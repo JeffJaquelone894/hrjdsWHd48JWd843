@@ -1086,8 +1086,7 @@ tail -20 /var/log/nginx/error.log
 ## Kontakt & Support
 
 Bei Fragen:
-- Emergent Discord: https://discord.gg/emergent
-- Emergent Support: support@emergentagent.com
+- E-Mail: info@tdata-testing.de
 
 ---
 

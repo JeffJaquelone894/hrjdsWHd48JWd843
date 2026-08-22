@@ -236,7 +236,6 @@ class EmailInboxService:
                         "codes": codes,
                         "received_at": received_at.isoformat(),
                         "email_id": email_id.decode() if isinstance(email_id, bytes) else str(email_id),
-                        "_body_preview": (subject + "\n\n" + body)[:1500],  # Used for LLM fallback if needed
                     })
                 
                 except Exception as e:
@@ -281,101 +280,6 @@ def get_verification_codes(email_address: str, app_password: str, since_minutes:
         return results
     finally:
         service.disconnect()
-
-
-async def _extract_code_via_llm(subject: str, body: str) -> Optional[str]:
-    """
-    Ask an LLM to extract the single verification code from an email.
-    Returns the code string (digits only, 4-8 chars) or None.
-    Uses Emergent LLM Key with gpt-5-nano for fastest/cheapest inference.
-    Hard timeout: 5 seconds per call.
-    """
-    import os
-    import re as _re
-    import asyncio as _asyncio
-    import uuid as _uuid
-
-    api_key = os.environ.get("EMERGENT_LLM_KEY")
-    if not api_key:
-        return None
-
-    try:
-        from emergentintegrations.llm.chat import LlmChat, UserMessage
-    except ImportError:
-        # Optional AI fallback not available (e.g. self-hosted server) - skip gracefully
-        return None
-
-    snippet = (subject + "\n\n" + body)[:1500]
-    system_msg = (
-        "You extract one-time verification / confirmation / login codes from emails. "
-        "Reply with ONLY the code (digits, 4-8 chars), nothing else. "
-        "If the email does not clearly contain a verification code intended for the recipient "
-        "(e.g. it's a receipt, tracking number, order number, invoice, year, account balance), reply exactly: NONE."
-    )
-    try:
-        chat = LlmChat(
-            api_key=api_key,
-            session_id=f"code-extract-{_uuid.uuid4().hex[:8]}",
-            system_message=system_msg,
-        ).with_model("openai", "gpt-5-nano")
-        response = await _asyncio.wait_for(
-            chat.send_message(UserMessage(text=snippet)),
-            timeout=5.0,
-        )
-        if not response:
-            return None
-        response = str(response).strip()
-        if response.upper() == "NONE":
-            return None
-        match = _re.search(r'\b(\d{4,8})\b', response)
-        if match:
-            return match.group(1)
-        return None
-    except _asyncio.TimeoutError:
-        print("LLM code extraction timeout (5s)")
-        return None
-    except Exception as e:
-        print(f"LLM code extraction failed: {e}")
-        return None
-
-
-async def get_verification_codes_smart(email_address: str, app_password: str, since_minutes: int = 60) -> List[Dict]:
-    """
-    Fetch verification codes with AI fallback for near-100% extraction accuracy.
-    - Regex first (fast, free)
-    - If regex finds no code for a verification-like email, ask LLM (parallel, hard 5s timeout each)
-    Total worst-case latency: ~6 seconds even if LLM hangs.
-    """
-    import asyncio as _asyncio
-    import os
-    service = EmailInboxService(email_address, app_password)
-    try:
-        results = service.fetch_verification_emails(since_minutes=since_minutes)
-    finally:
-        service.disconnect()
-
-    # Skip LLM entirely if no key configured (defensive)
-    if os.environ.get("EMERGENT_LLM_KEY") and any(not r.get("codes") for r in results):
-        # Run LLM fallbacks in parallel, capped at 8 emails to control cost
-        pending = [r for r in results if not r.get("codes")][:8]
-        tasks = [
-            _extract_code_via_llm(r.get("subject", ""), r.get("_body_preview", ""))
-            for r in pending
-        ]
-        if tasks:
-            try:
-                codes = await _asyncio.wait_for(_asyncio.gather(*tasks, return_exceptions=True), timeout=8.0)
-                for r, code in zip(pending, codes):
-                    if isinstance(code, str) and code:
-                        r["codes"] = [code]
-            except _asyncio.TimeoutError:
-                print("LLM batch timeout - returning regex-only results")
-
-    for r in results:
-        r.pop("_body_preview", None)
-
-    # Only return emails that ended up with a code
-    return [r for r in results if r.get("codes")]
 
 
 def test_email_credentials(email_address: str, app_password: str) -> Dict:

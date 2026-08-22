@@ -1,5 +1,15 @@
 # Prysm Technologies (ehemals Keyperion / Precision Labs) – PRD
 
+## 🟢 Emergent-Spuren entfernt + KI entfernt (2026-06)
+- **Alle sichtbaren „Emergent"-Hinweise aus dem ausgelieferten Code entfernt:**
+  - `frontend/public/index.html`: „Made with Emergent"-Badge-Skript (emergent-main.js), Visual-Edits-Skripte (debug-monitor.js/Tailwind-CDN) und PostHog-Analytics komplett entfernt. lang=„de", Titel/Description = Tdata Testing.
+  - Doku: `SELF_HOSTING_ANLEITUNG.md` (Emergent Discord/Support → info@tdata-testing.de), `ADMIN_LOGIN_ANLEITUNG.md` (Preview-URL → www.tdata-testing.de).
+- **KI-Funktionen auf Nutzerwunsch KOMPLETT entfernt (Option b):**
+  - Backend: `services/ai_task_service.py` gelöscht; Admin-Endpoint `POST /api/admin/tasks/ai-generate` entfernt (routes/admin.py); toter LLM-Fallback (`_extract_code_via_llm`, `get_verification_codes_smart`) aus `email_inbox_service.py` entfernt (E-Mail-Code-Erkennung läuft weiterhin rein per Regex `get_verification_codes`). `EMERGENT_LLM_KEY` aus backend/.env entfernt. `emergentintegrations` wird nirgends mehr importiert.
+  - Frontend: „✨ Mit KI generieren"-Panel + Logik + State + Sparkles-Import aus `pages/admin/AdminTasks.jsx` entfernt. Aufgaben-Erstellung ansonsten unverändert.
+- **Bewusst belassen** (kein ausgelieferter Code / ändert sich beim Deploy): dev-only `frontend/plugins/visual-edits/*` (nicht im Prod-Build), `REACT_APP_BACKEND_URL`/`FRONTEND_URL` (Preview-Deploy-URLs), Test-Dateien, interne memory/*.
+- Verifiziert: Backend startet fehlerfrei (Templates synced), Frontend kompiliert (nur bestehende eslint-Warnungen), Startseite lädt, Badge weg. Final-Grep: keine „emergent"-Referenz mehr im ausgelieferten Code/Doku.
+
 ## 🟢 Rebrand → Tdata Testing + Redesign öffentliche Website (2026-06)
 - **Rebrand Webora → Tdata / Tdata Testing**: Logo/Navbar = „Tdata" (grünes Serifen-„T"-Emblem + Wortmarke), langer Name (Footer, Impressum, Verträge) = „Tdata Testing". Rechtsträger unverändert: MO Handel & Service, Inh. Mariusz Otok.
 - **Design: Klassisch & seriös, Salbeigrün/Weiß** (Tailwind-Palette `sage-50..900`, primär #659A65 / hover #507D50, dunkelgrün #1A261A für Footer/CTA). Fonts: Merriweather (Serifen-Headlines, `font-heading`) + Source Sans 3 (`font-body`). Keine Bento-Grids/Glasmorphismus/8xl-Headlines mehr.

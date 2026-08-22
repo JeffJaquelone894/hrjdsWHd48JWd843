@@ -9,7 +9,7 @@
 
 ## Login-URL
 
-https://sms-verify-demo-1.preview.emergentagent.com/admin/login
+https://www.tdata-testing.de/admin/login
 
 ## Schritte:
 
