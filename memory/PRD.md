@@ -1,5 +1,10 @@
 # Prysm Technologies (ehemals Keyperion / Precision Labs) – PRD
 
+## 🟢 Telegram-Webhook entfernt + Security-Re-Audit (2026-06)
+- `POST /api/chat/telegram/webhook` inkl. `/start`//`/stop`-Registrierung komplett entfernt (routes/chat.py), `TELEGRAM_WEBHOOK_SECRET` aus .env raus, ungenutzter `Request`-Import bereinigt. Webhook → 404.
+- Security-Re-Audit per Testing-Agent (**iteration_30.json**): **414/414 Security-Tests + 21/21 Chat-Tests grün, 0 kritische / 0 kleinere Findings, keine Regression.**
+- Hinweis (informativ, kein Sicherheitsrisiko): `db.telegram_subscribers` ist ohne Webhook nur noch lesbar; `send_telegram_notification()` feuert nur für bereits gespeicherte chat_ids. Falls Telegram-Benachrichtigungen künftig nicht mehr gewünscht sind, können Funktion + Collection + `TELEGRAM_BOT_TOKEN` entfernt werden.
+
 ## 🔴🟢 Security-Audit (gesamtes Backend) – 0 offene Schwachstellen (2026-06)
 Vollständiger Audit + Fixes, per Testing-Agent verifiziert (**387/387 Security-Tests grün, iteration_29.json**).
 **Behobene Schwachstellen:**

@@ -8,11 +8,15 @@ import os
 import uuid
 from datetime import datetime
 
-BASE_URL = os.environ.get('REACT_APP_BACKEND_URL', '').rstrip('/')
+from dotenv import dotenv_values
 
-# Test credentials
-ADMIN_EMAIL = "admin@precision-labs.de"
-ADMIN_PASSWORD = "Inf0m3tr!ca#2025Sec"
+_frontend_env = dotenv_values("/app/frontend/.env")
+BASE_URL = (os.environ.get('REACT_APP_BACKEND_URL')
+            or _frontend_env.get('REACT_APP_BACKEND_URL', '')).rstrip('/')
+
+# Test credentials (see /app/memory/test_credentials.md)
+ADMIN_EMAIL = "admin@webora.de"
+ADMIN_PASSWORD = "Kp9!xRv2Lq@Zm7Tn4&Q"
 EMPLOYEE_EMAIL = "mitarbeiter@precision-labs.de"
 EMPLOYEE_PASSWORD = "Mitarbeiter123!"
 
@@ -33,9 +37,9 @@ class TestAdminLogin:
         assert "admin" in data, "Response should contain admin object"
         
     def test_admin_login_invalid_credentials(self):
-        """Admin login with wrong password should fail"""
+        """Admin login with wrong password should fail (throwaway email to avoid lockout)"""
         response = requests.post(f"{BASE_URL}/api/admin/login", json={
-            "email": ADMIN_EMAIL,
+            "email": f"TEST_nobody_{uuid.uuid4().hex[:8]}@qamail.de",
             "password": "wrongpassword"
         })
         assert response.status_code == 401
@@ -260,10 +264,10 @@ class TestChatSystem:
 
 
 class TestTelegramWebhook:
-    """Test Telegram webhook endpoint"""
-    
-    def test_telegram_webhook_start(self):
-        """POST /api/chat/telegram/webhook - Telegram bot webhook handles /start"""
+    """Telegram webhook endpoint was REMOVED (security hardening, iteration_30)"""
+
+    def test_telegram_webhook_removed_start(self):
+        """POST /api/chat/telegram/webhook - endpoint removed -> 404/405"""
         webhook_data = {
             "message": {
                 "text": "/start",
@@ -272,12 +276,10 @@ class TestTelegramWebhook:
             }
         }
         response = requests.post(f"{BASE_URL}/api/chat/telegram/webhook", json=webhook_data)
-        assert response.status_code == 200, f"Expected 200, got {response.status_code}: {response.text}"
-        data = response.json()
-        assert data.get("ok") == True, "Webhook should return ok: true"
-    
-    def test_telegram_webhook_stop(self):
-        """POST /api/chat/telegram/webhook - Telegram bot webhook handles /stop"""
+        assert response.status_code in (404, 405), f"Expected 404/405, got {response.status_code}: {response.text[:200]}"
+
+    def test_telegram_webhook_removed_stop(self):
+        """POST /api/chat/telegram/webhook - endpoint removed -> 404/405"""
         webhook_data = {
             "message": {
                 "text": "/stop",
@@ -286,9 +288,7 @@ class TestTelegramWebhook:
             }
         }
         response = requests.post(f"{BASE_URL}/api/chat/telegram/webhook", json=webhook_data)
-        assert response.status_code == 200, f"Expected 200, got {response.status_code}: {response.text}"
-        data = response.json()
-        assert data.get("ok") == True
+        assert response.status_code in (404, 405), f"Expected 404/405, got {response.status_code}: {response.text[:200]}"
 
 
 class TestQuizEndpoints:

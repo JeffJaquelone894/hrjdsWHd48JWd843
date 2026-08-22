@@ -457,13 +457,12 @@ def test_public_test_session_lifecycle_and_field_scope(s, admin_h):
         s.delete(f"{API}/test-sessions/{sid}", headers=admin_h)
 
 
-def test_telegram_webhook_requires_secret_when_configured(s):
-    secret = dotenv_values("/app/backend/.env").get("TELEGRAM_WEBHOOK_SECRET")
+def test_telegram_webhook_endpoint_is_removed(s):
+    """Endpoint was fully removed (iteration_30). Must be unreachable."""
     r = s.post(f"{API}/chat/telegram/webhook", json={"message": {"text": "hi", "chat": {"id": 1}}})
-    if secret:
-        assert r.status_code in (401, 403), f"webhook accepted without secret: {r.status_code}"
-    else:
-        pytest.skip("TELEGRAM_WEBHOOK_SECRET not configured in preview")
+    assert r.status_code in (404, 405), f"telegram webhook still reachable: {r.status_code} {r.text[:200]}"
+    assert not dotenv_values("/app/backend/.env").get("TELEGRAM_WEBHOOK_SECRET"), \
+        "TELEGRAM_WEBHOOK_SECRET should be removed from backend/.env"
 
 
 # ---------- 7. RE-VERIFICATION of iteration_28 fixes ----------
@@ -582,14 +581,20 @@ def test_session_tokens_are_unique(s, admin_h):
             s.delete(f"{API}/test-sessions/{sid}", headers=admin_h)
 
 
-# FIX #4 - telegram webhook secret
+# FIX #4 - telegram webhook removed entirely (iteration_30)
 @pytest.mark.parametrize("headers", [
     {},
     {"X-Telegram-Bot-Api-Secret-Token": "wrong-secret-value"},
     {"X-Telegram-Bot-Api-Secret-Token": ""},
 ])
-def test_telegram_webhook_rejects_missing_or_wrong_secret(s, headers):
+def test_telegram_webhook_unreachable_with_any_headers(s, headers):
     r = s.post(f"{API}/chat/telegram/webhook", headers=headers,
                json={"message": {"text": "/start", "chat": {"id": 999000111},
                                  "from": {"first_name": "Attacker"}}})
-    assert r.status_code == 403, f"webhook accepted with headers={headers}: {r.status_code} {r.text[:200]}"
+    assert r.status_code in (404, 405), f"webhook reachable with headers={headers}: {r.status_code} {r.text[:200]}"
+
+
+@pytest.mark.parametrize("method", ["get", "put", "delete", "patch"])
+def test_telegram_webhook_other_methods_unreachable(s, method):
+    r = getattr(s, method)(f"{API}/chat/telegram/webhook")
+    assert r.status_code in (404, 405), f"{method.upper()} webhook -> {r.status_code} {r.text[:150]}"

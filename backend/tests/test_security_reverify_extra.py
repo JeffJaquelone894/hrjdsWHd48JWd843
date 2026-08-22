@@ -116,14 +116,29 @@ def test_employee_document_download_nonexistent_contract(s, applicant):
     assert r.status_code in (403, 404), f"{r.status_code} {r.text[:200]}"
 
 
-def test_telegram_webhook_wrong_secret_does_not_register(s, admin_h):
-    """Confirm the rejected webhook call did not create a subscriber side effect."""
+def test_telegram_webhook_removed_and_no_subscriber_side_effect(s, admin_h):
+    """Endpoint removed (iteration_30): unreachable and must not register a subscriber."""
     chat_id = 987654321
     r = s.post(f"{API}/chat/telegram/webhook",
                headers={"X-Telegram-Bot-Api-Secret-Token": "nope"},
                json={"message": {"text": "/start", "chat": {"id": chat_id},
                                  "from": {"first_name": "Attacker"}}})
-    assert r.status_code == 403, f"{r.status_code} {r.text[:200]}"
+    assert r.status_code in (404, 405), f"{r.status_code} {r.text[:200]}"
+    r2 = s.post(f"{API}/chat/telegram/webhook",
+                json={"message": {"text": "/start", "chat": {"id": chat_id},
+                                  "from": {"first_name": "Attacker"}}})
+    assert r2.status_code in (404, 405), f"{r2.status_code} {r2.text[:200]}"
+
+    # verify no subscriber persisted in DB
+    try:
+        from pymongo import MongoClient
+        env = dotenv_values("/app/backend/.env")
+        mc = MongoClient(env["MONGO_URL"], serverSelectionTimeoutMS=5000)
+        count = mc[env["DB_NAME"]].telegram_subscribers.count_documents({"chat_id": chat_id})
+        mc.close()
+        assert count == 0, f"attacker chat_id registered as telegram subscriber ({count} docs)"
+    except ImportError:
+        pytest.skip("pymongo unavailable")
 
 
 def test_test_session_public_endpoints_reject_admin_paths(s):

@@ -15,7 +15,11 @@ import requests
 import jwt as pyjwt  # PyJWT for forging tokens
 from datetime import datetime, timedelta
 
-BASE_URL = os.environ.get("REACT_APP_BACKEND_URL", "").rstrip("/")
+from dotenv import dotenv_values
+
+_frontend_env = dotenv_values("/app/frontend/.env")
+BASE_URL = (os.environ.get("REACT_APP_BACKEND_URL")
+            or _frontend_env.get("REACT_APP_BACKEND_URL", "")).rstrip("/")
 assert BASE_URL, "REACT_APP_BACKEND_URL must be set"
 API = f"{BASE_URL}/api"
 
