@@ -331,6 +331,11 @@ async def send_image(
 # Telegram webhook - handles /start command to register subscribers
 @router.post("/telegram/webhook")
 async def telegram_webhook(request: Request, db: AsyncIOMotorDatabase = Depends(get_db)):
+    # Fail closed: the webhook is only reachable when a secret is configured AND matches.
+    expected_secret = os.environ.get("TELEGRAM_WEBHOOK_SECRET")
+    provided = request.headers.get("x-telegram-bot-api-secret-token")
+    if not expected_secret or provided != expected_secret:
+        raise HTTPException(status_code=403, detail="Forbidden")
     data = await request.json()
     message = data.get("message", {})
     text = message.get("text", "")

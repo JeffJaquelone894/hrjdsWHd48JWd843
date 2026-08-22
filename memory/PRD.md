@@ -1,5 +1,17 @@
 # Prysm Technologies (ehemals Keyperion / Precision Labs) – PRD
 
+## 🔴🟢 Security-Audit (gesamtes Backend) – 0 offene Schwachstellen (2026-06)
+Vollständiger Audit + Fixes, per Testing-Agent verifiziert (**387/387 Security-Tests grün, iteration_29.json**).
+**Behobene Schwachstellen:**
+- **CRITICAL IDOR** `GET /api/employee/documents/{id}/download` (contract-Zweig): fremde signierte Verträge waren abrufbar → jetzt Eigentümerprüfung (`employee_email == token.sub` bzw. Admin).
+- **HIGH NoSQL-Injection** `POST /api/applications/login`: untypisierter `dict`-Body erlaubte Mongo-Operatoren (`$ne`) → jetzt Pydantic-Modell `ApplicantLogin(EmailStr, str)` → 422 statt 500/Bypass.
+- **Backdoors entfernt**: unauth. `POST /api/admin/init-admin` + `POST /api/employee/init-employee` (letzterer legte Account mit fest kodierten Zugangsdaten an) → gelöscht (404). Demo `GET/POST /api/status` entfernt.
+- **CORS**: `allow_credentials=True` + `*` → `allow_credentials=False` (App nutzt Bearer-Token, keine Cookies).
+- **Telegram-Webhook** `POST /api/chat/telegram/webhook`: war unauthentifiziert (Info-Leak über Subscriber) → `TELEGRAM_WEBHOOK_SECRET` in .env + **fail-closed** Header-Prüfung (403 ohne/falsches Secret). ⚠️ VPS: gleiches Secret setzen und bei Telegram `setWebhook(secret_token=...)` hinterlegen.
+- **Session-Token-Entropie**: `uuid4().hex[:12]` (48 Bit) → `secrets.token_urlsafe(32)` (~256 Bit) für öffentliche 1h-Test-Session-Links.
+**Bereits vorher stark (bestätigt):** JWT fail-closed (kein Default-Secret), bcrypt, Brute-Force-Lockout Admin-Login (5→429), Eigentümerprüfung Verträge (get/sign/download), Path-Traversal-Schutz Chat-Bilder, RBAC auf 45 Admin-Endpunkten (no-auth/employee/5 gefälschte JWT-Varianten → 401/403).
+**Restliche LOW-Hinweise (nicht ausnutzbar, aktiv gefuzzt):** 7 verbliebene `data: dict`-Bodies (Defence-in-Depth), Brute-Force nur per ip:email (kein per-Account-Zähler). Kein offenes Risiko.
+
 ## 🟢 Emergent-Spuren entfernt + KI entfernt (2026-06)
 - **Alle sichtbaren „Emergent"-Hinweise aus dem ausgelieferten Code entfernt:**
   - `frontend/public/index.html`: „Made with Emergent"-Badge-Skript (emergent-main.js), Visual-Edits-Skripte (debug-monitor.js/Tailwind-CDN) und PostHog-Analytics komplett entfernt. lang=„de", Titel/Description = Tdata Testing.

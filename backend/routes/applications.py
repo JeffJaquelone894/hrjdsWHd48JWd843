@@ -4,6 +4,7 @@ from models.application import ApplicationCreate, ApplicationResponse, Applicant
 from utils.auth import get_password_hash, verify_password, create_access_token, decode_token
 from typing import List
 from datetime import datetime, timedelta
+from pydantic import BaseModel, EmailStr
 import os
 import uuid
 import base64
@@ -72,18 +73,20 @@ async def submit_application(
 
 
 # Applicant login endpoint
+class ApplicantLogin(BaseModel):
+    email: EmailStr
+    password: str
+
+
 @router.post("/login")
 async def applicant_login(
-    credentials: dict,
+    credentials: ApplicantLogin,
     db: AsyncIOMotorDatabase = Depends(get_db)
 ):
     """Login for applicants/employees"""
-    email = credentials.get("email")
-    password = credentials.get("password")
-    
-    if not email or not password:
-        raise HTTPException(status_code=400, detail="E-Mail und Passwort erforderlich")
-    
+    email = credentials.email
+    password = credentials.password
+
     # Find application by email
     application = await db.applications.find_one({"email": email})
     

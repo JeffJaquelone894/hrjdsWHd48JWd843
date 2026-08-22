@@ -5,6 +5,7 @@ from datetime import datetime, timezone, timedelta
 from pydantic import BaseModel
 from typing import Optional
 import uuid
+import secrets
 
 router = APIRouter(prefix="/api/test-sessions", tags=["test-sessions"])
 
@@ -44,7 +45,7 @@ async def create_session(
 ):
     verify_admin(authorization)
 
-    session_token = uuid.uuid4().hex[:12]
+    session_token = secrets.token_urlsafe(32)
 
     session_doc = {
         "id": f"session-{uuid.uuid4().hex[:8]}",

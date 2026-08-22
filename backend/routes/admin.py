@@ -131,36 +131,6 @@ async def verify_token(authorization: str = Header(None)):
     
     return {"valid": True, "email": payload.get("sub"), "role": payload.get("role")}
 
-@router.post("/init-admin")
-async def initialize_admin(db: AsyncIOMotorDatabase = Depends(get_db)):
-    """Initialize admin user from environment variables (idempotent)."""
-    admin_email = os.environ.get("ADMIN_EMAIL", "admin@webora.de")
-    admin_password = os.environ.get("ADMIN_PASSWORD")
-
-    existing_admin = await db.admins.find_one({"email": admin_email})
-    if existing_admin:
-        return {"message": "Admin bereits vorhanden"}
-
-    if not admin_password:
-        raise HTTPException(status_code=500, detail="ADMIN_PASSWORD nicht konfiguriert")
-
-    admin_data = {
-        "id": "admin-001",
-        "email": admin_email,
-        "password_hash": get_password_hash(admin_password),
-        "name": "Administrator",
-        "role": "admin",
-        "created_at": datetime.utcnow(),
-        "last_login": None
-    }
-
-    await db.admins.insert_one(admin_data)
-
-    return {
-        "message": "Admin erstellt",
-        "email": admin_email
-    }
-
 # ========== TASK MANAGEMENT ==========
 
 def verify_admin_token(authorization: str = Header(None)):

@@ -248,37 +248,6 @@ async def get_employee_stats(
         "total_provision": round(total_provision, 2)
     }
 
-@router.post("/init-employee")
-async def initialize_employee(db: AsyncIOMotorDatabase = Depends(get_db)):
-    """Initialize test employee - REMOVE IN PRODUCTION"""
-    existing = await db.employees.find_one({"email": "mitarbeiter@precision-labs.de"})
-    
-    if existing:
-        return {"message": "Mitarbeiter bereits vorhanden"}
-    
-    employee_data = {
-        "id": "emp-001",
-        "email": "mitarbeiter@precision-labs.de",
-        "password_hash": get_password_hash("Mitarbeiter123!"),
-        "name": "Max Mitarbeiter",
-        "position": "QA Tester",
-        "department": "Testing",
-        "employee_number": "EMP001",
-        "phone": "+49 170 1234567",
-        "created_at": datetime.utcnow(),
-        "last_login": None,
-        "is_active": True
-    }
-    
-    await db.employees.insert_one(employee_data)
-    
-    return {
-        "message": "Test-Mitarbeiter erstellt",
-        "email": "mitarbeiter@precision-labs.de",
-        "password": "Mitarbeiter123!"
-    }
-
-
 # ==================== PROFILE / SETTINGS ENDPOINTS ====================
 
 @router.get("/profile")
@@ -553,7 +522,11 @@ async def download_document(
         contract = await db.contracts.find_one({"id": doc_id, "status": "signed"})
         if not contract:
             raise HTTPException(status_code=404, detail="Vertrag nicht gefunden")
-        
+
+        # Ownership check: only the owning employee (or an admin) may download this contract
+        if payload.get("role") != "admin" and contract.get("employee_email") != payload.get("sub"):
+            raise HTTPException(status_code=403, detail="Kein Zugriff auf diesen Vertrag")
+
         pdf_filename = contract.get("signed_pdf")
         if not pdf_filename:
             raise HTTPException(status_code=404, detail="PDF nicht verfügbar")

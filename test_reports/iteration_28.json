@@ -1,0 +1,63 @@
+{
+  "summary": "Full backend security audit (authn/authz/RBAC/IDOR/JWT/brute-force/injection) against the public URL. 342 pytest cases executed: 339 passed, 3 failed, 1 skipped (Telegram secret not configured). Verified all removed backdoors are gone and the RBAC matrix (no-auth / employee token / 5 forged-token variants) across 45 admin endpoints. Found 2 real vulnerabilities still open (1 CRITICAL IDOR, 1 HIGH NoSQL operator injection) plus 3 medium hardening gaps. No application code was modified.",
+  "backend_issues": {
+    "critical": [
+      {
+        "endpoint": "GET /api/employee/documents/{doc_id}/download",
+        "issue": "IDOR/BOLA STILL OPEN. The `doc_id.startswith('contract-')` branch (employee.py ~line 519-536) looks up db.contracts by id ONLY, with no ownership check. Repro: applicant A signs contract contract-XXXX; applicant B (any valid employee/applicant token) calls GET /api/employee/documents/contract-XXXX/download -> HTTP 200 and receives A's signed employment-contract PDF (full name, address, position, salary, signature). Regular (non-contract) documents ARE correctly scoped by employee_id, only the contract branch is unscoped. Fix: after fetching the contract, require contract['employee_email'] == payload['sub'] (or contract['employee_id'] == payload['id']) else 403.",
+        "priority": "CRITICAL"
+      },
+      {
+        "endpoint": "POST /api/applications/login",
+        "issue": "NoSQL operator injection. Body is declared as untyped `credentials: dict` (applications.py:77), so `{\"email\": {\"$ne\": null}, \"password\": {\"$ne\": null}}` is passed straight into db.applications.find_one({'email': <dict>}). The query MATCHES an arbitrary account (passes the 'user not found' check) and then crashes in passlib with UnknownHashError -> HTTP 500 + stack trace in backend logs. Full auth bypass is prevented only because bcrypt verify still runs, but this is an exploitable injection + account-selection/enumeration oracle (401 vs 500) and an unhandled 500. Fix: use a Pydantic model (EmailStr + str) like AdminLogin/EmployeeLogin, and coerce/validate before querying.",
+        "priority": "HIGH"
+      }
+    ],
+    "minor": [
+      {
+        "endpoint": "POST /api/chat/telegram/webhook",
+        "issue": "TELEGRAM_WEBHOOK_SECRET is NOT set in backend/.env, so the secret-token guard in chat.py:335 is inert and the webhook is fully unauthenticated. Anyone can POST {'message':{'text':'/start','chat':{'id':<their id>}}} to register as a telegram_subscribers entry and thereafter receive notifications about admin chat messages (data exfiltration). Set TELEGRAM_WEBHOOK_SECRET in the env (and pass it in setWebhook) or reject when unset."
+      },
+      {
+        "endpoint": "POST /api/test-sessions/create -> GET /api/test-sessions/public/{token}",
+        "issue": "Public session token is only uuid4().hex[:12] (12 hex chars / 48 bits, test_sessions.py:46). These unauthenticated links expose test_login_email, test_login_password, ident link, SMS and email codes. Use the full 32-char hex (or secrets.token_urlsafe(32))."
+      },
+      {
+        "endpoint": "PUT /api/admin/tasks/{id}/category, /credentials, /assign; POST /api/applications/sign-contract; PUT /api/applications/contract-templates/{type}; POST /api/applications/{id}/accept|unlock",
+        "issue": "Untyped `data: dict` request bodies (admin.py:276/297/330, applications.py:233/281/345/915) bypass Pydantic validation. Example: POST /api/applications/sign-contract with a non-string iban/signature_data reaches len()/startswith() and can store malformed data or raise 500. Replace with explicit Pydantic models."
+      }
+    ]
+  },
+  "frontend_issues": {"ui_bugs": [], "integration_issues": [], "design_issues": []},
+  "test_report_links": [
+    "/app/backend/tests/test_security_full_audit.py",
+    "/app/backend/tests/test_security_bruteforce.py",
+    "/app/backend/tests/cleanup_security_audit.py",
+    "/app/test_reports/pytest/security_audit.xml"
+  ],
+  "action_items": [
+    "CRITICAL: add an ownership check to the `contract-` branch of GET /api/employee/documents/{doc_id}/download (cross-tenant contract PDF leak).",
+    "HIGH: replace the untyped dict body of POST /api/applications/login with a Pydantic model (EmailStr/str) to close NoSQL operator injection and the 500.",
+    "MEDIUM: set TELEGRAM_WEBHOOK_SECRET in backend/.env (webhook currently open) or reject webhook calls when the secret is unset.",
+    "MEDIUM: increase public test-session token entropy (full uuid4 hex / secrets.token_urlsafe).",
+    "LOW: convert remaining `data: dict` bodies to Pydantic models."
+  ],
+  "critical_code_review_comments": [
+    "employee.py download_document: contract branch queries db.contracts by id only - must compare contract.employee_email/employee_id with the JWT subject.",
+    "applications.py applicant_login: `credentials: dict` allows Mongo operators; also wrap verify_password in a type check so a non-str password cannot raise passlib UnknownHashError (500).",
+    "employee.py get_documents matches contracts via employee_id.replace('emp-','EMP').upper() - brittle id mangling; the download endpoint does not use the same rule, which is exactly why the IDOR slipped through.",
+    "Admin brute-force lockout is keyed on ip:email; a distributed attacker rotating IPs is unaffected - consider an additional per-account counter."
+  ],
+  "updated_files": [
+    "/app/backend/tests/test_security_full_audit.py",
+    "/app/backend/tests/test_security_bruteforce.py",
+    "/app/backend/tests/cleanup_security_audit.py"
+  ],
+  "success_rate": {"backend": "99% of security assertions pass (339/342); 2 real vulnerabilities + 1 entropy finding", "frontend": "not tested (backend-only request)"},
+  "seed_data_creation": "Created 2 throwaway applicants (TEST_sec_A_*/TEST_sec_B_*@qamail.de), 1 contract per run and 1 test session; all removed afterwards via the cleanup fixture and /app/backend/tests/cleanup_security_audit.py. Brute-force test used random sectest-bruteforce-*@example.com emails only; the real admin was never locked and login_attempts/audit rows were cleaned.",
+  "should_call_test_agent_after_fix": true,
+  "should_main_agent_self_test": false,
+  "test_credentials": "admin@webora.de / Kp9!xRv2Lq@Zm7Tn4&Q (login OK), mitarbeiter@precision-labs.de / Mitarbeiter123! (login OK)",
+  "context_for_next_testing_agent": "Run `python -m pytest tests/test_security_full_audit.py tests/test_security_bruteforce.py -q -p no:randomly` from /app/backend. VERIFIED PASSING: init-admin/init-employee and GET|POST /api/status all 404; 45 admin endpoints reject no-auth, employee tokens and 5 forged-JWT variants (garbage, wrong-secret admin, expired, tampered, alg=none) with 401/403; contracts IDOR (read/download/sign) correctly 403 with owner still 200; my-contracts, chat/messages, applications/status all caller-scoped; download-contract query-param token rejects forged JWTs; regular employee-document download/delete owner-scoped; admin brute-force 5x401 then 429 and stays locked; no password_hash/app_password in any response; /api/chat/image path traversal blocked; referral tracking returns only valid/slug/name; invalid/unstarted session tokens rejected. EXPECTED FAILURES until fixed: test_employee_document_download_via_contract_prefix_is_owner_scoped (CRITICAL IDOR), test_nosql_injection_applicant_login (500), test_public_test_session_lifecycle_and_field_scope (12-char token). Run cleanup_security_audit.py after each run.",
+  "rca_of_the_issue": "1) The security hardening pass added ownership checks in contracts.py (get/sign/download) but missed the parallel download path in employee.py, which serves signed contract PDFs by id with no owner comparison - so the fix was bypassable through a different route. 2) applications/login was never migrated to a typed Pydantic body (unlike admin/employee login), so raw JSON (including Mongo operators) flows into find_one; the 500 comes from passlib being handed a dict/None hash. 3) The Telegram webhook guard is env-conditional and the env var is absent, leaving the endpoint effectively unauthenticated."
+}
