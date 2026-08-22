@@ -7,12 +7,28 @@ module.exports = {
   ],
   theme: {
   	extend: {
-  		borderRadius: {
+  		fontFamily: {
+			heading: ['Merriweather', 'Georgia', 'serif'],
+			body: ['"Source Sans 3"', 'system-ui', 'sans-serif']
+		},
+		borderRadius: {
   			lg: 'var(--radius)',
   			md: 'calc(var(--radius) - 2px)',
   			sm: 'calc(var(--radius) - 4px)'
   		},
   		colors: {
+			sage: {
+				'50': '#F1F6F1',
+				'100': '#E3EDE3',
+				'200': '#C7DBC7',
+				'300': '#A5C4A5',
+				'400': '#82AC82',
+				'500': '#659A65',
+				'600': '#507D50',
+				'700': '#3F633F',
+				'800': '#324E32',
+				'900': '#1A261A'
+			},
   			background: 'hsl(var(--background))',
   			foreground: 'hsl(var(--foreground))',
   			card: {

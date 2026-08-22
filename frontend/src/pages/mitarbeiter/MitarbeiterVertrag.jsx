@@ -66,7 +66,7 @@ const ContractDocument = ({ contract }) => {
         <section>
           <h3 className="font-bold text-gray-900 mb-2">§2 Tätigkeit</h3>
           <p className="text-gray-700 mb-2">
-            Der Arbeitnehmer wird als <strong>Assistent für Evaluierungen im Homeoffice</strong> bei Webora eingestellt und insbesondere mit folgenden Aufgaben betraut:
+            Der Arbeitnehmer wird als <strong>Assistent für Evaluierungen im Homeoffice</strong> bei Tdata Testing eingestellt und insbesondere mit folgenden Aufgaben betraut:
           </p>
           <ul className="list-disc list-inside text-gray-700 space-y-1 ml-4">
             <li>Überprüfung von Apps und Software auf Benutzerfreundlichkeit und Mängel</li>
@@ -100,7 +100,7 @@ const ContractDocument = ({ contract }) => {
             Dem Arbeitnehmer ist bekannt, dass ein entsprechender Verzicht nur mit Wirkung für die Zukunft und bei Ausübung mehrerer geringfügiger Beschäftigungsverhältnisse nur einheitlich erklärt werden kann. Diese Erklärung bindet den Arbeitnehmer für die Dauer der jeweiligen Beschäftigungen.
           </p>
           <p className="text-gray-700">
-            Die Tätigkeit erfolgt bei Webora im Homeoffice.
+            Die Tätigkeit erfolgt bei Tdata Testing im Homeoffice.
           </p>
         </section>
 
@@ -287,14 +287,14 @@ const MitarbeiterVertrag = () => {
   const getStatusBadge = (status) => {
     if (status === 'signed') {
       return (
-        <span className="flex items-center gap-1 px-3 py-1 bg-sky-100 text-sky-700 rounded-full text-sm font-medium">
+        <span className="flex items-center gap-1 px-3 py-1 bg-sage-100 text-sage-700 rounded-full text-sm font-medium">
           <CheckCircle size={14} />
           Unterschrieben
         </span>
       );
     }
     return (
-      <span className="flex items-center gap-1 px-3 py-1 bg-sky-100 text-sky-700 rounded-full text-sm font-medium">
+      <span className="flex items-center gap-1 px-3 py-1 bg-sage-100 text-sage-700 rounded-full text-sm font-medium">
         <Clock size={14} />
         Ausstehend
       </span>
@@ -304,7 +304,7 @@ const MitarbeiterVertrag = () => {
   if (loading) {
     return (
       <div className="flex items-center justify-center h-64">
-        <div className="animate-spin rounded-full h-12 w-12 border-b-2 border-sky-500"></div>
+        <div className="animate-spin rounded-full h-12 w-12 border-b-2 border-sage-500"></div>
       </div>
     );
   }
@@ -336,8 +336,8 @@ const MitarbeiterVertrag = () => {
             >
               <div className="flex flex-col lg:flex-row lg:items-center justify-between gap-4">
                 <div className="flex items-start gap-4">
-                  <div className="w-14 h-14 bg-sky-100 rounded-xl flex items-center justify-center flex-shrink-0">
-                    <FileText className="text-sky-500" size={28} />
+                  <div className="w-14 h-14 bg-sage-100 rounded-xl flex items-center justify-center flex-shrink-0">
+                    <FileText className="text-sage-500" size={28} />
                   </div>
                   <div>
                     <div className="flex items-center gap-3 mb-1">
@@ -372,7 +372,7 @@ const MitarbeiterVertrag = () => {
                         setSelectedContract(contract);
                         setShowSignModal(true);
                       }}
-                      className="bg-sky-500 hover:bg-sky-600"
+                      className="bg-sage-500 hover:bg-sage-600"
                     >
                       <PenTool size={18} className="mr-2" />
                       Jetzt unterschreiben
@@ -381,7 +381,7 @@ const MitarbeiterVertrag = () => {
                     <Button
                       onClick={() => handleDownload(contract)}
                       variant="outline"
-                      className="border-sky-500 text-sky-600 hover:bg-sky-50"
+                      className="border-sage-500 text-sage-600 hover:bg-sage-50"
                     >
                       <Download size={18} className="mr-2" />
                       PDF herunterladen
@@ -395,16 +395,16 @@ const MitarbeiterVertrag = () => {
       )}
 
       {/* Info Box */}
-      <div className="bg-blue-50 border border-blue-200 rounded-xl p-6">
+      <div className="bg-sage-50 border border-sage-200 rounded-xl p-6">
         <div className="flex items-start gap-4">
-          <AlertTriangle className="text-blue-600 flex-shrink-0 mt-1" size={24} />
+          <AlertTriangle className="text-sage-600 flex-shrink-0 mt-1" size={24} />
           <div>
-            <h3 className="font-semibold text-blue-800">Wichtige Hinweise</h3>
-            <ul className="text-sm text-blue-700 mt-2 space-y-1">
+            <h3 className="font-semibold text-sage-800">Wichtige Hinweise</h3>
+            <ul className="text-sm text-sage-700 mt-2 space-y-1">
               <li>• Lesen Sie den Vertrag sorgfältig durch bevor Sie unterschreiben</li>
               <li>• Ihre digitale Unterschrift ist rechtlich bindend</li>
               <li>• Nach der Unterschrift können Sie den Vertrag als PDF herunterladen</li>
-              <li>• Bei Fragen wenden Sie sich an hr@webora.de</li>
+              <li>• Bei Fragen wenden Sie sich an hr@tdata-testing.de</li>
             </ul>
           </div>
         </div>
@@ -424,7 +424,7 @@ const MitarbeiterVertrag = () => {
             <div className="p-6 border-b border-gray-200 flex items-center justify-between flex-shrink-0">
               <div>
                 <h2 className="text-xl font-bold text-gray-900 flex items-center gap-2">
-                  <ScrollText size={24} className="text-sky-500" />
+                  <ScrollText size={24} className="text-sage-500" />
                   Arbeitsvertrag lesen & unterschreiben
                 </h2>
                 <p className="text-sm text-gray-500 mt-1">Bitte lesen Sie den Vertrag sorgfältig durch</p>
@@ -442,7 +442,7 @@ const MitarbeiterVertrag = () => {
               {/* Contract Preview */}
               <div className="mb-6">
                 <div className="flex items-center gap-2 mb-4">
-                  <FileText size={20} className="text-sky-500" />
+                  <FileText size={20} className="text-sage-500" />
                   <h3 className="font-semibold text-gray-900 text-lg">Vertragsinhalt</h3>
                 </div>
                 <ContractDocument contract={selectedContract} />
@@ -456,7 +456,7 @@ const MitarbeiterVertrag = () => {
               {/* Signature Section */}
               <div className="bg-gray-50 rounded-xl p-6 border border-gray-200">
                 <h3 className="font-semibold text-gray-900 text-lg mb-6 flex items-center gap-2">
-                  <PenTool size={20} className="text-sky-500" />
+                  <PenTool size={20} className="text-sage-500" />
                   Vertrag unterschreiben
                 </h3>
 
@@ -534,7 +534,7 @@ const MitarbeiterVertrag = () => {
               <Button
                 onClick={handleSign}
                 disabled={signing}
-                className="bg-sky-500 hover:bg-sky-600"
+                className="bg-sage-500 hover:bg-sage-600"
               >
                 {signing ? (
                   <>

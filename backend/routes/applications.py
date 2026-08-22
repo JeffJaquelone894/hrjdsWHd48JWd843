@@ -412,7 +412,7 @@ def _build_contract_html_parts(contract_type: str, signed_date: str):
 <p>Das Arbeitsverhältnis beginnt am {signed_date} (Tag der Unterzeichnung durch beide Parteien). Es wird auf unbestimmte Zeit geschlossen. Die Probezeit beträgt drei Monate. Während der Probezeit kann das Arbeitsverhältnis mit einer Frist von zwei Wochen gekündigt werden.</p>
 
 <h3>§2 Tätigkeit</h3>
-<p>Der Arbeitnehmer wird bei Webora als <strong>Mitarbeiter/in in der Daten- und Produktprüfung</strong> eingestellt. Die Tätigkeit umfasst insbesondere:</p>
+<p>Der Arbeitnehmer wird bei Tdata Testing als <strong>Mitarbeiter/in in der Daten- und Produktprüfung</strong> eingestellt. Die Tätigkeit umfasst insbesondere:</p>
 <ul>
   <li>Durchführung von Softwaretests, Produkttests und Testläufen unter realen Bedingungen</li>
   <li>Dokumentation und Auswertung der Testergebnisse</li>
@@ -488,7 +488,7 @@ def _build_contract_html_parts(contract_type: str, signed_date: str):
 <p>Das Arbeitsverhältnis beginnt am {signed_date} (Tag der Unterzeichnung durch beide Parteien). Es wird auf unbestimmte Zeit geschlossen. Die Probezeit beträgt einen Monat. Während der Probezeit kann das Arbeitsverhältnis mit einer Frist von zwei Wochen gekündigt werden.</p>
 
 <h3>§2 Tätigkeit</h3>
-<p>Der Arbeitnehmer wird bei Webora als <strong>Mitarbeiter/in in der Daten- und Produktprüfung</strong> eingestellt. Die Tätigkeit umfasst insbesondere:</p>
+<p>Der Arbeitnehmer wird bei Tdata Testing als <strong>Mitarbeiter/in in der Daten- und Produktprüfung</strong> eingestellt. Die Tätigkeit umfasst insbesondere:</p>
 <ul>
   <li>Durchführung von Softwaretests, Produkttests und Testläufen unter realen Bedingungen</li>
   <li>Dokumentation und Auswertung der Testergebnisse</li>
@@ -764,7 +764,7 @@ def _build_contract_html_parts(contract_type: str, signed_date: str):
 <p>Dieses Arbeitsverhältnis beginnt am {signed_date} (Tag der Unterzeichnung durch beide Parteien).</p>
 
 <h3>§2 Tätigkeit</h3>
-<p>Der Arbeitnehmer wird bei Webora als <strong>Mitarbeiter in der Verifikations Testung</strong> im Homeoffice eingestellt und vor allem mit folgenden Aufgaben beschäftigt:</p>
+<p>Der Arbeitnehmer wird bei Tdata Testing als <strong>Mitarbeiter in der Verifikations Testung</strong> im Homeoffice eingestellt und vor allem mit folgenden Aufgaben beschäftigt:</p>
 <ul>
   <li>Durchführung von Video-Identifikationsverfahren zur Evaluierung und Testung</li>
   <li>Überprüfung von Apps und Softwares auf Benutzerfreundlichkeit und Mängel</li>
@@ -850,7 +850,7 @@ START_DATE_PLACEHOLDER = "{{START_DATE}}"
 
 # Bump this whenever the code-side contract text changes so that live/prod
 # databases with older seeded templates get automatically refreshed on startup.
-CONTRACT_TEMPLATE_VERSION = 3
+CONTRACT_TEMPLATE_VERSION = 4
 
 
 def _code_template(contract_type: str) -> dict:

@@ -1,0 +1,43 @@
+{
+  "summary": "Frontend-only verification of the Webora -> Tdata rebrand + sage-green classic redesign. Verified all 7 public pages (/, /unternehmen, /dienstleistungen, /karriere, /kontakt, /impressum, /datenschutz) load with zero console errors, correct 'Tdata Testing' branding, no visible 'Webora' text, and the new sage-green/white classic aesthetic (Merriweather serif headings). Navbar links + 'Beratung anfragen' CTA all route correctly; mobile (390px) hamburger menu works. Kontakt mock form submits and shows the green success toast. Karriere application form completed end-to-end (POST /api/applications/submit -> 200) and shows the green success modal with login link. Employee panel login works and is fully recolored (0 sky-* classes, sage sidebar/header, 'Tdata Testing' branding). Admin /admin/login still loads in its original dark theme (unchanged, as intended). One HIGH bug found: the Karriere form white-screens on any backend 422.",
+  "backend_issues": {
+    "critical": [],
+    "minor": [
+      {"endpoint": "/api/applications/status", "issue": "Returns 404 for employee-type accounts and is called 3x on every employee-panel navigation -> constant console noise + redundant requests. Should return 200 with a neutral payload or be skipped for employees."}
+    ]
+  },
+  "frontend_issues": {
+    "ui_bugs": [
+      {"component": "Karriere.jsx handleSubmit", "issue": "HIGH: On a 422 from POST /api/applications/submit, `error.response.data.detail` is a FastAPI array of objects and is passed straight into toast.error({description: errorMsg}). React throws 'Objects are not valid as a React child (found: object with keys {type, loc, msg, input, ctx})' and the whole page white-screens (uncaught runtime error overlay). Reproduced with an email whose domain is rejected by EmailStr (e.g. anything@example.test). Fix: normalise detail -> if Array.isArray(detail) join detail.map(d => d.msg).", "selector": "[data-testid=\"karriere-submit\"]", "priority": "HIGH"},
+      {"component": "MitarbeiterPending.jsx, MitarbeiterAwaitingApproval.jsx, MitarbeiterVertrag.jsx", "issue": "Rebrand miss: still show/link the old address 'hr@webora.de' (2x mailto links + 1 list item). Should be hr@tdata-testing.de.", "selector": "a[href='mailto:hr@webora.de']", "priority": "MEDIUM"},
+      {"component": "Karriere form fields", "issue": "Testability: only name/email/password/submit have data-testid. mobilnummer, geburtsdatum, staatsangehoerigkeit, passwordConfirm, strasse, postleitzahl, stadt, position, cv have none (had to fall back to #id selectors).", "selector": "#mobilnummer, #cv", "priority": "LOW"}
+    ],
+    "integration_issues": [],
+    "design_issues": [
+      {"screen": "Mitarbeiter panel (Dashboard / Einstellungen / Aufträge / Vertrag / Dokumente / Verification)", "issues": ["sky-* is fully gone (0 occurrences) but blue/purple accents remain and clash with the sage theme: 'In Bearbeitung' stat tile bg-blue-100, 'Gesamt' + 'Benachrichtigungen' tiles purple, 'Passwort ändern' lock tile bg-blue-100 + border-blue-500/text-blue-600 button, and the bg-blue-50/border-blue-200 info boxes in MitarbeiterVertrag/MitarbeiterDokumente/MitarbeiterVerification/MitarbeiterAwaitingApproval."]},
+      {"screen": "/admin/login", "issues": ["Admin was to stay untouched, but because Logo.jsx is shared the admin logo tile is now sage-green while the wordmark still reads 'Webora' on the dark Tokyo-Night background - visually inconsistent. Either give admin its own logo variant or accept intentionally."]},
+      {"screen": "/kontakt", "issues": ["Success toast (top-right) overlaps the 'Beratung anfragen' navbar CTA button; consider bottom-right or an offset."]},
+      {"screen": "Mitarbeiter > Einstellungen", "issues": ["Seeded test employee e-mail is shown as mitarbeiter@infometrica.de (old brand leftover in seed data, not @tdata-testing.de)."]}
+    ]
+  },
+  "test_report_links": ["/app/test_reports/iteration_27.json"],
+  "action_items": [
+    "Karriere.jsx: normalise FastAPI error detail (array -> joined msgs) before passing to toast, so a 422 no longer white-screens the page.",
+    "Replace hr@webora.de with hr@tdata-testing.de in MitarbeiterPending.jsx, MitarbeiterAwaitingApproval.jsx, MitarbeiterVertrag.jsx.",
+    "Recolour remaining blue/purple accents in the Mitarbeiter panel to sage (list of files/lines in design_issues).",
+    "Optional: stop calling /api/applications/status for employee accounts (or return 200) to remove the repeated 404s.",
+    "Optional: add data-testid to the remaining Karriere form inputs."
+  ],
+  "critical_code_review_comments": [
+    "Karriere.jsx: `error.response?.data?.detail` is assumed to be a string; FastAPI returns a list for validation errors -> React render crash. Guard all such toast/JSX interpolations app-wide.",
+    "Logo.jsx is shared between public/employee/admin; recolouring it silently changed the admin panel that was supposed to stay untouched. Consider a variant prop."
+  ],
+  "updated_files": [],
+  "success_rate": {"backend": "not tested (frontend-only request)", "frontend": "92%"},
+  "seed_data_creation": "Created one application via the public Karriere form: qa.tester501719@qamail.de / TestPass123! (status 'Neu'). Also one rejected 422 attempt with qa.tester714213@example.test (not persisted).",
+  "should_call_test_agent_after_fix": false,
+  "should_main_agent_self_test": true,
+  "test_credentials": "Employee: mitarbeiter@precision-labs.de / Mitarbeiter123! (works, lands on /mitarbeiter/dashboard). Admin not logged in (avoided lockout).",
+  "context_for_next_testing_agent": "Public site rebrand+redesign is verified good: no 'Webora' in visible text on any public page, Impressum/Footer contain 'Tdata Testing', 'MO Handel & Service, Inh. Mariusz Jerzy Otok' and info@tdata-testing.de. Karriere POST works - IMPORTANT: use a real-looking email domain (e.g. @qamail.de); EmailStr rejects reserved domains like .test/.example and triggers the 422 white-screen bug. Employee panel has 0 sky-* classes left. Admin panel intentionally unchanged.",
+  "rca_of_the_issue": "Karriere white-screen: FastAPI 422 responses put a list of error objects in `detail`. Karriere.jsx does `const errorMsg = error.response?.data?.detail || '...'` and passes it as sonner's `description`, which renders it as a React child -> 'Objects are not valid as a React child'. The CRA error overlay then replaces the page. Reproduce: submit the Karriere form with email user@example.test."
+}

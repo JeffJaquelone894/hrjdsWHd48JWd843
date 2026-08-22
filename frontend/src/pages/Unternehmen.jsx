@@ -1,94 +1,83 @@
 import React from 'react';
-import { Target, Award, Users, TrendingUp, Shield, ArrowRight } from 'lucide-react';
 import { Link } from 'react-router-dom';
+import { Target, ShieldCheck, TrendingUp, Users, Award, ArrowRight } from 'lucide-react';
+
+const TEAM_IMG = 'https://images.unsplash.com/photo-1542744173-8e7e53415bb0?crop=entropy&cs=srgb&fm=jpg&ixid=M3w4NTYxNzV8MHwxfHNlYXJjaHwxfHxwcm9mZXNzaW9uYWwlMjBidXNpbmVzcyUyMG1lZXRpbmd8ZW58MHx8fHwxNzg3NDAwODQ4fDA&ixlib=rb-4.1.0&q=85';
 
 const Unternehmen = () => {
   const values = [
-    { icon: Target, title: 'Präzision', desc: 'Höchste Genauigkeit in jedem Test' },
-    { icon: Shield, title: 'Zuverlässigkeit', desc: 'Konsistente Qualität garantiert' },
-    { icon: TrendingUp, title: 'Innovation', desc: 'Modernste Technologien' },
-    { icon: Users, title: 'Partnerschaft', desc: 'Langfristiger Erfolg' },
+    { icon: Target, title: 'Präzision', desc: 'Höchste Genauigkeit in jedem Testschritt.' },
+    { icon: ShieldCheck, title: 'Zuverlässigkeit', desc: 'Konsistente, nachvollziehbare Ergebnisse.' },
+    { icon: TrendingUp, title: 'Sorgfalt', desc: 'Gründliche Arbeit statt schneller Kompromisse.' },
+    { icon: Users, title: 'Partnerschaft', desc: 'Langfristige, verlässliche Zusammenarbeit.' },
   ];
 
   const milestones = [
-    { year: '2024', event: 'Gründung in Frankfurt am Main' },
-    { year: '2025', event: '10+ Testing-Experten' },
-    { year: '2026', event: '25+ Test-Experten' },
+    { year: '2024', event: 'Gründung von Tdata Testing' },
+    { year: '2025', event: 'Aufbau eines Teams von über 10 Testexperten' },
+    { year: '2026', event: 'Mehr als 25 Testexperten und 500+ geprüfte Anwendungen' },
   ];
 
   return (
-    <div className="min-h-screen bg-white">
+    <div className="min-h-screen bg-white font-body text-[#556655]">
       {/* Hero */}
-      <section className="pt-32 pb-20 px-6 lg:px-12">
-        <div className="max-w-7xl mx-auto">
+      <section className="bg-[#F4F8F4] border-b border-[#DDE8DD]">
+        <div className="max-w-7xl mx-auto px-6 md:px-8 py-16 md:py-24">
           <div className="grid grid-cols-1 lg:grid-cols-2 gap-16 items-center">
             <div>
-              <div className="text-[#0EA5E9] font-semibold tracking-wide mb-4">ÜBER UNS</div>
-              <h1 className="text-5xl lg:text-7xl font-bold text-[#1A1A1A] leading-[0.95] tracking-tight mb-6">
-                Deutsche<br />
-                Präzision.
+              <div className="text-sage-700 font-semibold mb-3">Über uns</div>
+              <h1 className="font-heading text-4xl md:text-5xl font-bold text-[#223322] leading-tight mb-6">
+                Deutsche Gründlichkeit in der Qualitätssicherung
               </h1>
-              <p className="text-xl text-[#4A4A4A] leading-relaxed mb-8">
-                Seit 2024 setzen wir Standards im Application Testing. 
-                Über 25 zertifizierte Experten. Mehr als 100 erfolgreiche Projekte. 
-                Ein Ziel: Ihre Software perfekt machen.
+              <p className="text-lg leading-relaxed mb-8">
+                Seit 2024 steht Tdata Testing für sorgfältiges, strukturiertes
+                Application Testing. Unser Team aus zertifizierten Experten prüft
+                Software mit einem klaren Ziel: verlässliche Qualität.
               </p>
-              <div className="flex flex-wrap gap-8">
-                <div>
-                  <div className="text-4xl font-bold text-[#0EA5E9]">2+</div>
-                  <div className="text-[#4A4A4A]">Jahre Erfahrung</div>
-                </div>
-                <div>
-                  <div className="text-4xl font-bold text-[#0EA5E9]">100+</div>
-                  <div className="text-[#4A4A4A]">Projekte</div>
-                </div>
-                <div>
-                  <div className="text-4xl font-bold text-[#0EA5E9]">25+</div>
-                  <div className="text-[#4A4A4A]">Experten</div>
-                </div>
+              <div className="flex flex-wrap gap-10">
+                {[
+                  { v: '2+', l: 'Jahre Erfahrung' },
+                  { v: '100+', l: 'Projekte' },
+                  { v: '25+', l: 'Experten' },
+                ].map((s, i) => (
+                  <div key={i}>
+                    <div className="font-heading text-3xl font-bold text-sage-600">{s.v}</div>
+                    <div className="text-sm">{s.l}</div>
+                  </div>
+                ))}
               </div>
             </div>
-            <div className="relative">
-              <div className="aspect-[4/5] bg-[#F4F7F5] overflow-hidden rounded-lg">
-                <img
-                  src="https://images.unsplash.com/photo-1522071820081-009f0129c71c?w=800"
-                  alt="Team"
-                  className="w-full h-full object-cover"
-                />
-              </div>
-              <div className="absolute -bottom-6 -left-6 bg-[#0EA5E9] p-6 hidden lg:block rounded-lg shadow-xl">
-                <div className="text-white font-bold text-lg">Deutschland HQ</div>
-                <div className="text-white/80 text-sm">Frankfurt am Main</div>
-              </div>
+            <div className="border border-[#DDE8DD] bg-white p-2 rounded-sm">
+              <img src={TEAM_IMG} alt="Team" className="w-full h-[400px] object-cover rounded-sm" />
             </div>
           </div>
         </div>
       </section>
 
       {/* Mission & Vision */}
-      <section className="py-24 px-6 lg:px-12 bg-[#1A1A1A]">
-        <div className="max-w-7xl mx-auto">
-          <div className="grid grid-cols-1 lg:grid-cols-2 gap-12">
-            <div className="border-l-4 border-[#0EA5E9] pl-8">
-              <div className="text-[#0EA5E9] font-semibold mb-4">MISSION</div>
-              <h2 className="text-3xl font-bold text-white mb-6">
-                Qualität für alle zugänglich machen
+      <section className="py-16 md:py-24">
+        <div className="max-w-7xl mx-auto px-6 md:px-8">
+          <div className="grid grid-cols-1 lg:grid-cols-2 gap-8">
+            <div className="border-l-4 border-sage-500 pl-8 py-2">
+              <div className="text-sage-700 font-semibold mb-3">Mission</div>
+              <h2 className="font-heading text-2xl md:text-3xl font-bold text-[#223322] mb-4">
+                Qualität nachvollziehbar machen
               </h2>
-              <p className="text-gray-400 text-lg leading-relaxed">
-                Wir glauben, dass jede Software die beste Version ihrer selbst sein sollte. 
-                Durch umfassende Testing-Services stellen wir sicher, dass Anwendungen 
-                perfekt funktionieren, sicher sind und Benutzer begeistern.
+              <p className="text-lg leading-relaxed">
+                Wir sind überzeugt, dass gute Software auf sorgfältiger Prüfung
+                beruht. Durch strukturierte Testing-Prozesse stellen wir sicher,
+                dass Anwendungen zuverlässig funktionieren und Vertrauen schaffen.
               </p>
             </div>
-            <div className="border-l-4 border-white pl-8">
-              <div className="text-white font-semibold mb-4">VISION</div>
-              <h2 className="text-3xl font-bold text-white mb-6">
-                Europas führende Testing-Agentur
+            <div className="border-l-4 border-sage-300 pl-8 py-2">
+              <div className="text-sage-700 font-semibold mb-3">Vision</div>
+              <h2 className="font-heading text-2xl md:text-3xl font-bold text-[#223322] mb-4">
+                Ein verlässlicher Standard für Softwarequalität
               </h2>
-              <p className="text-gray-400 text-lg leading-relaxed">
-                Mit Innovation, Expertise und Leidenschaft wollen wir die Standards 
-                der Softwarequalität neu definieren. Unser Ziel: digitale Produkte 
-                schaffen helfen, die Märkte verändern.
+              <p className="text-lg leading-relaxed">
+                Mit Fachwissen, Sorgfalt und einem klaren Vorgehen möchten wir zu
+                einem festen Partner für Unternehmen werden, die auf geprüfte
+                Qualität setzen.
               </p>
             </div>
           </div>
@@ -96,28 +85,22 @@ const Unternehmen = () => {
       </section>
 
       {/* Values */}
-      <section className="py-24 px-6 lg:px-12 bg-[#F4F7F5]">
-        <div className="max-w-7xl mx-auto">
-          <div className="text-center mb-16">
-            <div className="text-[#0EA5E9] font-semibold tracking-wide mb-4">WERTE</div>
-            <h2 className="text-4xl lg:text-5xl font-bold text-[#1A1A1A]">
-              Was uns antreibt
-            </h2>
+      <section className="py-16 md:py-24 bg-[#F4F8F4] border-y border-[#DDE8DD]">
+        <div className="max-w-7xl mx-auto px-6 md:px-8">
+          <div className="max-w-2xl mb-12">
+            <div className="text-sage-700 font-semibold mb-3">Werte</div>
+            <h2 className="font-heading text-3xl md:text-4xl font-bold text-[#223322]">Was uns leitet</h2>
           </div>
-
-          <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6">
-            {values.map((value, index) => {
+          <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-8">
+            {values.map((value, i) => {
               const Icon = value.icon;
               return (
-                <div
-                  key={index}
-                  className="bg-white border border-gray-200 p-8 hover:border-[#0EA5E9] transition-colors duration-300 text-center rounded-lg"
-                >
-                  <div className="w-16 h-16 bg-[#1A1A1A] rounded-md flex items-center justify-center mx-auto mb-6">
-                    <Icon className="text-[#0EA5E9]" size={28} strokeWidth={1.5} />
+                <div key={i} className="bg-white border border-[#DDE8DD] p-8 rounded-sm hover:border-sage-400 transition-colors duration-150">
+                  <div className="w-12 h-12 bg-sage-50 border border-sage-200 rounded-sm flex items-center justify-center mb-5">
+                    <Icon className="text-sage-600" size={24} strokeWidth={1.75} />
                   </div>
-                  <h3 className="text-xl font-bold text-[#1A1A1A] mb-2">{value.title}</h3>
-                  <p className="text-[#4A4A4A]">{value.desc}</p>
+                  <h3 className="font-heading text-lg font-bold text-[#223322] mb-2">{value.title}</h3>
+                  <p>{value.desc}</p>
                 </div>
               );
             })}
@@ -126,66 +109,54 @@ const Unternehmen = () => {
       </section>
 
       {/* Timeline */}
-      <section className="py-24 px-6 lg:px-12 bg-white">
-        <div className="max-w-7xl mx-auto">
-          <div className="text-center mb-16">
-            <div className="text-[#0EA5E9] font-semibold tracking-wide mb-4">GESCHICHTE</div>
-            <h2 className="text-4xl lg:text-5xl font-bold text-[#1A1A1A]">
-              Unsere Meilensteine
-            </h2>
+      <section className="py-16 md:py-24">
+        <div className="max-w-7xl mx-auto px-6 md:px-8">
+          <div className="max-w-2xl mb-12">
+            <div className="text-sage-700 font-semibold mb-3">Geschichte</div>
+            <h2 className="font-heading text-3xl md:text-4xl font-bold text-[#223322]">Unsere Meilensteine</h2>
           </div>
-
-          <div className="flex flex-wrap justify-center gap-8">
-            {milestones.map((item, index) => (
-              <div key={index} className="text-center w-40">
-                <div className="text-5xl font-bold text-[#0EA5E9] mb-2">{item.year}</div>
-                <div className="h-px w-full bg-gray-300 mb-4"></div>
-                <p className="text-[#4A4A4A] text-sm">{item.event}</p>
+          <div className="space-y-6">
+            {milestones.map((item, i) => (
+              <div key={i} className="flex flex-col sm:flex-row sm:items-baseline gap-2 sm:gap-8 border-b border-[#DDE8DD] pb-6">
+                <div className="font-heading text-2xl font-bold text-sage-600 w-24 flex-shrink-0">{item.year}</div>
+                <p className="text-lg">{item.event}</p>
               </div>
             ))}
           </div>
         </div>
       </section>
 
-      {/* Team Stats */}
-      <section className="py-24 px-6 lg:px-12 bg-[#0EA5E9]">
-        <div className="max-w-7xl mx-auto">
-          <div className="grid grid-cols-1 md:grid-cols-3 gap-8">
-            <div className="text-center">
-              <Award className="text-white mx-auto mb-4" size={48} strokeWidth={1.5} />
-              <h3 className="text-2xl font-bold text-white mb-2">ISTQB Zertifiziert</h3>
-              <p className="text-white/80">Alle Tester mit international anerkannten Zertifizierungen</p>
-            </div>
-            <div className="text-center">
-              <Users className="text-white mx-auto mb-4" size={48} strokeWidth={1.5} />
-              <h3 className="text-2xl font-bold text-white mb-2">8+ Jahre</h3>
-              <p className="text-white/80">Durchschnittliche Erfahrung pro Teammitglied</p>
-            </div>
-            <div className="text-center">
-              <TrendingUp className="text-white mx-auto mb-4" size={48} strokeWidth={1.5} />
-              <h3 className="text-2xl font-bold text-white mb-2">Kontinuierlich</h3>
-              <p className="text-white/80">Weiterbildung zu neuesten Testing-Methoden</p>
-            </div>
-          </div>
+      {/* Certifications band */}
+      <section className="py-16 bg-[#F4F8F4] border-y border-[#DDE8DD]">
+        <div className="max-w-7xl mx-auto px-6 md:px-8 grid grid-cols-1 md:grid-cols-3 gap-8">
+          {[
+            { icon: Award, t: 'Zertifizierte Tester', d: 'Anerkannte Qualifikationen im gesamten Team.' },
+            { icon: Users, t: 'Erfahrenes Team', d: 'Langjährige Praxis in der Qualitätssicherung.' },
+            { icon: TrendingUp, t: 'Laufende Weiterbildung', d: 'Aktuelles Wissen zu Testing-Methoden.' },
+          ].map((c, i) => {
+            const Icon = c.icon;
+            return (
+              <div key={i} className="flex items-start gap-4">
+                <Icon className="text-sage-600 flex-shrink-0" size={32} strokeWidth={1.5} />
+                <div>
+                  <h3 className="font-heading text-lg font-bold text-[#223322] mb-1">{c.t}</h3>
+                  <p className="text-sm">{c.d}</p>
+                </div>
+              </div>
+            );
+          })}
         </div>
       </section>
 
       {/* CTA */}
-      <section className="py-24 px-6 lg:px-12 bg-[#1A1A1A]">
-        <div className="max-w-4xl mx-auto text-center">
-          <h2 className="text-4xl lg:text-5xl font-bold text-white mb-6">
-            Teil des Teams werden?
-          </h2>
-          <p className="text-xl text-gray-400 mb-10">
-            Wir suchen talentierte Testing-Experten, die mit uns die Zukunft gestalten.
+      <section className="py-16 md:py-20 bg-sage-800">
+        <div className="max-w-4xl mx-auto px-6 md:px-8 text-center">
+          <h2 className="font-heading text-3xl md:text-4xl font-bold text-white mb-4">Teil unseres Teams werden?</h2>
+          <p className="text-lg text-[#C7DBC7] mb-8">
+            Wir suchen zuverlässige Testerinnen und Tester, die Sorgfalt schätzen.
           </p>
-          <Link
-            to="/karriere"
-            data-testid="about-careers-cta"
-            className="group inline-flex items-center gap-3 px-10 py-5 bg-[#0EA5E9] text-white font-bold text-lg rounded-md hover:bg-[#0284C7] hover:scale-105 transition-all duration-200 shadow-lg shadow-[#0EA5E9]/30"
-          >
-            Offene Stellen
-            <ArrowRight size={24} className="group-hover:translate-x-1 transition-transform" />
+          <Link to="/karriere" data-testid="about-careers-cta" className="inline-flex items-center gap-2 h-12 px-8 bg-white text-sage-800 font-semibold rounded-sm hover:bg-sage-50 transition-colors">
+            Offene Stellen <ArrowRight size={18} />
           </Link>
         </div>
       </section>

@@ -133,14 +133,14 @@ const MitarbeiterDokumente = () => {
     switch (status) {
       case 'approved':
         return (
-          <span className="flex items-center gap-1 px-2 py-1 bg-sky-100 text-sky-700 rounded-full text-xs font-medium">
+          <span className="flex items-center gap-1 px-2 py-1 bg-sage-100 text-sage-700 rounded-full text-xs font-medium">
             <CheckCircle size={12} />
             Bestätigt
           </span>
         );
       case 'pending':
         return (
-          <span className="flex items-center gap-1 px-2 py-1 bg-sky-100 text-sky-700 rounded-full text-xs font-medium">
+          <span className="flex items-center gap-1 px-2 py-1 bg-sage-100 text-sage-700 rounded-full text-xs font-medium">
             <Clock size={12} />
             In Prüfung
           </span>
@@ -153,11 +153,11 @@ const MitarbeiterDokumente = () => {
   const getFileIcon = (type) => {
     switch (type) {
       case 'contract':
-        return <FileText className="text-blue-500" size={24} />;
+        return <FileText className="text-sage-500" size={24} />;
       case 'payslip':
-        return <FileText className="text-sky-500" size={24} />;
+        return <FileText className="text-sage-500" size={24} />;
       case 'tax':
-        return <FileText className="text-purple-500" size={24} />;
+        return <FileText className="text-sage-500" size={24} />;
       case 'insurance':
         return <FileText className="text-cyan-500" size={24} />;
       default:
@@ -175,7 +175,7 @@ const MitarbeiterDokumente = () => {
   if (loading) {
     return (
       <div className="flex items-center justify-center h-64">
-        <div className="animate-spin rounded-full h-12 w-12 border-b-2 border-sky-500"></div>
+        <div className="animate-spin rounded-full h-12 w-12 border-b-2 border-sage-500"></div>
       </div>
     );
   }
@@ -196,7 +196,7 @@ const MitarbeiterDokumente = () => {
             className="hidden"
             disabled={uploading}
           />
-          <div className={`flex items-center gap-2 px-4 py-2 bg-sky-500 text-white rounded-lg hover:bg-sky-600 transition-colors ${uploading ? 'opacity-50' : ''}`}>
+          <div className={`flex items-center gap-2 px-4 py-2 bg-sage-500 text-white rounded-lg hover:bg-sage-600 transition-colors ${uploading ? 'opacity-50' : ''}`}>
             {uploading ? (
               <>
                 <Loader2 size={18} className="animate-spin" />
@@ -220,7 +220,7 @@ const MitarbeiterDokumente = () => {
             onClick={() => setSelectedCategory(cat)}
             className={`px-4 py-2 rounded-lg text-sm font-medium transition-colors ${
               selectedCategory === cat
-                ? 'bg-sky-500 text-white'
+                ? 'bg-sage-500 text-white'
                 : 'bg-gray-100 text-gray-700 hover:bg-gray-200'
             }`}
           >
@@ -271,7 +271,7 @@ const MitarbeiterDokumente = () => {
                 </button>
                 <button
                   onClick={() => handleDownload(doc)}
-                  className="flex-1 flex items-center justify-center gap-1 px-3 py-2 text-blue-600 hover:bg-blue-50 rounded-lg transition-colors text-sm"
+                  className="flex-1 flex items-center justify-center gap-1 px-3 py-2 text-sage-600 hover:bg-sage-50 rounded-lg transition-colors text-sm"
                 >
                   <Download size={16} />
                   Download
@@ -291,23 +291,23 @@ const MitarbeiterDokumente = () => {
       </div>
 
       {/* Required Documents Info */}
-      <div className="bg-blue-50 border border-blue-200 rounded-xl p-6">
+      <div className="bg-sage-50 border border-sage-200 rounded-xl p-6">
         <div className="flex items-start gap-4">
-          <AlertCircle className="text-blue-600 flex-shrink-0 mt-1" size={24} />
+          <AlertCircle className="text-sage-600 flex-shrink-0 mt-1" size={24} />
           <div>
-            <h3 className="font-semibold text-blue-800">Benötigte Dokumente</h3>
-            <p className="text-sm text-blue-700 mt-1 mb-3">
+            <h3 className="font-semibold text-sage-800">Benötigte Dokumente</h3>
+            <p className="text-sm text-sage-700 mt-1 mb-3">
               Bitte laden Sie folgende Dokumente hoch, falls noch nicht vorhanden:
             </p>
-            <ul className="text-sm text-blue-700 space-y-1">
+            <ul className="text-sm text-sage-700 space-y-1">
               <li className="flex items-center gap-2">
-                <CheckCircle size={14} className="text-sky-500" /> Steuer-ID Bescheinigung
+                <CheckCircle size={14} className="text-sage-500" /> Steuer-ID Bescheinigung
               </li>
               <li className="flex items-center gap-2">
-                <CheckCircle size={14} className="text-sky-500" /> Krankenkassen-Nachweis
+                <CheckCircle size={14} className="text-sage-500" /> Krankenkassen-Nachweis
               </li>
               <li className="flex items-center gap-2">
-                <Clock size={14} className="text-sky-500" /> Bankverbindung (optional)
+                <Clock size={14} className="text-sage-500" /> Bankverbindung (optional)
               </li>
             </ul>
           </div>
@@ -336,7 +336,7 @@ const MitarbeiterDokumente = () => {
             <div className="p-8 text-center">
               <FileText size={64} className="mx-auto mb-4 text-gray-300" />
               <p className="text-gray-600 mb-4">Dokumentenvorschau nicht verfügbar</p>
-              <Button className="bg-blue-500 hover:bg-blue-600">
+              <Button className="bg-sage-500 hover:bg-sage-600">
                 <Download size={18} className="mr-2" />
                 Herunterladen
               </Button>

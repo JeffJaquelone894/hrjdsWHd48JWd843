@@ -1,5 +1,15 @@
 # Prysm Technologies (ehemals Keyperion / Precision Labs) – PRD
 
+## 🟢 Rebrand → Tdata Testing + Redesign öffentliche Website (2026-06)
+- **Rebrand Webora → Tdata / Tdata Testing**: Logo/Navbar = „Tdata" (grünes Serifen-„T"-Emblem + Wortmarke), langer Name (Footer, Impressum, Verträge) = „Tdata Testing". Rechtsträger unverändert: MO Handel & Service, Inh. Mariusz Otok.
+- **Design: Klassisch & seriös, Salbeigrün/Weiß** (Tailwind-Palette `sage-50..900`, primär #659A65 / hover #507D50, dunkelgrün #1A261A für Footer/CTA). Fonts: Merriweather (Serifen-Headlines, `font-heading`) + Source Sans 3 (`font-body`). Keine Bento-Grids/Glasmorphismus/8xl-Headlines mehr.
+- **Öffentliche Seiten komplett neu gebaut**: Home, Unternehmen, Dienstleistungen, Karriere, Kontakt, Impressum, Datenschutz + Navbar (weiß, border-bottom, sticky, kein blur) + Footer (dunkelgrün). Alle E-Mails → @tdata-testing.de.
+- **Mitarbeiter-Panel nur umgefärbt** (kein Redesign): `sky-*`→`sage-*`, Blau/Lila-Akzente→sage, `#0EA5E9`→#659A65 etc., Logo grünes „T", Branding „Tdata Testing". Funktionalität unverändert.
+- **Admin-Panel bewusst UNVERÄNDERT** (dunkles „Tokyo Night", blaues „W"-Logo `WeboraLogo`, Wortmarke „Webora"). `Logo.jsx` exportiert `TdataLogo` (public/Mitarbeiter) UND das originale `WeboraLogo` (nur Admin).
+- **Backend-Texte**: „bei Webora"→„bei Tdata Testing" in Verträgen (applications.py/contracts.py), SMS-Texte (sms_service.py). `CONTRACT_TEMPLATE_VERSION` 3→4 → Vorlagen re-seeded. Admin-Login-Mail (admin@webora.de) bewusst NICHT geändert (Lockout-Schutz).
+- **Bugfix**: Karriere-Formular White-Screen bei FastAPI-422 behoben (detail-Array wird jetzt zu String normalisiert, statt als React-Child gerendert).
+- Verifiziert: Testing-Agent (Frontend 92%, alle 7 public Seiten fehlerfrei, kein „Webora" sichtbar, Karriere-POST 200, Mitarbeiter-Panel 0 sky-Klassen) + eigene Screenshots (Home/Karriere/Mitarbeiter-Login grün, Admin unverändert blau).
+
 ## 🟢 Auftragnehmer-Freitextfeld (nur Freiberufler) (2026-08-18)
 - Beim Freiberufler-Vertrag (`freiberufler_at`) kann der Admin im Accept-/Vertrag-ändern-Dialog ein freies Textfeld „Auftragnehmer" (eigene Firma des Freelancers: Name, Adresse, UID …) eingeben. Nur bei `freiberufler_at` sichtbar; bei allen anderen Verträgen unverändert.
 - Backend: `contractor` in accept + change-contract-type gespeichert, in `my-contract` + Admin-Liste (ApplicationResponse) zurückgegeben. Download-Vertrag: bei Freiberufler „Auftraggeber/Auftragnehmer"-Labels + `contractor`-Block statt Arbeitnehmer-Name/Adresse (leer = Fallback Name/Adresse). Erste Zeile = Unterzeichner.

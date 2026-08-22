@@ -169,7 +169,7 @@ const MitarbeiterEinstellungen = () => {
   if (loading) {
     return (
       <div className="flex items-center justify-center h-64">
-        <div className="animate-spin rounded-full h-12 w-12 border-b-2 border-sky-500"></div>
+        <div className="animate-spin rounded-full h-12 w-12 border-b-2 border-sage-500"></div>
       </div>
     );
   }
@@ -185,8 +185,8 @@ const MitarbeiterEinstellungen = () => {
       {/* Profile Section */}
       <div className="bg-white rounded-xl border border-gray-200 p-6">
         <div className="flex items-center gap-3 mb-6">
-          <div className="w-10 h-10 bg-sky-100 rounded-lg flex items-center justify-center">
-            <User className="text-sky-500" size={20} />
+          <div className="w-10 h-10 bg-sage-100 rounded-lg flex items-center justify-center">
+            <User className="text-sage-500" size={20} />
           </div>
           <div>
             <h2 className="text-lg font-semibold text-gray-900">Persönliche Daten</h2>
@@ -228,7 +228,7 @@ const MitarbeiterEinstellungen = () => {
           <div className="space-y-2">
             <Label>Position</Label>
             <div className="flex items-center gap-2 px-4 py-3 bg-gray-50 rounded-lg border border-gray-200">
-              <CheckCircle size={18} className="text-sky-500" />
+              <CheckCircle size={18} className="text-sage-500" />
               <span className="text-gray-900">{employeeData?.position}</span>
             </div>
           </div>
@@ -252,7 +252,7 @@ const MitarbeiterEinstellungen = () => {
           <Button 
             onClick={handleProfileSave}
             disabled={saving}
-            className="bg-sky-500 hover:bg-sky-600"
+            className="bg-sage-500 hover:bg-sage-600"
           >
             <Save size={18} className="mr-2" />
             {saving ? 'Speichern...' : 'Änderungen speichern'}
@@ -263,8 +263,8 @@ const MitarbeiterEinstellungen = () => {
       {/* Password Section */}
       <div className="bg-white rounded-xl border border-gray-200 p-6">
         <div className="flex items-center gap-3 mb-6">
-          <div className="w-10 h-10 bg-blue-100 rounded-lg flex items-center justify-center">
-            <Lock className="text-blue-500" size={20} />
+          <div className="w-10 h-10 bg-sage-100 rounded-lg flex items-center justify-center">
+            <Lock className="text-sage-500" size={20} />
           </div>
           <div>
             <h2 className="text-lg font-semibold text-gray-900">Passwort ändern</h2>
@@ -322,7 +322,7 @@ const MitarbeiterEinstellungen = () => {
             onClick={handlePasswordChange}
             disabled={saving || !passwordData.currentPassword || !passwordData.newPassword}
             variant="outline"
-            className="border-blue-500 text-blue-600 hover:bg-blue-50"
+            className="border-sage-500 text-sage-600 hover:bg-sage-50"
           >
             <Lock size={18} className="mr-2" />
             Passwort ändern
@@ -333,8 +333,8 @@ const MitarbeiterEinstellungen = () => {
       {/* Notifications Section */}
       <div className="bg-white rounded-xl border border-gray-200 p-6">
         <div className="flex items-center gap-3 mb-6">
-          <div className="w-10 h-10 bg-purple-100 rounded-lg flex items-center justify-center">
-            <Bell className="text-purple-500" size={20} />
+          <div className="w-10 h-10 bg-sage-100 rounded-lg flex items-center justify-center">
+            <Bell className="text-sage-500" size={20} />
           </div>
           <div>
             <h2 className="text-lg font-semibold text-gray-900">Benachrichtigungen</h2>
@@ -359,7 +359,7 @@ const MitarbeiterEinstellungen = () => {
               <button
                 onClick={() => handleNotificationToggle(item.key)}
                 className={`relative w-12 h-6 rounded-full transition-colors ${
-                  notifications[item.key] ? 'bg-sky-500' : 'bg-gray-300'
+                  notifications[item.key] ? 'bg-sage-500' : 'bg-gray-300'
                 }`}
               >
                 <span 
@@ -376,8 +376,8 @@ const MitarbeiterEinstellungen = () => {
       {/* Contract Download */}
       <div className="bg-white rounded-xl border border-gray-200 p-6">
         <div className="flex items-center gap-3 mb-6">
-          <div className="w-10 h-10 bg-sky-100 rounded-lg flex items-center justify-center">
-            <FileSignature className="text-sky-500" size={20} />
+          <div className="w-10 h-10 bg-sage-100 rounded-lg flex items-center justify-center">
+            <FileSignature className="text-sage-500" size={20} />
           </div>
           <div>
             <h2 className="text-lg font-semibold text-gray-900">Arbeitsvertrag</h2>
@@ -387,7 +387,7 @@ const MitarbeiterEinstellungen = () => {
 
         <div className="flex items-center justify-between p-4 bg-gray-50 rounded-lg">
           <div className="flex items-center gap-3">
-            <CheckCircle size={18} className="text-sky-500" />
+            <CheckCircle size={18} className="text-sage-500" />
             <p className="text-gray-900 font-medium">Vertrag unterschrieben</p>
           </div>
           <button
@@ -395,7 +395,7 @@ const MitarbeiterEinstellungen = () => {
               const token = localStorage.getItem('employee_token');
               window.open(`${BACKEND_URL}/api/applications/download-contract?token=${token}`, '_blank');
             }}
-            className="flex items-center gap-2 px-4 py-2 bg-sky-500 text-white rounded-lg hover:bg-sky-600 transition-colors text-sm font-medium"
+            className="flex items-center gap-2 px-4 py-2 bg-sage-500 text-white rounded-lg hover:bg-sage-600 transition-colors text-sm font-medium"
             data-testid="download-contract-btn"
           >
             <Download size={16} />
@@ -405,12 +405,12 @@ const MitarbeiterEinstellungen = () => {
       </div>
 
       {/* Security Info */}
-      <div className="bg-sky-50 border border-sky-200 rounded-xl p-6">
+      <div className="bg-sage-50 border border-sage-200 rounded-xl p-6">
         <div className="flex items-start gap-4">
-          <Shield className="text-sky-600 flex-shrink-0 mt-1" size={24} />
+          <Shield className="text-sage-600 flex-shrink-0 mt-1" size={24} />
           <div>
-            <h3 className="font-semibold text-sky-800">Datenschutz & Sicherheit</h3>
-            <p className="text-sm text-sky-700 mt-1">
+            <h3 className="font-semibold text-sage-800">Datenschutz & Sicherheit</h3>
+            <p className="text-sm text-sage-700 mt-1">
               Ihre Daten werden gemäß DSGVO behandelt und sicher gespeichert. 
               Bei Fragen wenden Sie sich an unseren Datenschutzbeauftragten.
             </p>

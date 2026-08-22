@@ -50,32 +50,32 @@ const MitarbeiterDashboard = () => {
       value: stats.open_tasks,
       icon: AlertCircle,
       color: 'emerald',
-      bgColor: 'bg-sky-100',
-      textColor: 'text-sky-600',
+      bgColor: 'bg-sage-100',
+      textColor: 'text-sage-600',
     },
     {
       title: 'In Bearbeitung',
       value: stats.in_progress,
       icon: Clock,
       color: 'blue',
-      bgColor: 'bg-blue-100',
-      textColor: 'text-blue-600',
+      bgColor: 'bg-sage-100',
+      textColor: 'text-sage-600',
     },
     {
       title: 'Abgeschlossen',
       value: stats.completed,
       icon: CheckCircle,
       color: 'green',
-      bgColor: 'bg-sky-100',
-      textColor: 'text-sky-600',
+      bgColor: 'bg-sage-100',
+      textColor: 'text-sage-600',
     },
     {
       title: 'Gesamt',
       value: stats.total_tasks,
       icon: TrendingUp,
       color: 'purple',
-      bgColor: 'bg-purple-100',
-      textColor: 'text-purple-600',
+      bgColor: 'bg-sage-100',
+      textColor: 'text-sage-600',
     },
     {
       title: 'Provision gesamt',
@@ -90,7 +90,7 @@ const MitarbeiterDashboard = () => {
   if (loading) {
     return (
       <div className="flex items-center justify-center h-64">
-        <div className="animate-spin rounded-full h-12 w-12 border-b-2 border-sky-500"></div>
+        <div className="animate-spin rounded-full h-12 w-12 border-b-2 border-sage-500"></div>
       </div>
     );
   }
@@ -98,11 +98,11 @@ const MitarbeiterDashboard = () => {
   return (
     <div className="space-y-6">
       {/* Welcome Section */}
-      <div className="bg-gradient-to-r from-sky-500 to-sky-600 rounded-2xl p-8 text-white shadow-lg">
+      <div className="bg-gradient-to-r from-sage-500 to-sage-600 rounded-2xl p-8 text-white shadow-lg">
         <h1 className="text-3xl font-bold mb-2">
           Willkommen zurück, {employeeData.name}!
         </h1>
-        <p className="text-sky-100">
+        <p className="text-sage-100">
           {employeeData.position} • {employeeData.department}
         </p>
       </div>
@@ -150,9 +150,9 @@ const MitarbeiterDashboard = () => {
                     <p className="text-sm text-gray-600 mb-2">{task.description}</p>
                     <div className="flex items-center space-x-4 text-xs text-gray-500">
                       <span className={`px-2 py-1 rounded-full ${
-                        task.status === 'Offen' ? 'bg-sky-100 text-sky-600' :
-                        task.status === 'In Bearbeitung' ? 'bg-blue-100 text-blue-600' :
-                        'bg-sky-100 text-sky-600'
+                        task.status === 'Offen' ? 'bg-sage-100 text-sage-600' :
+                        task.status === 'In Bearbeitung' ? 'bg-sage-100 text-sage-600' :
+                        'bg-sage-100 text-sage-600'
                       }`}>
                         {task.status}
                       </span>
@@ -180,7 +180,7 @@ const MitarbeiterDashboard = () => {
           <div className="px-6 py-4 border-t border-gray-200 bg-gray-50">
             <a
               href="/mitarbeiter/auftrage"
-              className="text-sky-600 hover:text-sky-700 font-medium text-sm"
+              className="text-sage-600 hover:text-sage-700 font-medium text-sm"
             >
               Alle Aufträge ansehen →
             </a>
