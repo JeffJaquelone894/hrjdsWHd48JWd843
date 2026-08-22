@@ -1,5 +1,10 @@
 # Prysm Technologies (ehemals Keyperion / Precision Labs) – PRD
 
+## 🟢 Telegram-Reste komplett ausgebaut (2026-06)
+- Vollständig aus `routes/chat.py` entfernt: `TELEGRAM_BOT_TOKEN`/`TELEGRAM_API`-Konstanten, `send_telegram_notification()`, beide Aufrufe in `/send` + `/send-image`, ungenutzter `httpx`-Import und der verwaiste `logger`. `TELEGRAM_BOT_TOKEN` aus `backend/.env` entfernt, Collection `telegram_subscribers` gedroppt.
+- Verifiziert per Testing-Agent (**iteration_31.json**): **461/461 Backend-Tests grün** (21 Chat + 26 neue Telegram-Removal-Regression + 414 Security), 0 kritische Findings, keine Regression. Chat-Senden/-Bild/-Konversationen/-Unread + Path-Traversal-Schutz weiterhin intakt; Webhook 404.
+- ⚠️ **Offene Aktion für Nutzer (extern, kann ich nicht):** Der alte Telegram-Bot-Token bleibt trotz Entfernung aus .env gültig und steht in historischen Log-Zeilen → bitte den Bot über BotFather widerrufen/löschen.
+
 ## 🟢 Telegram-Webhook entfernt + Security-Re-Audit (2026-06)
 - `POST /api/chat/telegram/webhook` inkl. `/start`//`/stop`-Registrierung komplett entfernt (routes/chat.py), `TELEGRAM_WEBHOOK_SECRET` aus .env raus, ungenutzter `Request`-Import bereinigt. Webhook → 404.
 - Security-Re-Audit per Testing-Agent (**iteration_30.json**): **414/414 Security-Tests + 21/21 Chat-Tests grün, 0 kritische / 0 kleinere Findings, keine Regression.**

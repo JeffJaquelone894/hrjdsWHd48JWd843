@@ -7,45 +7,12 @@ from pydantic import BaseModel
 from typing import Optional
 import os
 import uuid
-import httpx
-import logging
-
-logger = logging.getLogger(__name__)
 
 router = APIRouter(prefix="/api/chat", tags=["chat"])
 
 UPLOAD_DIR = os.path.join(os.path.dirname(os.path.dirname(os.path.abspath(__file__))), "uploads", "chat")
 os.makedirs(UPLOAD_DIR, exist_ok=True)
 
-TELEGRAM_BOT_TOKEN = os.environ.get("TELEGRAM_BOT_TOKEN", "")
-TELEGRAM_API = f"https://api.telegram.org/bot{TELEGRAM_BOT_TOKEN}"
-
-
-async def send_telegram_notification(db, sender_name: str, message: str, is_image: bool = False):
-    """Send notification to all Telegram subscribers when admin receives a message"""
-    if not TELEGRAM_BOT_TOKEN:
-        return
-    try:
-        subscribers = await db.telegram_subscribers.find({}, {"_id": 0, "chat_id": 1}).to_list(100)
-        if not subscribers:
-            return
-        text = f"Neue Nachricht von {sender_name}:\n\n"
-        if is_image:
-            text += "Bild gesendet"
-        else:
-            text += message
-        async with httpx.AsyncClient(timeout=10) as client:
-            for sub in subscribers:
-                try:
-                    await client.post(f"{TELEGRAM_API}/sendMessage", json={
-                        "chat_id": sub["chat_id"],
-                        "text": text,
-                        "parse_mode": "HTML"
-                    })
-                except Exception:
-                    pass
-    except Exception as e:
-        logger.error(f"Telegram notification error: {e}")
 
 def get_db():
     from server import db
@@ -101,12 +68,6 @@ async def send_message(
     }
 
     await db.messages.insert_one(msg_doc)
-
-    # Notify via Telegram if message is sent TO an admin
-    if sender_role != "admin":
-        admin_check = await db.admins.find_one({"id": data.recipient_id})
-        if admin_check:
-            await send_telegram_notification(db, sender_name, data.message)
 
     return {"message": "Nachricht gesendet", "conversation_id": conversation_id}
 
@@ -318,12 +279,6 @@ async def send_image(
     }
 
     await db.messages.insert_one(msg_doc)
-
-    # Notify via Telegram if image is sent TO an admin
-    if sender_role != "admin":
-        admin_check = await db.admins.find_one({"id": recipient_id})
-        if admin_check:
-            await send_telegram_notification(db, sender_name, "", is_image=True)
 
     return {"message": "Bild gesendet", "image": filename}
 

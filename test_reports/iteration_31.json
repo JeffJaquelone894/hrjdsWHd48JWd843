@@ -1,0 +1,54 @@
+{
+  "summary": "Backend-only regression verification after full Telegram removal from /app/backend/routes/chat.py (send_telegram_notification, TELEGRAM_BOT_TOKEN/TELEGRAM_API constants, both call sites in /send and /send-image, httpx import) and removal of TELEGRAM_BOT_TOKEN from backend/.env plus dropping the telegram_subscribers collection. Ran the existing chat suite (21/21), a NEW dedicated telegram-removal regression suite (26/26 incl. real multipart image upload, image serving, path traversal, unread/read-marking), and the full security suite (414/414). Total 461/461 passed. Backend imports and starts cleanly with no ImportError/NameError; zero outbound Telegram HTTP calls in logs during the run (all api.telegram.org log lines are historical from April 2026). Telegram is confirmed fully gone: 0 references in any application .py file, 0 TELEGRAM keys in backend/.env, telegram_subscribers collection absent, and /api/chat/telegram/webhook returns 404 for POST/GET/PUT/PATCH/DELETE.",
+  "backend_issues": {
+    "critical": [],
+    "minor": [
+      {
+        "endpoint": "POST /api/chat/send",
+        "issue": "Unauthenticated request with a missing/malformed JSON body returns 422 (Pydantic body validation) instead of 401, because the SendMessage body model is resolved before the manual Authorization header check. Pre-existing FastAPI dependency-ordering nuance, not caused by the Telegram edit. With a valid body and no token it correctly returns 401. Low impact (schema shape disclosure only); consider moving auth into a dependency so 401 always precedes 422."
+      },
+      {
+        "endpoint": "logs / secret hygiene",
+        "issue": "The now-removed Telegram bot token is still present in plaintext in historical log lines in /var/log/supervisor/backend.err.log (e.g. 'POST https://api.telegram.org/bot8658978837:AAETK-...'). Removing it from .env does not invalidate it. Recommend revoking/regenerating the bot via BotFather (or deleting the bot) and rotating anything else that appeared in logs."
+      }
+    ]
+  },
+  "frontend_issues": {
+    "ui_bugs": [],
+    "integration_issues": [],
+    "design_issues": []
+  },
+  "test_report_links": [
+    "/app/backend/tests/test_chat_telegram_removal_regression.py",
+    "/app/backend/tests/test_chat_and_per_employee_tasks.py",
+    "/app/test_reports/pytest/iter31_telegram_removal.xml",
+    "/app/test_reports/pytest/iter31_chat.xml",
+    "/app/test_reports/pytest/iter31_security.xml"
+  ],
+  "action_items": [
+    "No functional fixes required for the Telegram removal - it is complete and regression-free (461/461 backend tests passing).",
+    "SECURITY (outside this change, recommended): revoke/delete the old Telegram bot token 8658978837:AAETK-... via BotFather; it is still valid and is exposed in historical backend log lines even though it was removed from .env.",
+    "OPTIONAL hardening: refactor the repeated Authorization-header parsing in routes/chat.py into a shared FastAPI dependency so 401 is returned before 422 body validation and to remove the 6x duplicated auth block (DRY)."
+  ],
+  "critical_code_review_comments": [
+    "routes/chat.py is clean of Telegram: no TELEGRAM_BOT_TOKEN/TELEGRAM_API constants, no send_telegram_notification definition or call sites, and the unused httpx import is gone. Remaining imports (os, uuid, logging, FileResponse) are all used.",
+    "DRY violation: the identical 6-line 'if not authorization or not authorization.startswith(\"Bearer \") ... decode_token ... 401' block is duplicated in all 5 protected chat endpoints. Extract into a reusable Depends() dependency.",
+    "The `logger` created at module top of chat.py is now unused after the Telegram notification code (its only consumer) was deleted - harmless dead code, safe to drop.",
+    "/send-image validates only the file extension, never the magic bytes or a max size. An attacker can upload arbitrary content (e.g. HTML/SVG payload or a multi-GB file) renamed to .png. FileResponse guesses Content-Type from extension so stored-XSS risk is low, but an explicit size cap is advisable.",
+    "Path traversal defense on /image/{filename} is correct (os.basename + realpath prefix check) and verified against encoded ..%2f, %2e%2e%2f and ....// payloads.",
+    "All chat responses correctly project out MongoDB _id ({'_id': 0}); asserted explicitly in the new tests."
+  ],
+  "updated_files": [
+    "/app/backend/tests/test_chat_telegram_removal_regression.py (new test file only - no application code modified)"
+  ],
+  "success_rate": {
+    "backend": "100% (461/461: 21 chat suite + 26 new telegram-removal suite + 414 security suite)",
+    "frontend": "not tested (backend-only request)"
+  },
+  "seed_data_creation": "Created a few TEST_iter31-prefixed chat messages between the seeded admin and employee, plus one 1x1 PNG upload in backend/uploads/chat (TEST_iter31). tests/cleanup_security_audit.py was run afterwards (applications: 0, contracts: 1, sessions: 0, login_attempts: 2, audit: 13 cleaned).",
+  "should_call_test_agent_after_fix": false,
+  "should_main_agent_self_test": true,
+  "test_credentials": "Admin admin@webora.de / Kp9!xRv2Lq@Zm7Tn4&Q ; Employee mitarbeiter@precision-labs.de / Mitarbeiter123! (both from /app/memory/test_credentials.md, both valid). Admin brute-force was not attempted per instructions.",
+  "context_for_next_testing_agent": "Iteration 31 verified the Telegram removal is complete and regression-free. New reusable suite: /app/backend/tests/test_chat_telegram_removal_regression.py (26 tests) - covers /chat/send auth+persistence, real multipart /chat/send-image upload + retrieval via /chat/image/{filename}, invalid-extension 400, path-traversal 404, conversations/messages/unread with read-marking, webhook-404 across all HTTP verbs, and static guards asserting zero Telegram refs in app code/.env/chat.py and that the telegram_subscribers collection is dropped. These static guards will fail loudly if Telegram code ever returns. Security suite remains 414/414. Note: SMS-service DNS errors ('Name or service not known') and an old passlib UnknownHashError in backend.err.log are pre-existing/unrelated sandbox noise. Known minor: POST /api/chat/send with no body and no token returns 422 before 401.",
+  "rca_of_the_issue": "No regression found. The removed send_telegram_notification() was invoked fire-and-forget after the DB insert in both /send and /send-image, so deleting the calls left the persistence path untouched - confirmed by create-then-GET assertions on both endpoints. No residual import of httpx in chat.py (httpx is still legitimately used by services/anosim_service.py and services/sms_service.py, so the dependency stays required). Backend reload logs show a clean 'Application startup complete' with no ImportError/NameError."
+}
