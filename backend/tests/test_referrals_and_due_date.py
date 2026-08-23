@@ -10,9 +10,14 @@ import pytest
 import requests
 from datetime import datetime, timedelta, timezone
 
-BASE_URL = os.environ.get("REACT_APP_BACKEND_URL", "https://sms-verify-demo-1.preview.emergentagent.com").rstrip("/")
-ADMIN_EMAIL = "admin@precision-labs.de"
-ADMIN_PASSWORD = "Inf0m3tr!ca#2025Sec"
+from dotenv import dotenv_values  # noqa: E402
+
+_base_url = os.environ.get('REACT_APP_BACKEND_URL') or dotenv_values('/app/frontend/.env').get('REACT_APP_BACKEND_URL')
+if not _base_url:
+    raise RuntimeError('REACT_APP_BACKEND_URL is missing from the environment and /app/frontend/.env')
+BASE_URL = _base_url.rstrip('/')
+ADMIN_EMAIL = "admin@webora.de"
+ADMIN_PASSWORD = "Kp9!xRv2Lq@Zm7Tn4&Q"
 
 
 @pytest.fixture(scope="module")

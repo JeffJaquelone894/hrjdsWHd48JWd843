@@ -11,11 +11,16 @@ import os
 import uuid
 from datetime import datetime
 
-BASE_URL = os.environ.get('REACT_APP_BACKEND_URL', '').rstrip('/')
+from dotenv import dotenv_values  # noqa: E402
+
+_base_url = os.environ.get('REACT_APP_BACKEND_URL') or dotenv_values('/app/frontend/.env').get('REACT_APP_BACKEND_URL')
+if not _base_url:
+    raise RuntimeError('REACT_APP_BACKEND_URL is missing from the environment and /app/frontend/.env')
+BASE_URL = _base_url.rstrip('/')
 
 # Test credentials
-ADMIN_EMAIL = "admin@precision-labs.de"
-ADMIN_PASSWORD = "Admin123!"
+ADMIN_EMAIL = "admin@webora.de"
+ADMIN_PASSWORD = "Kp9!xRv2Lq@Zm7Tn4&Q"
 TEST_APPLICANT_EMAIL = "anna.schmidt@example.com"
 TEST_APPLICANT_PASSWORD = "TestPass123!"
 

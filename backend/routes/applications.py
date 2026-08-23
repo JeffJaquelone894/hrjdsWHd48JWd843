@@ -2,9 +2,9 @@ from fastapi import APIRouter, HTTPException, Depends, Header, UploadFile, File,
 from motor.motor_asyncio import AsyncIOMotorDatabase
 from models.application import ApplicationCreate, ApplicationResponse, ApplicantLoginResponse
 from utils.auth import get_password_hash, verify_password, create_access_token, decode_token
-from typing import List
+from typing import List, Optional
 from datetime import datetime, timedelta
-from pydantic import BaseModel, EmailStr
+from pydantic import BaseModel, EmailStr, constr
 import os
 import uuid
 import base64
@@ -914,17 +914,21 @@ async def list_contract_templates(authorization: str = Header(None), db: AsyncIO
     return [await _get_template(db, t) for t in ALL_CONTRACT_TYPES]
 
 
+class ContractTemplateUpdate(BaseModel):
+    title: Optional[constr(strip_whitespace=True, max_length=300)] = None
+    subtitle: Optional[constr(strip_whitespace=True, max_length=500)] = None
+    position: Optional[constr(strip_whitespace=True, max_length=300)] = None
+    body_html: Optional[constr(max_length=100000)] = None
+
+
 @router.put("/contract-templates/{contract_type}")
-async def update_contract_template(contract_type: str, data: dict = Body(default={}), authorization: str = Header(None), db: AsyncIOMotorDatabase = Depends(get_db)):
+async def update_contract_template(contract_type: str, data: ContractTemplateUpdate = Body(...), authorization: str = Header(None), db: AsyncIOMotorDatabase = Depends(get_db)):
     """Admin: update an editable contract template (global)."""
     _require_admin(authorization)
     if contract_type not in ALL_CONTRACT_TYPES:
         raise HTTPException(status_code=400, detail="Unbekannter Vertragstyp")
     await _get_template(db, contract_type)  # ensure it exists
-    update = {}
-    for field in ("title", "subtitle", "position", "body_html"):
-        if field in data and data[field] is not None:
-            update[field] = data[field]
+    update = data.model_dump(exclude_none=True)
     if not update:
         raise HTTPException(status_code=400, detail="Keine Änderungen")
     await db.contract_templates.update_one({"type": contract_type}, {"$set": update})

@@ -7,11 +7,11 @@ import requests
 import os
 import uuid
 
-BASE_URL = os.environ.get('REACT_APP_BACKEND_URL', 'https://sms-verify-demo-1.preview.emergentagent.com')
+BASE_URL = os.environ.get('REACT_APP_BACKEND_URL', 'http://localhost:8001')
 
 # Test credentials
-ADMIN_EMAIL = "admin@precision-labs.de"
-ADMIN_PASSWORD = "Admin123!"
+ADMIN_EMAIL = "admin@webora.de"
+ADMIN_PASSWORD = "Kp9!xRv2Lq@Zm7Tn4&Q"
 EMPLOYEE_EMAIL = "mitarbeiter@precision-labs.de"
 EMPLOYEE_PASSWORD = "Mitarbeiter123!"
 

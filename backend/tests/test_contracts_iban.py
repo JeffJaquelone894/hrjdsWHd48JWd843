@@ -6,7 +6,12 @@ import pytest
 import requests
 import os
 
-BASE_URL = os.environ.get('REACT_APP_BACKEND_URL', '').rstrip('/')
+from dotenv import dotenv_values  # noqa: E402
+
+_base_url = os.environ.get('REACT_APP_BACKEND_URL') or dotenv_values('/app/frontend/.env').get('REACT_APP_BACKEND_URL')
+if not _base_url:
+    raise RuntimeError('REACT_APP_BACKEND_URL is missing from the environment and /app/frontend/.env')
+BASE_URL = _base_url.rstrip('/')
 
 class TestContractSigningWithIBAN:
     """Contract signing with IBAN validation tests"""

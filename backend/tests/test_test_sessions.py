@@ -4,9 +4,9 @@ import pytest
 import requests
 from pymongo import MongoClient
 
-BASE_URL = os.environ.get("REACT_APP_BACKEND_URL", "https://sms-verify-demo-1.preview.emergentagent.com").rstrip("/")
-ADMIN_EMAIL = "admin@precision-labs.de"
-ADMIN_PASSWORD = "Inf0m3tr!ca#2025Sec"
+BASE_URL = os.environ.get("REACT_APP_BACKEND_URL", "http://localhost:8001").rstrip("/")
+ADMIN_EMAIL = "admin@webora.de"
+ADMIN_PASSWORD = "Kp9!xRv2Lq@Zm7Tn4&Q"
 
 # Direct MongoDB access for verification
 MONGO_URL = os.environ.get("MONGO_URL", "mongodb://localhost:27017")

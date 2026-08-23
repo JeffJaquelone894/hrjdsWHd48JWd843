@@ -111,7 +111,7 @@ MongoDB listens only on `127.0.0.1` by default — good. Do **not** open port 27
 
 ## 3. Get the code onto the server
 
-**Recommended:** push the project to GitHub first (use the **"Save to GitHub"** button in the Emergent chat), then clone it:
+**Recommended:** push the project to a GitHub repository, then clone it:
 
 ```bash
 sudo mkdir -p /var/www/tdata

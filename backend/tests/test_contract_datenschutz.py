@@ -12,6 +12,11 @@ import pytest
 # Ensure backend imports work for unit tests
 sys.path.insert(0, os.path.abspath(os.path.join(os.path.dirname(__file__), "..")))
 
+# Load backend env (JWT_SECRET_KEY etc.) before importing backend modules
+from dotenv import load_dotenv  # noqa: E402
+
+load_dotenv(os.path.abspath(os.path.join(os.path.dirname(__file__), "..", ".env")))
+
 from routes.applications import _build_contract_html_parts  # noqa: E402
 
 BASE_URL = os.environ.get("REACT_APP_BACKEND_URL")

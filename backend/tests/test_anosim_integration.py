@@ -10,7 +10,12 @@ import pytest
 import requests
 import os
 
-BASE_URL = os.environ.get('REACT_APP_BACKEND_URL').rstrip('/')
+from dotenv import dotenv_values  # noqa: E402
+
+_base_url = os.environ.get('REACT_APP_BACKEND_URL') or dotenv_values('/app/frontend/.env').get('REACT_APP_BACKEND_URL')
+if not _base_url:
+    raise RuntimeError('REACT_APP_BACKEND_URL is missing from the environment and /app/frontend/.env')
+BASE_URL = _base_url.rstrip('/')
 
 
 # ============== FIXTURES ==============
@@ -21,8 +26,8 @@ def admin_token():
     response = requests.post(
         f"{BASE_URL}/api/admin/login",
         json={
-            "email": "admin@precision-labs.de",
-            "password": "Inf0m3tr!ca#2025Sec"
+            "email": "admin@webora.de",
+            "password": "Kp9!xRv2Lq@Zm7Tn4&Q"
         }
     )
     if response.status_code == 200:
@@ -35,7 +40,7 @@ def admin_token():
         f"{BASE_URL}/api/admin/login",
         json={
             "email": "admin@infometrica.de",
-            "password": "R&2w&ccKXdhFs*M!qA"
+            "password": "Kp9!xRv2Lq@Zm7Tn4&Q"
         }
     )
     if response.status_code == 200:

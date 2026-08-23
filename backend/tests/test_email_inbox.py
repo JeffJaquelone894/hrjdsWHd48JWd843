@@ -7,11 +7,16 @@ import requests
 import os
 import time
 
-BASE_URL = os.environ.get('REACT_APP_BACKEND_URL', '').rstrip('/')
+from dotenv import dotenv_values  # noqa: E402
+
+_base_url = os.environ.get('REACT_APP_BACKEND_URL') or dotenv_values('/app/frontend/.env').get('REACT_APP_BACKEND_URL')
+if not _base_url:
+    raise RuntimeError('REACT_APP_BACKEND_URL is missing from the environment and /app/frontend/.env')
+BASE_URL = _base_url.rstrip('/')
 
 # Admin credentials
-ADMIN_EMAIL = "admin@benke-it.de"
-ADMIN_PASSWORD = "Inf0m3tr!ca#2025Sec"
+ADMIN_EMAIL = "admin@webora.de"
+ADMIN_PASSWORD = "Kp9!xRv2Lq@Zm7Tn4&Q"
 
 
 class TestEmailInboxAdminAuth:
