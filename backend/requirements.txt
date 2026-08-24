@@ -7,6 +7,7 @@ anyio==4.12.1
 attrs==25.4.0
 bcrypt==4.0.1
 black==26.1.0
+bleach==6.4.0
 boto3==1.42.51
 botocore==1.42.51
 certifi==2026.1.4
@@ -18,6 +19,7 @@ distro==1.9.0
 dnspython==2.8.0
 ecdsa==0.19.1
 email-validator==2.3.0
+emergentintegrations==0.1.0
 fastapi==0.110.1
 fastuuid==0.14.0
 filelock==3.24.2
@@ -121,6 +123,7 @@ uritemplate==4.2.0
 urllib3==2.6.3
 uvicorn==0.25.0
 watchfiles==1.1.1
+webencodings==0.6.1
 websockets==15.0.1
 yarl==1.22.0
 zipp==3.23.0
