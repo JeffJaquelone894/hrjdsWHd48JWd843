@@ -13,16 +13,16 @@ const services = [
 
 const Home = () => {
   return (
-    <div className="min-h-screen bg-white font-body text-[#556655]">
+    <div className="min-h-screen bg-white font-body text-[#4A5568]">
       {/* Hero */}
-      <section className="bg-[#F4F8F4] border-b border-[#DDE8DD]">
+      <section className="bg-[#F0F4FA] border-b border-[#D9E3F0]">
         <div className="max-w-7xl mx-auto px-6 md:px-8 py-16 md:py-24">
           <div className="grid grid-cols-1 lg:grid-cols-2 gap-12 lg:gap-16 items-center">
             <div className="tdata-reveal">
               <div className="inline-block mb-6 px-3 py-1 border border-sage-300 bg-white text-sage-700 text-sm font-semibold rounded-sm">
                 Qualitätssicherung aus Deutschland
               </div>
-              <h1 className="font-heading text-4xl md:text-5xl font-bold text-[#223322] leading-tight mb-6">
+              <h1 className="font-heading text-4xl md:text-5xl font-bold text-[#1C2B3A] leading-tight mb-6">
                 Software, auf die man sich verlassen kann.
               </h1>
               <p className="text-lg leading-relaxed mb-8 max-w-xl">
@@ -48,7 +48,7 @@ const Home = () => {
               </div>
             </div>
             <div className="tdata-reveal">
-              <div className="border border-[#DDE8DD] bg-white p-2 rounded-sm">
+              <div className="border border-[#D9E3F0] bg-white p-2 rounded-sm">
                 <img src={HERO_IMG} alt="Tdata Testing Büro" className="w-full h-[360px] object-cover rounded-sm" />
               </div>
             </div>
@@ -57,7 +57,7 @@ const Home = () => {
       </section>
 
       {/* Trust stats */}
-      <section className="border-b border-[#DDE8DD]">
+      <section className="border-b border-[#D9E3F0]">
         <div className="max-w-7xl mx-auto px-6 md:px-8 py-12">
           <div className="grid grid-cols-2 md:grid-cols-4 gap-8">
             {[
@@ -79,7 +79,7 @@ const Home = () => {
       <section className="py-16 md:py-24">
         <div className="max-w-7xl mx-auto px-6 md:px-8">
           <div className="max-w-2xl mb-12">
-            <h2 className="font-heading text-3xl md:text-4xl font-bold text-[#223322] mb-4">Unsere Leistungen</h2>
+            <h2 className="font-heading text-3xl md:text-4xl font-bold text-[#1C2B3A] mb-4">Unsere Leistungen</h2>
             <p className="text-lg">
               Ein vollständiges Spektrum professioneller Qualitätssicherung –
               abgestimmt auf die Anforderungen Ihres Projekts.
@@ -89,11 +89,11 @@ const Home = () => {
             {services.map((s, i) => {
               const Icon = s.icon;
               return (
-                <div key={i} className="bg-white border border-[#DDE8DD] p-8 rounded-sm hover:border-sage-400 transition-colors duration-150" data-testid={`service-card-${i}`}>
+                <div key={i} className="bg-white border border-[#D9E3F0] p-8 rounded-sm hover:border-sage-400 transition-colors duration-150" data-testid={`service-card-${i}`}>
                   <div className="w-12 h-12 bg-sage-50 border border-sage-200 rounded-sm flex items-center justify-center mb-5">
                     <Icon className="text-sage-600" size={24} strokeWidth={1.75} />
                   </div>
-                  <h3 className="font-heading text-xl font-bold text-[#223322] mb-3">{s.title}</h3>
+                  <h3 className="font-heading text-xl font-bold text-[#1C2B3A] mb-3">{s.title}</h3>
                   <p className="leading-relaxed">{s.desc}</p>
                 </div>
               );
@@ -103,11 +103,11 @@ const Home = () => {
       </section>
 
       {/* Why us */}
-      <section className="py-16 md:py-24 bg-[#F4F8F4] border-y border-[#DDE8DD]">
+      <section className="py-16 md:py-24 bg-[#F0F4FA] border-y border-[#D9E3F0]">
         <div className="max-w-7xl mx-auto px-6 md:px-8">
           <div className="grid grid-cols-1 lg:grid-cols-2 gap-16 items-center">
             <div>
-              <h2 className="font-heading text-3xl md:text-4xl font-bold text-[#223322] mb-6">Warum Tdata Testing</h2>
+              <h2 className="font-heading text-3xl md:text-4xl font-bold text-[#1C2B3A] mb-6">Warum Tdata Testing</h2>
               <p className="text-lg mb-8 max-w-lg">
                 Wir verbinden deutsche Gründlichkeit mit einem klaren, strukturierten
                 Vorgehen. Unser Anspruch ist eine Qualitätssicherung, die
@@ -124,7 +124,7 @@ const Home = () => {
                       <Check size={18} className="text-white" />
                     </div>
                     <div>
-                      <div className="font-heading font-bold text-[#223322]">{item.t}</div>
+                      <div className="font-heading font-bold text-[#1C2B3A]">{item.t}</div>
                       <div className="text-sm">{item.d}</div>
                     </div>
                   </li>
@@ -134,7 +134,7 @@ const Home = () => {
                 Mehr über uns <ArrowRight size={18} />
               </Link>
             </div>
-            <div className="border border-[#DDE8DD] bg-white p-2 rounded-sm">
+            <div className="border border-[#D9E3F0] bg-white p-2 rounded-sm">
               <img
                 src="https://images.unsplash.com/photo-1542744173-8e7e53415bb0?crop=entropy&cs=srgb&fm=jpg&ixid=M3w4NTYxNzV8MHwxfHNlYXJjaHwxfHxwcm9mZXNzaW9uYWwlMjBidXNpbmVzcyUyMG1lZXRpbmd8ZW58MHx8fHwxNzg3NDAwODQ4fDA&ixlib=rb-4.1.0&q=85"
                 alt="Team bei der Arbeit"
@@ -149,7 +149,7 @@ const Home = () => {
       <section className="py-16 md:py-20 bg-sage-800">
         <div className="max-w-4xl mx-auto px-6 md:px-8 text-center">
           <h2 className="font-heading text-3xl md:text-4xl font-bold text-white mb-4">Sprechen wir über Ihr Projekt</h2>
-          <p className="text-lg text-[#C7DBC7] mb-8 max-w-2xl mx-auto">
+          <p className="text-lg text-[#C7D9F0] mb-8 max-w-2xl mx-auto">
             Kontaktieren Sie uns für eine unverbindliche Erstberatung. Wir
             analysieren Ihre Anforderungen und schlagen ein passendes Vorgehen vor.
           </p>

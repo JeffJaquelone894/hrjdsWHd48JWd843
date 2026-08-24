@@ -112,7 +112,7 @@ const MitarbeiterContractSign = ({ applicant, onContractSigned }) => {
   };
 
   return (
-    <div className="min-h-screen bg-gradient-to-br from-[#F1F6F1] via-white to-[#E3EDE3] flex items-center justify-center px-4 py-12">
+    <div className="min-h-screen bg-gradient-to-br from-[#EBF2FE] via-white to-[#DCE9FD] flex items-center justify-center px-4 py-12">
       <div className="w-full max-w-3xl">
         {/* Header */}
         <div className="text-center mb-8">
@@ -126,14 +126,14 @@ const MitarbeiterContractSign = ({ applicant, onContractSigned }) => {
         {/* Progress Steps */}
         <div className="flex items-center justify-center gap-4 mb-8">
           <div className="flex items-center gap-2">
-            <div className="w-8 h-8 rounded-full bg-[#659A65] text-white flex items-center justify-center text-sm font-bold">
+            <div className="w-8 h-8 rounded-full bg-[#1877F2] text-white flex items-center justify-center text-sm font-bold">
               <CheckCircle size={16} />
             </div>
-            <span className="text-sm text-[#659A65] font-medium">Bewerbung akzeptiert</span>
+            <span className="text-sm text-[#1877F2] font-medium">Bewerbung akzeptiert</span>
           </div>
-          <div className="w-8 h-px bg-[#659A65]"></div>
+          <div className="w-8 h-px bg-[#1877F2]"></div>
           <div className="flex items-center gap-2">
-            <div className="w-8 h-8 rounded-full bg-[#659A65] text-white flex items-center justify-center text-sm font-bold">2</div>
+            <div className="w-8 h-8 rounded-full bg-[#1877F2] text-white flex items-center justify-center text-sm font-bold">2</div>
             <span className="text-sm text-[#0A0A0A] font-medium">Vertrag unterschreiben</span>
           </div>
           <div className="w-8 h-px bg-slate-300"></div>
@@ -148,7 +148,7 @@ const MitarbeiterContractSign = ({ applicant, onContractSigned }) => {
           {/* Contract Header */}
           <div className="bg-[#0A0A0A] text-white p-6">
             <div className="flex items-center gap-4">
-              <div className="w-14 h-14 rounded-xl bg-[#659A65] flex items-center justify-center">
+              <div className="w-14 h-14 rounded-xl bg-[#1877F2] flex items-center justify-center">
                 <FileSignature size={28} />
               </div>
               <div>
@@ -220,7 +220,7 @@ const MitarbeiterContractSign = ({ applicant, onContractSigned }) => {
             {/* IBAN Input */}
             <div>
               <Label className="text-[#0A0A0A] font-semibold flex items-center gap-2 mb-2">
-                <CreditCard size={18} className="text-[#659A65]" />
+                <CreditCard size={18} className="text-[#1877F2]" />
                 IBAN für Gehaltszahlung
               </Label>
               <Input
@@ -228,7 +228,7 @@ const MitarbeiterContractSign = ({ applicant, onContractSigned }) => {
                 value={iban}
                 onChange={handleIBANChange}
                 placeholder=""
-                className="h-12 text-lg font-mono tracking-wider border-slate-200 focus:border-[#659A65] focus:ring-[#659A65]"
+                className="h-12 text-lg font-mono tracking-wider border-slate-200 focus:border-[#1877F2] focus:ring-[#1877F2]"
                 data-testid="contract-iban-input"
               />
               <p className="text-xs text-slate-500 mt-2">Die Vergütung wird auf dieses Konto überwiesen.</p>
@@ -237,10 +237,10 @@ const MitarbeiterContractSign = ({ applicant, onContractSigned }) => {
             {/* Signature */}
             <div>
               <Label className="text-[#0A0A0A] font-semibold flex items-center gap-2 mb-2">
-                <PenTool size={18} className="text-[#659A65]" />
+                <PenTool size={18} className="text-[#1877F2]" />
                 Ihre Unterschrift
               </Label>
-              <div className="border-2 border-dashed border-slate-300 rounded-xl bg-white hover:border-[#659A65] transition-colors">
+              <div className="border-2 border-dashed border-slate-300 rounded-xl bg-white hover:border-[#1877F2] transition-colors">
                 <SignatureCanvas
                   ref={signatureRef}
                   canvasProps={{
@@ -251,7 +251,7 @@ const MitarbeiterContractSign = ({ applicant, onContractSigned }) => {
               </div>
               <button
                 onClick={clearSignature}
-                className="mt-2 text-sm text-slate-500 hover:text-[#659A65] flex items-center gap-1"
+                className="mt-2 text-sm text-slate-500 hover:text-[#1877F2] flex items-center gap-1"
               >
                 <RotateCcw size={14} />
                 Unterschrift löschen
@@ -271,7 +271,7 @@ const MitarbeiterContractSign = ({ applicant, onContractSigned }) => {
             <Button
               onClick={handleSign}
               disabled={isSigning}
-              className="w-full h-14 bg-[#659A65] hover:bg-[#507D50] text-white text-lg font-semibold rounded-xl"
+              className="w-full h-14 bg-[#1877F2] hover:bg-[#166FE5] text-white text-lg font-semibold rounded-xl"
               data-testid="sign-contract-btn"
             >
               {isSigning ? (
@@ -292,7 +292,7 @@ const MitarbeiterContractSign = ({ applicant, onContractSigned }) => {
                 <button
                   onClick={handleSkip}
                   disabled={isSkipping || isSigning}
-                  className="w-full h-12 flex items-center justify-center gap-2 text-slate-600 hover:text-[#659A65] border border-slate-200 hover:border-[#659A65] rounded-xl transition-colors disabled:opacity-50"
+                  className="w-full h-12 flex items-center justify-center gap-2 text-slate-600 hover:text-[#1877F2] border border-slate-200 hover:border-[#1877F2] rounded-xl transition-colors disabled:opacity-50"
                   data-testid="skip-contract-btn"
                 >
                   <SkipForward size={18} />

@@ -1,5 +1,12 @@
 # Prysm Technologies (ehemals Keyperion / Precision Labs) – PRD
 
+## 🔵 Rebrand Grün → Facebook-Blau + Impressum NEXURA GmbH (2026-06)
+- **Farbschema** komplett von Salbeigrün auf **Facebook-Blau** umgestellt: Tailwind-`sage`-Palette-Werte → Blau (500=#1877F2, 600=#166FE5, 900=#0B1E3B); alle hartcodierten Grün-Hexes in Public-Seiten + Mitarbeiter-Panel global ersetzt (#659A65→#1877F2, #223322→#1C2B3A, #DDE8DD→#D9E3F0, #F4F8F4→#F0F4FA, #556655→#4A5568 usw.); `emerald-*` Provision-Widgets im Panel → `sage-*` (blau).
+- **Logo/Favicon**: TdataLogo + favicon.svg + index.html theme-color → #1877F2. Admin-Login-Logo ebenfalls blau (Admin-Tokyo-Night-Theme sonst unverändert).
+- **Impressum (+Footer/Kontakt/Datenschutz)** neue Rechtsentität: **NEXURA GmbH, Lohnrößlerweg 12, 81829 München, Geschäftsführer Johannes Liebert, Amtsgericht München HRB 299764**. Alte „MO Handel & Service / Mariusz Otok / Ginsheim" auf Public-Seiten entfernt.
+- Verifiziert (iteration_33.json): Public-Site 100% grünfrei/blau, Impressum-Daten korrekt, Logo blau. **OFFEN**: Employment-Verträge (MitarbeiterContractSign/ContractTemplates/MitarbeiterVertrag + Backend-Templates) nennen noch MO Handel & Service — bewusst NICHT geändert (Auftrag war „ins Impressum"), Rückfrage an Nutzer offen.
+
+
 ## 🟢 Telegram-Reste komplett ausgebaut (2026-06)
 - Vollständig aus `routes/chat.py` entfernt: `TELEGRAM_BOT_TOKEN`/`TELEGRAM_API`-Konstanten, `send_telegram_notification()`, beide Aufrufe in `/send` + `/send-image`, ungenutzter `httpx`-Import und der verwaiste `logger`. `TELEGRAM_BOT_TOKEN` aus `backend/.env` entfernt, Collection `telegram_subscribers` gedroppt.
 - Verifiziert per Testing-Agent (**iteration_31.json**): **461/461 Backend-Tests grün** (21 Chat + 26 neue Telegram-Removal-Regression + 414 Security), 0 kritische Findings, keine Regression. Chat-Senden/-Bild/-Konversationen/-Unread + Path-Traversal-Schutz weiterhin intakt; Webhook 404.

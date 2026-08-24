@@ -82,8 +82,8 @@ const MitarbeiterDashboard = () => {
       value: `${Number(stats.total_provision || 0).toFixed(2)} €`,
       icon: Wallet,
       color: 'emerald',
-      bgColor: 'bg-emerald-100',
-      textColor: 'text-emerald-600',
+      bgColor: 'bg-sage-100',
+      textColor: 'text-sage-600',
     },
   ];
 
@@ -164,7 +164,7 @@ const MitarbeiterDashboard = () => {
                         {task.priority}
                       </span>
                       {task.provision > 0 && (
-                        <span className="px-2 py-1 rounded-full bg-emerald-100 text-emerald-700 font-semibold">
+                        <span className="px-2 py-1 rounded-full bg-sage-100 text-sage-700 font-semibold">
                           {Number(task.provision).toFixed(2)} €
                         </span>
                       )}

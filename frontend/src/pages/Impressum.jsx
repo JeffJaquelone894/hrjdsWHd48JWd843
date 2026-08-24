@@ -3,20 +3,20 @@ import { Link } from 'react-router-dom';
 import { Mail, Globe, ArrowLeft } from 'lucide-react';
 
 const Section = ({ title, children }) => (
-  <div className="border-b border-[#DDE8DD] pb-8">
-    <h2 className="font-heading text-xl md:text-2xl font-bold text-[#223322] mb-4">{title}</h2>
+  <div className="border-b border-[#D9E3F0] pb-8">
+    <h2 className="font-heading text-xl md:text-2xl font-bold text-[#1C2B3A] mb-4">{title}</h2>
     <div className="space-y-3 leading-relaxed">{children}</div>
   </div>
 );
 
 const Impressum = () => {
   return (
-    <div className="min-h-screen bg-white font-body text-[#556655]">
+    <div className="min-h-screen bg-white font-body text-[#4A5568]">
       {/* Hero */}
-      <section className="bg-[#F4F8F4] border-b border-[#DDE8DD]">
+      <section className="bg-[#F0F4FA] border-b border-[#D9E3F0]">
         <div className="max-w-4xl mx-auto px-6 md:px-8 py-16 md:py-20">
           <div className="text-sage-700 font-semibold mb-3">Rechtliches</div>
-          <h1 className="font-heading text-4xl md:text-5xl font-bold text-[#223322] mb-3">Impressum</h1>
+          <h1 className="font-heading text-4xl md:text-5xl font-bold text-[#1C2B3A] mb-3">Impressum</h1>
           <p className="text-lg">Angaben gemäß § 5 TMG</p>
         </div>
       </section>
@@ -25,16 +25,16 @@ const Impressum = () => {
       <section className="py-16">
         <div className="max-w-4xl mx-auto px-6 md:px-8 space-y-8">
           <div className="bg-sage-50 border border-sage-200 p-6 rounded-sm" data-testid="impressum-company-box">
-            <p className="text-[#223322]">
+            <p className="text-[#1C2B3A]">
               <span className="font-bold">Tdata Testing</span> ist ein Angebot von{' '}
-              <span className="font-bold">MO Handel &amp; Service, Inh. Mariusz Jerzy Otok</span>.
+              <span className="font-bold">NEXURA GmbH</span>.
             </p>
           </div>
 
           <Section title="Firmeninformationen">
-            <p className="font-semibold text-[#223322]">MO Handel &amp; Service, Inh. Mariusz Jerzy Otok</p>
-            <p>Darmstädter Landstraße 60</p>
-            <p>65462 Ginsheim-Gustavsburg</p>
+            <p className="font-semibold text-[#1C2B3A]">NEXURA GmbH</p>
+            <p>Lohnrößlerweg 12</p>
+            <p>81829 München</p>
             <p>Deutschland</p>
           </Section>
 
@@ -49,19 +49,19 @@ const Impressum = () => {
             </div>
           </Section>
 
-          <Section title="Vertretungsberechtigte Person">
-            <p>Mariusz Otok</p>
+          <Section title="Vertretungsberechtigter Geschäftsführer">
+            <p>Johannes Liebert</p>
           </Section>
 
-          <Section title="Umsatzsteuer-Identifikationsnummer">
-            <p>Umsatzsteuer-Identifikationsnummer gemäß § 27a Umsatzsteuergesetz:</p>
-            <p className="font-semibold text-[#223322]">DE368527526</p>
+          <Section title="Handelsregister">
+            <p>Registergericht: Amtsgericht München</p>
+            <p className="font-semibold text-[#1C2B3A]">Registernummer: HRB 299764</p>
           </Section>
 
           <Section title="Verantwortlich für den Inhalt nach § 18 Abs. 2 MStV">
-            <p>Mariusz Otok</p>
-            <p>Darmstädter Landstraße 60</p>
-            <p>65462 Ginsheim-Gustavsburg</p>
+            <p>Johannes Liebert</p>
+            <p>Lohnrößlerweg 12</p>
+            <p>81829 München</p>
           </Section>
 
           <Section title="Streitschlichtung">
@@ -91,7 +91,7 @@ const Impressum = () => {
           </Section>
 
           <div className="pb-2">
-            <h2 className="font-heading text-xl md:text-2xl font-bold text-[#223322] mb-4">Urheberrecht</h2>
+            <h2 className="font-heading text-xl md:text-2xl font-bold text-[#1C2B3A] mb-4">Urheberrecht</h2>
             <div className="space-y-3 text-sm leading-relaxed">
               <p>
                 Die durch die Seitenbetreiber erstellten Inhalte und Werke auf diesen Seiten unterliegen dem deutschen

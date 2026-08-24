@@ -123,16 +123,16 @@ const Karriere = () => {
     { icon: Briefcase, title: 'Moderne Tools', description: 'Aktuelle Testing-Technologien' },
   ];
 
-  const inputBase = 'h-12 border-[#DDE8DD] focus-visible:ring-sage-500';
+  const inputBase = 'h-12 border-[#D9E3F0] focus-visible:ring-sage-500';
 
   return (
-    <div className="min-h-screen bg-white font-body text-[#556655]">
+    <div className="min-h-screen bg-white font-body text-[#4A5568]">
       {/* Hero */}
-      <section className="bg-[#F4F8F4] border-b border-[#DDE8DD]">
+      <section className="bg-[#F0F4FA] border-b border-[#D9E3F0]">
         <div className="max-w-7xl mx-auto px-6 md:px-8 py-16 md:py-20">
           <div className="max-w-2xl">
             <div className="text-sage-700 font-semibold mb-3">Karriere bei Tdata Testing</div>
-            <h1 className="font-heading text-4xl md:text-5xl font-bold text-[#223322] leading-tight mb-4">
+            <h1 className="font-heading text-4xl md:text-5xl font-bold text-[#1C2B3A] leading-tight mb-4">
               Werden Sie Teil unseres Teams
             </h1>
             <p className="text-lg leading-relaxed">
@@ -148,18 +148,18 @@ const Karriere = () => {
       <section className="py-16 md:py-24">
         <div className="max-w-7xl mx-auto px-6 md:px-8">
           <div className="max-w-2xl mb-12">
-            <h2 className="font-heading text-3xl md:text-4xl font-bold text-[#223322] mb-3">Warum Tdata Testing?</h2>
+            <h2 className="font-heading text-3xl md:text-4xl font-bold text-[#1C2B3A] mb-3">Warum Tdata Testing?</h2>
             <p className="text-lg">Was Sie bei uns erwartet.</p>
           </div>
           <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8">
             {benefits.map((benefit, i) => {
               const Icon = benefit.icon;
               return (
-                <div key={i} className="bg-white border border-[#DDE8DD] p-8 rounded-sm hover:border-sage-400 transition-colors duration-150">
+                <div key={i} className="bg-white border border-[#D9E3F0] p-8 rounded-sm hover:border-sage-400 transition-colors duration-150">
                   <div className="w-12 h-12 bg-sage-50 border border-sage-200 rounded-sm flex items-center justify-center mb-5">
                     <Icon className="text-sage-600" size={24} strokeWidth={1.75} />
                   </div>
-                  <h3 className="font-heading text-lg font-bold text-[#223322] mb-2">{benefit.title}</h3>
+                  <h3 className="font-heading text-lg font-bold text-[#1C2B3A] mb-2">{benefit.title}</h3>
                   <p>{benefit.description}</p>
                 </div>
               );
@@ -169,24 +169,24 @@ const Karriere = () => {
       </section>
 
       {/* Open Positions */}
-      <section className="py-16 md:py-24 bg-[#F4F8F4] border-y border-[#DDE8DD]">
+      <section className="py-16 md:py-24 bg-[#F0F4FA] border-y border-[#D9E3F0]">
         <div className="max-w-7xl mx-auto px-6 md:px-8">
           <div className="max-w-2xl mb-12">
-            <h2 className="font-heading text-3xl md:text-4xl font-bold text-[#223322] mb-3">Offene Stellen</h2>
+            <h2 className="font-heading text-3xl md:text-4xl font-bold text-[#1C2B3A] mb-3">Offene Stellen</h2>
             <p className="text-lg">Finden Sie Ihre passende Position in unserem Team.</p>
           </div>
           <div className="space-y-6">
             {openPositions.map((position, i) => (
-              <div key={i} className="bg-white border border-[#DDE8DD] p-8 rounded-sm">
+              <div key={i} className="bg-white border border-[#D9E3F0] p-8 rounded-sm">
                 <div className="flex flex-col lg:flex-row lg:items-start lg:justify-between gap-6">
                   <div className="flex-1">
-                    <h3 className="font-heading text-xl font-bold text-[#223322] mb-3">{position.title}</h3>
+                    <h3 className="font-heading text-xl font-bold text-[#1C2B3A] mb-3">{position.title}</h3>
                     <div className="flex flex-wrap gap-4 mb-4 text-sm">
                       <div className="flex items-center"><MapPin size={16} className="mr-2 text-sage-600" />{position.location}</div>
                       <div className="flex items-center"><Clock size={16} className="mr-2 text-sage-600" />{position.type}</div>
                     </div>
                     <p className="mb-4">{position.description}</p>
-                    <h4 className="font-semibold text-[#223322] mb-2">Anforderungen:</h4>
+                    <h4 className="font-semibold text-[#1C2B3A] mb-2">Anforderungen:</h4>
                     <ul className="space-y-2">
                       {position.requirements.map((req, idx) => (
                         <li key={idx} className="flex items-start text-sm">
@@ -212,11 +212,11 @@ const Karriere = () => {
       <section id="bewerbung" className="py-16 md:py-24">
         <div className="max-w-3xl mx-auto px-6 md:px-8">
           <div className="mb-10">
-            <h2 className="font-heading text-3xl md:text-4xl font-bold text-[#223322] mb-3">Jetzt bewerben</h2>
+            <h2 className="font-heading text-3xl md:text-4xl font-bold text-[#1C2B3A] mb-3">Jetzt bewerben</h2>
             <p className="text-lg">Senden Sie uns Ihre Unterlagen – wir melden uns zeitnah bei Ihnen.</p>
           </div>
 
-          <div className="bg-white border border-[#DDE8DD] p-8 md:p-10 rounded-sm">
+          <div className="bg-white border border-[#D9E3F0] p-8 md:p-10 rounded-sm">
             {referralSlug && (
               <div className="mb-6 px-4 py-3 rounded-sm bg-sage-50 border border-sage-200 text-sm text-sage-800" data-testid="referral-banner">
                 Sie bewerben sich über{referralName ? ` „${referralName}"` : ''} (<span className="font-mono">{referralSlug}</span>)
@@ -225,7 +225,7 @@ const Karriere = () => {
             <form onSubmit={handleSubmit} className="space-y-8">
               {/* Persönliche Daten */}
               <div>
-                <h3 className="font-heading text-lg font-bold text-[#223322] mb-4 pb-2 border-b border-[#DDE8DD]">Persönliche Daten</h3>
+                <h3 className="font-heading text-lg font-bold text-[#1C2B3A] mb-4 pb-2 border-b border-[#D9E3F0]">Persönliche Daten</h3>
                 <div className="space-y-6">
                   <div className="grid grid-cols-1 sm:grid-cols-2 gap-6">
                     <div className="space-y-2">
@@ -256,7 +256,7 @@ const Karriere = () => {
 
               {/* Zugangsdaten */}
               <div>
-                <h3 className="font-heading text-lg font-bold text-[#223322] mb-4 pb-2 border-b border-[#DDE8DD] flex items-center gap-2">
+                <h3 className="font-heading text-lg font-bold text-[#1C2B3A] mb-4 pb-2 border-b border-[#D9E3F0] flex items-center gap-2">
                   <Lock className="text-sage-600" size={18} /> Zugangsdaten
                 </h3>
                 <p className="text-sm mb-4">Mit diesen Daten können Sie sich einloggen und den Status Ihrer Bewerbung verfolgen.</p>
@@ -265,7 +265,7 @@ const Karriere = () => {
                     <Label htmlFor="password">Passwort wählen *</Label>
                     <div className="relative">
                       <Input id="password" name="password" type={showPassword ? 'text' : 'password'} value={formData.password} onChange={handleChange} placeholder="Mindestens 8 Zeichen" required minLength={8} className={`${inputBase} pr-10`} data-testid="karriere-password" />
-                      <button type="button" onClick={() => setShowPassword(!showPassword)} className="absolute right-3 top-3 text-[#8FA98F] hover:text-[#556655]">
+                      <button type="button" onClick={() => setShowPassword(!showPassword)} className="absolute right-3 top-3 text-[#8A97A6] hover:text-[#4A5568]">
                         {showPassword ? <EyeOff size={20} /> : <Eye size={20} />}
                       </button>
                     </div>
@@ -279,7 +279,7 @@ const Karriere = () => {
 
               {/* Anschrift */}
               <div>
-                <h3 className="font-heading text-lg font-bold text-[#223322] mb-4 pb-2 border-b border-[#DDE8DD]">Anschrift</h3>
+                <h3 className="font-heading text-lg font-bold text-[#1C2B3A] mb-4 pb-2 border-b border-[#D9E3F0]">Anschrift</h3>
                 <div className="space-y-6">
                   <div className="space-y-2">
                     <Label htmlFor="strasse">Straße und Hausnummer *</Label>
@@ -300,7 +300,7 @@ const Karriere = () => {
 
               {/* Bewerbungsdetails */}
               <div>
-                <h3 className="font-heading text-lg font-bold text-[#223322] mb-4 pb-2 border-b border-[#DDE8DD]">Bewerbungsdetails</h3>
+                <h3 className="font-heading text-lg font-bold text-[#1C2B3A] mb-4 pb-2 border-b border-[#D9E3F0]">Bewerbungsdetails</h3>
                 <div className="space-y-6">
                   <div className="space-y-2">
                     <Label htmlFor="position">Gewünschte Position *</Label>
@@ -310,9 +310,9 @@ const Karriere = () => {
                     <Label htmlFor="cv">Lebenslauf / CV *</Label>
                     <div className="relative">
                       <Input id="cv" name="cv" type="file" onChange={handleFileChange} accept=".pdf,.doc,.docx" required className={`${inputBase} cursor-pointer`} />
-                      <Upload className="absolute right-3 top-3 text-[#8FA98F] pointer-events-none" size={20} />
+                      <Upload className="absolute right-3 top-3 text-[#8A97A6] pointer-events-none" size={20} />
                     </div>
-                    <p className="text-sm text-[#8FA98F]">PDF, DOC oder DOCX (max. 5 MB)</p>
+                    <p className="text-sm text-[#8A97A6]">PDF, DOC oder DOCX (max. 5 MB)</p>
                   </div>
                 </div>
               </div>
@@ -340,7 +340,7 @@ const Karriere = () => {
       <section className="py-16 md:py-20 bg-sage-800">
         <div className="max-w-4xl mx-auto px-6 md:px-8 text-center">
           <h2 className="font-heading text-3xl md:text-4xl font-bold text-white mb-4">Fragen zur Karriere?</h2>
-          <p className="text-lg text-[#C7DBC7] mb-8">Unser Team beantwortet gerne Ihre Fragen rund um Bewerbung und Einstieg.</p>
+          <p className="text-lg text-[#C7D9F0] mb-8">Unser Team beantwortet gerne Ihre Fragen rund um Bewerbung und Einstieg.</p>
           <Link to="/kontakt" className="inline-flex items-center justify-center h-12 px-8 bg-white text-sage-800 font-semibold rounded-sm hover:bg-sage-50 transition-colors">
             Team kontaktieren
           </Link>
@@ -350,7 +350,7 @@ const Karriere = () => {
       {/* Success Modal */}
       {showSuccessModal && (
         <div className="fixed inset-0 bg-black/50 flex items-center justify-center z-50 p-4">
-          <div className="bg-white rounded-sm max-w-lg w-full shadow-xl overflow-hidden border border-[#DDE8DD]">
+          <div className="bg-white rounded-sm max-w-lg w-full shadow-xl overflow-hidden border border-[#D9E3F0]">
             <div className="bg-sage-700 p-6 text-white text-center relative">
               <button onClick={() => setShowSuccessModal(false)} className="absolute top-4 right-4 p-1 hover:bg-white/20 rounded-sm transition-colors">
                 <X size={20} />
@@ -359,28 +359,28 @@ const Karriere = () => {
                 <CheckCircle size={30} className="text-white" />
               </div>
               <h3 className="font-heading text-2xl font-bold">Bewerbung erfolgreich!</h3>
-              <p className="text-[#C7DBC7] mt-2">Vielen Dank für Ihr Interesse an Tdata Testing</p>
+              <p className="text-[#C7D9F0] mt-2">Vielen Dank für Ihr Interesse an Tdata Testing</p>
             </div>
             <div className="p-6 space-y-6">
               <div className="bg-sage-50 border border-sage-200 rounded-sm p-4">
-                <h4 className="font-semibold text-[#223322] mb-2 flex items-center gap-2">
+                <h4 className="font-semibold text-[#1C2B3A] mb-2 flex items-center gap-2">
                   <CheckCircle className="text-sage-600" size={18} /> Nächster Schritt
                 </h4>
                 <p className="text-sm">Sie können sich ab sofort in Ihrem persönlichen Bewerberportal einloggen, um den Status Ihrer Bewerbung zu verfolgen.</p>
               </div>
               <div className="space-y-3">
-                <h4 className="font-semibold text-[#223322]">Ihre Login-Daten:</h4>
-                <div className="bg-[#F4F8F4] border border-[#DDE8DD] rounded-sm p-4 space-y-3">
-                  <div><span className="text-sm text-[#8FA98F]">E-Mail:</span><p className="font-medium text-[#223322]">{submittedEmail}</p></div>
-                  <div><span className="text-sm text-[#8FA98F]">Passwort:</span><p className="font-medium text-[#223322]">Das von Ihnen gewählte Passwort</p></div>
+                <h4 className="font-semibold text-[#1C2B3A]">Ihre Login-Daten:</h4>
+                <div className="bg-[#F0F4FA] border border-[#D9E3F0] rounded-sm p-4 space-y-3">
+                  <div><span className="text-sm text-[#8A97A6]">E-Mail:</span><p className="font-medium text-[#1C2B3A]">{submittedEmail}</p></div>
+                  <div><span className="text-sm text-[#8A97A6]">Passwort:</span><p className="font-medium text-[#1C2B3A]">Das von Ihnen gewählte Passwort</p></div>
                 </div>
               </div>
               <div className="space-y-3">
-                <h4 className="font-semibold text-[#223322]">Login-Adresse:</h4>
-                <div className="flex items-center gap-2 bg-[#F4F8F4] border border-[#DDE8DD] rounded-sm p-3">
+                <h4 className="font-semibold text-[#1C2B3A]">Login-Adresse:</h4>
+                <div className="flex items-center gap-2 bg-[#F0F4FA] border border-[#D9E3F0] rounded-sm p-3">
                   <code className="flex-1 text-sm text-sage-700 break-all">{getLoginUrl()}</code>
                   <button onClick={() => copyToClipboard(getLoginUrl())} className="p-2 hover:bg-sage-100 rounded-sm transition-colors flex-shrink-0" title="Link kopieren">
-                    <Copy size={18} className="text-[#556655]" />
+                    <Copy size={18} className="text-[#4A5568]" />
                   </button>
                 </div>
               </div>
@@ -388,11 +388,11 @@ const Karriere = () => {
                 <a href={getLoginUrl()} target="_blank" rel="noopener noreferrer" className="flex-1 flex items-center justify-center gap-2 px-6 py-3 bg-sage-600 text-white rounded-sm font-semibold hover:bg-sage-700 transition-colors">
                   <ExternalLink size={18} /> Zum Login
                 </a>
-                <button onClick={() => setShowSuccessModal(false)} className="flex-1 px-6 py-3 border border-[#DDE8DD] text-[#223322] rounded-sm font-semibold hover:bg-[#F4F8F4] transition-colors">
+                <button onClick={() => setShowSuccessModal(false)} className="flex-1 px-6 py-3 border border-[#D9E3F0] text-[#1C2B3A] rounded-sm font-semibold hover:bg-[#F0F4FA] transition-colors">
                   Schließen
                 </button>
               </div>
-              <p className="text-xs text-[#8FA98F] text-center">Eine Bestätigungs-E-Mail mit allen Informationen wurde an {submittedEmail} gesendet.</p>
+              <p className="text-xs text-[#8A97A6] text-center">Eine Bestätigungs-E-Mail mit allen Informationen wurde an {submittedEmail} gesendet.</p>
             </div>
           </div>
         </div>

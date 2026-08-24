@@ -6,7 +6,7 @@ import { TdataLogo } from './Logo';
 const Wordmark = ({ size = 'text-2xl' }) => (
   <span className={`${size} font-heading font-bold tracking-tight`}>
     <span className="text-sage-600">T</span>
-    <span className="text-[#223322]">data</span>
+    <span className="text-[#1C2B3A]">data</span>
   </span>
 );
 
@@ -29,7 +29,7 @@ export const Navbar = () => {
   const isActive = (path) => location.pathname === path;
 
   return (
-    <nav className="sticky top-0 left-0 right-0 z-50 bg-white border-b border-[#DDE8DD]" data-testid="navbar">
+    <nav className="sticky top-0 left-0 right-0 z-50 bg-white border-b border-[#D9E3F0]" data-testid="navbar">
       <div className="max-w-7xl mx-auto px-6 md:px-8">
         <div className="flex justify-between items-center h-20">
           {/* Logo */}
@@ -37,7 +37,7 @@ export const Navbar = () => {
             <TdataLogo className="h-10 w-10" />
             <div className="flex flex-col leading-none">
               <Wordmark />
-              <span className="text-[10px] font-body font-semibold uppercase tracking-[0.25em] text-[#556655] mt-0.5">Testing</span>
+              <span className="text-[10px] font-body font-semibold uppercase tracking-[0.25em] text-[#4A5568] mt-0.5">Testing</span>
             </div>
           </Link>
 
@@ -51,7 +51,7 @@ export const Navbar = () => {
                 className={`font-body text-[15px] font-semibold pb-1 border-b-2 transition-colors duration-150 ${
                   isActive(link.path)
                     ? 'text-sage-700 border-sage-500'
-                    : 'text-[#223322] border-transparent hover:text-sage-600 hover:border-sage-300'
+                    : 'text-[#1C2B3A] border-transparent hover:text-sage-600 hover:border-sage-300'
                 }`}
               >
                 {link.name}
@@ -71,7 +71,7 @@ export const Navbar = () => {
           {/* Mobile Menu Button */}
           <button
             onClick={() => setIsMobileMenuOpen(!isMobileMenuOpen)}
-            className="lg:hidden p-2 text-[#223322]"
+            className="lg:hidden p-2 text-[#1C2B3A]"
             data-testid="nav-mobile-toggle"
           >
             {isMobileMenuOpen ? <X size={26} /> : <Menu size={26} />}
@@ -81,14 +81,14 @@ export const Navbar = () => {
 
       {/* Mobile Menu */}
       {isMobileMenuOpen && (
-        <div className="lg:hidden border-t border-[#DDE8DD] bg-white" data-testid="nav-mobile-menu">
+        <div className="lg:hidden border-t border-[#D9E3F0] bg-white" data-testid="nav-mobile-menu">
           <div className="px-6 py-4 flex flex-col">
             {navLinks.map((link) => (
               <Link
                 key={link.path}
                 to={link.path}
-                className={`py-3 font-body text-lg font-semibold border-b border-[#F1F6F1] ${
-                  isActive(link.path) ? 'text-sage-700' : 'text-[#223322]'
+                className={`py-3 font-body text-lg font-semibold border-b border-[#EBF2FE] ${
+                  isActive(link.path) ? 'text-sage-700' : 'text-[#1C2B3A]'
                 }`}
               >
                 {link.name}

@@ -22,7 +22,7 @@ export const Footer = () => {
   };
 
   return (
-    <footer className="bg-sage-900 text-[#E8F0E8] font-body" data-testid="footer">
+    <footer className="bg-sage-900 text-[#E7EEF7] font-body" data-testid="footer">
       <div className="max-w-7xl mx-auto px-6 md:px-8 py-16">
         <div className="grid grid-cols-1 lg:grid-cols-12 gap-12">
           {/* Brand Column */}
@@ -33,20 +33,20 @@ export const Footer = () => {
                 Tdata <span className="text-sage-300">Testing</span>
               </span>
             </div>
-            <p className="text-[#B8CDB8] leading-relaxed max-w-sm mb-8">
+            <p className="text-[#AFC4E4] leading-relaxed max-w-sm mb-8">
               Tdata Testing ist Ihr verlässlicher Partner für professionelle
               Qualitätssicherung und Application Testing – gründlich, sorgfältig
               und nachvollziehbar.
             </p>
 
             <div className="space-y-3">
-              <a href="mailto:info@tdata-testing.de" className="flex items-center gap-3 text-[#B8CDB8] hover:text-white transition-colors" data-testid="footer-email">
+              <a href="mailto:info@tdata-testing.de" className="flex items-center gap-3 text-[#AFC4E4] hover:text-white transition-colors" data-testid="footer-email">
                 <Mail size={18} className="text-sage-400" />
                 info@tdata-testing.de
               </a>
-              <div className="flex items-start gap-3 text-[#B8CDB8]">
+              <div className="flex items-start gap-3 text-[#AFC4E4]">
                 <MapPin size={18} className="text-sage-400 mt-0.5" />
-                <span>Darmstädter Landstraße 60, 65462 Ginsheim-Gustavsburg</span>
+                <span>Lohnrößlerweg 12, 81829 München</span>
               </div>
             </div>
           </div>
@@ -58,7 +58,7 @@ export const Footer = () => {
               <ul className="space-y-3">
                 {links.navigation.map((link) => (
                   <li key={link.path}>
-                    <Link to={link.path} className="text-[#B8CDB8] hover:text-white transition-colors">
+                    <Link to={link.path} className="text-[#AFC4E4] hover:text-white transition-colors">
                       {link.name}
                     </Link>
                   </li>
@@ -70,7 +70,7 @@ export const Footer = () => {
               <ul className="space-y-3">
                 {['Funktionales Testing', 'Performance Testing', 'Usability Testing', 'Testautomatisierung'].map((service) => (
                   <li key={service}>
-                    <Link to="/dienstleistungen" className="text-[#B8CDB8] hover:text-white transition-colors">
+                    <Link to="/dienstleistungen" className="text-[#AFC4E4] hover:text-white transition-colors">
                       {service}
                     </Link>
                   </li>
@@ -82,7 +82,7 @@ export const Footer = () => {
               <ul className="space-y-3">
                 {links.legal.map((link) => (
                   <li key={link.path}>
-                    <Link to={link.path} className="text-[#B8CDB8] hover:text-white transition-colors">
+                    <Link to={link.path} className="text-[#AFC4E4] hover:text-white transition-colors">
                       {link.name}
                     </Link>
                   </li>
@@ -96,8 +96,8 @@ export const Footer = () => {
       {/* Bottom Bar */}
       <div className="border-t border-white/10">
         <div className="max-w-7xl mx-auto px-6 md:px-8 py-6">
-          <div className="flex flex-col md:flex-row justify-between items-center gap-3 text-sm text-[#8FA98F]">
-            <p>© {currentYear} Tdata Testing — MO Handel &amp; Service, Inh. Mariusz Otok. Alle Rechte vorbehalten.</p>
+          <div className="flex flex-col md:flex-row justify-between items-center gap-3 text-sm text-[#8A97A6]">
+            <p>© {currentYear} Tdata Testing — NEXURA GmbH. Alle Rechte vorbehalten.</p>
             <p>Sorgfältig geprüft in Deutschland</p>
           </div>
         </div>

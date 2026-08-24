@@ -54,12 +54,12 @@ const Datenschutz = () => {
   ];
 
   return (
-    <div className="min-h-screen bg-white font-body text-[#556655]">
+    <div className="min-h-screen bg-white font-body text-[#4A5568]">
       {/* Hero */}
-      <section className="bg-[#F4F8F4] border-b border-[#DDE8DD]">
+      <section className="bg-[#F0F4FA] border-b border-[#D9E3F0]">
         <div className="max-w-4xl mx-auto px-6 md:px-8 py-16 md:py-20">
           <div className="text-sage-700 font-semibold mb-3">Rechtliches</div>
-          <h1 className="font-heading text-4xl md:text-5xl font-bold text-[#223322] mb-3">Datenschutzerklärung</h1>
+          <h1 className="font-heading text-4xl md:text-5xl font-bold text-[#1C2B3A] mb-3">Datenschutzerklärung</h1>
           <p className="text-lg">Wir nehmen den Schutz Ihrer persönlichen Daten ernst.</p>
         </div>
       </section>
@@ -68,29 +68,29 @@ const Datenschutz = () => {
         <div className="max-w-4xl mx-auto px-6 md:px-8 space-y-10">
           <p className="leading-relaxed">
             Wir freuen uns über Ihr Interesse an unserer Website. Nachstehend informieren wir Sie über den Umgang mit
-            Ihren Daten. <strong className="text-[#223322]">Stand: Juni 2026</strong>
+            Ihren Daten. <strong className="text-[#1C2B3A]">Stand: Juni 2026</strong>
           </p>
 
           {/* Verantwortliche Stelle */}
-          <div className="border-b border-[#DDE8DD] pb-8">
-            <h2 className="font-heading text-2xl font-bold text-[#223322] mb-4">Verantwortliche Stelle</h2>
+          <div className="border-b border-[#D9E3F0] pb-8">
+            <h2 className="font-heading text-2xl font-bold text-[#1C2B3A] mb-4">Verantwortliche Stelle</h2>
             <p className="mb-4">Die verantwortliche Stelle für die Datenverarbeitung auf dieser Website ist:</p>
-            <div className="bg-[#F4F8F4] border border-[#DDE8DD] p-6 rounded-sm space-y-1">
-              <p className="font-semibold text-[#223322]">MO Handel &amp; Service, Inh. Mariusz Otok</p>
-              <p>Darmstädter Landstraße 60</p>
-              <p>65462 Ginsheim-Gustavsburg</p>
+            <div className="bg-[#F0F4FA] border border-[#D9E3F0] p-6 rounded-sm space-y-1">
+              <p className="font-semibold text-[#1C2B3A]">NEXURA GmbH</p>
+              <p>Lohnrößlerweg 12</p>
+              <p>81829 München</p>
               <p>Deutschland</p>
               <p className="pt-2">E-Mail: datenschutz@tdata-testing.de</p>
             </div>
           </div>
 
           {sections.map((section, i) => (
-            <div key={i} className="border-b border-[#DDE8DD] pb-8">
-              <h2 className="font-heading text-2xl font-bold text-[#223322] mb-4">{section.title}</h2>
+            <div key={i} className="border-b border-[#D9E3F0] pb-8">
+              <h2 className="font-heading text-2xl font-bold text-[#1C2B3A] mb-4">{section.title}</h2>
               <div className="space-y-5">
                 {section.content.map((item, idx) => (
                   <div key={idx}>
-                    {item.subtitle && <h3 className="font-heading text-lg font-semibold text-[#223322] mb-2">{item.subtitle}</h3>}
+                    {item.subtitle && <h3 className="font-heading text-lg font-semibold text-[#1C2B3A] mb-2">{item.subtitle}</h3>}
                     <p className="leading-relaxed">{item.text}</p>
                   </div>
                 ))}
@@ -99,27 +99,27 @@ const Datenschutz = () => {
           ))}
 
           {/* GDPR Rights */}
-          <div className="bg-[#F4F8F4] border border-[#DDE8DD] p-8 rounded-sm">
-            <h2 className="font-heading text-2xl font-bold text-[#223322] mb-6">Ihre Rechte nach DSGVO</h2>
+          <div className="bg-[#F0F4FA] border border-[#D9E3F0] p-8 rounded-sm">
+            <h2 className="font-heading text-2xl font-bold text-[#1C2B3A] mb-6">Ihre Rechte nach DSGVO</h2>
             <div className="space-y-4">
               {rights.map((r, i) => (
                 <div key={i} className="flex items-start gap-3">
                   <div className="w-6 h-6 bg-sage-600 rounded-sm flex items-center justify-center flex-shrink-0 mt-0.5">
                     <Check size={14} className="text-white" />
                   </div>
-                  <p><strong className="text-[#223322]">{r.t}:</strong> {r.d}</p>
+                  <p><strong className="text-[#1C2B3A]">{r.t}:</strong> {r.d}</p>
                 </div>
               ))}
             </div>
           </div>
 
           {/* Contact */}
-          <div className="border-t border-[#DDE8DD] pt-8">
-            <h2 className="font-heading text-2xl font-bold text-[#223322] mb-4">Kontakt in Datenschutzfragen</h2>
+          <div className="border-t border-[#D9E3F0] pt-8">
+            <h2 className="font-heading text-2xl font-bold text-[#1C2B3A] mb-4">Kontakt in Datenschutzfragen</h2>
             <p className="mb-4">Für Fragen zum Datenschutz oder zur Ausübung Ihrer Rechte wenden Sie sich bitte an:</p>
             <div className="bg-sage-50 border border-sage-200 p-6 rounded-sm">
-              <p className="font-semibold text-[#223322] mb-1">Datenschutz</p>
-              <p>MO Handel &amp; Service, Inh. Mariusz Otok</p>
+              <p className="font-semibold text-[#1C2B3A] mb-1">Datenschutz</p>
+              <p>NEXURA GmbH</p>
               <p>E-Mail: datenschutz@tdata-testing.de</p>
             </div>
           </div>

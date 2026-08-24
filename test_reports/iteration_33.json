@@ -1,0 +1,47 @@
+{
+  "summary": "Frontend-only verification of the green->Facebook-blue rebrand and the Impressum legal-entity change. Tested all 7 public pages (/, /unternehmen, /dienstleistungen, /karriere, /kontakt, /impressum, /datenschutz) with a programmatic computed-color scan (flagging any element whose color/background/border has a dominant green channel), verified logo/favicon fills, navbar+footer navigation, Kontakt & Karriere form rendering, and logged into the employee panel (mitarbeiter@precision-labs.de) to scan dashboard/auftrage/chat/einstellungen. Result: PUBLIC SITE IS 100% GREEN-FREE and Facebook blue (#1877F2/#166FE5 confirmed on navbar active link, CTA, stat numbers, eyebrows, icon tiles, links; footer bg = rgb(11,30,59) navy). Impressum shows all required NEXURA data. Two leftovers found in the employee area: emerald-green provision widgets and the OLD legal entity text still inside the employee contract components.",
+  "backend_issues": {"critical": [], "minor": []},
+  "frontend_issues": {
+    "ui_bugs": [
+      {"component": "MitarbeiterDashboard (Provision gesamt stat card)", "issue": "GREEN REMNANT in employee panel: icon tile still uses bg-emerald-100 (rgb(209,250,229)) + text-emerald-600 (rgb(5,150,105)) while all other 4 stat tiles are blue. Also the 'Abgeschlossen'/badge color arrays still contain 'emerald'.", "selector": "div.bg-emerald-100 (MitarbeiterDashboard.jsx lines 52, 84-86, 167)", "priority": "MEDIUM"},
+      {"component": "MitarbeiterAuftrage (provision total + per-task badge)", "issue": "GREEN REMNANT: text-emerald-600 total provision (rgb(5,150,105)) and bg-emerald-100/text-emerald-700 provision badges per task.", "selector": "[data-testid='auftrage-total-provision'], [data-testid^='task-provision-']", "priority": "MEDIUM"}
+    ],
+    "integration_issues": [],
+    "design_issues": [
+      {"screen": "Employee panel", "issues": ["Mixed accent palette: blue theme with emerald provision widgets looks unintentional post-rebrand"]}
+    ],
+    "content_issues": [
+      {"component": "MitarbeiterContractSign.jsx (rendered inside MitarbeiterLayout for employees with an unsigned contract)", "issue": "OLD LEGAL ENTITY still present and user-visible: 'MO Handel & Service, Inh. Mariusz Otok', 'Darmstädter Landstraße 60', '65462 Ginsheim-Gustavsburg', 'vertreten durch Mariusz Otok', and place-of-signature 'Ginsheim-Gustavsburg, {date}' (lines 175-178, 203, 207). Must be NEXURA GmbH / Lohnrößlerweg 12 / 81829 München / Johannes Liebert. Not visible in this test run only because the test employee already signed.", "priority": "HIGH"},
+      {"component": "pages/mitarbeiter/ContractTemplates.jsx line 331", "issue": "Contract template clause still names 'MO Handel & Service, Inh. Mariusz Otok'.", "priority": "HIGH"},
+      {"component": "pages/mitarbeiter/MitarbeiterVertrag.jsx lines 43-45, 177", "issue": "Old MO Handel / Darmstädter Landstraße 60 / Ginsheim-Gustavsburg address. File appears unrouted (dead code) but should be updated or deleted.", "priority": "MEDIUM"}
+    ]
+  },
+  "verified_ok": [
+    "All 7 public pages render, zero greenish computed colors, Facebook-blue hits present on every page (11-107 per page).",
+    "Navbar logo rect fill=#1877F2, admin /admin/login TdataLogo fill=#1877F2, public/favicon.svg + index.html theme-color=#1877F2.",
+    "Impressum: NEXURA GmbH, Lohnrößlerweg 12, 81829 München, Johannes Liebert, Amtsgericht München, HRB 299764 all PRESENT; no old entity strings on any public page.",
+    "Footer/Kontakt/Datenschutz show NEXURA + München; footer bg rgb(11,30,59) dark navy; footer Impressum/Datenschutz links navigate correctly.",
+    "Navbar navigation to all 5 pages works, no white screens, ZERO console errors on public site.",
+    "Kontakt form renders 6 fields + visible submit; Karriere form renders 12 fields.",
+    "Employee login works, sidebar active item is blue (color rgb(22,111,229) / bg rgb(235,242,254)), branding 'Tdata Testing' intact; /mitarbeiter/chat and /mitarbeiter/einstellungen are fully green-free.",
+    "Admin tokyo-night green (#9ece6a) left as-is per instructions (not reported as a bug)."
+  ],
+  "test_report_links": [],
+  "action_items": [
+    "Recolor the emerald provision widgets in MitarbeiterDashboard.jsx and MitarbeiterAuftrage.jsx to the blue (sage-*) palette to remove the last green pixels in the employee panel.",
+    "Update the employee contract components (MitarbeiterContractSign.jsx, ContractTemplates.jsx, MitarbeiterVertrag.jsx) to NEXURA GmbH / Lohnrößlerweg 12 / 81829 München / Johannes Liebert and change place of signature from Ginsheim-Gustavsburg to München."
+  ],
+  "critical_code_review_comments": [
+    "Legal-entity strings are duplicated across at least 4 files; extract to a single constants module (e.g. src/config/company.js) so future entity changes cannot leave stale copies.",
+    "Logo.jsx header comment still describes 'a calm sage-green square with a serif T' - misleading after the blue rebrand.",
+    "MitarbeiterVertrag.jsx is imported nowhere (no route) - dead code carrying outdated legal text; delete it."
+  ],
+  "updated_files": [],
+  "success_rate": {"backend": "not tested", "frontend": "92%"},
+  "seed_data_creation": "none",
+  "should_call_test_agent_after_fix": false,
+  "should_main_agent_self_test": true,
+  "test_credentials": "employee mitarbeiter@precision-labs.de / Mitarbeiter123! (works)",
+  "context_for_next_testing_agent": "Colour verification was done programmatically by scanning getComputedStyle for all elements and flagging g>r+12 && g>b+12; reuse that approach. Public site + employee chat/einstellungen are clean. Remaining green is only the emerald provision widgets (dashboard 'Provision gesamt' tile, auftrage provision text/badges). Admin panel green #9ece6a is intentional. Old MO Handel/Ginsheim text remains only in employee contract components; to see it live you need an employee whose contract is unsigned (MitarbeiterLayout renders MitarbeiterContractSign modal).",
+  "rca_of_the_issue": "The rebrand swapped the 'sage' Tailwind scale and hardcoded green hexes, but semantic Tailwind color names (emerald-*) used for money/success widgets were not part of the swap, and the legal-entity update covered only public pages (Impressum/Footer/Kontakt/Datenschutz), missing the employee contract templates."
+}

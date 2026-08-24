@@ -12,8 +12,8 @@ export const TdataLogo = ({ className = "" }) => {
       role="img"
       aria-label="Tdata"
     >
-      <rect x="10" y="10" width="180" height="180" rx="14" fill="#659A65" />
-      <rect x="10" y="10" width="180" height="180" rx="14" fill="none" stroke="#507D50" strokeWidth="3" />
+      <rect x="10" y="10" width="180" height="180" rx="14" fill="#1877F2" />
+      <rect x="10" y="10" width="180" height="180" rx="14" fill="none" stroke="#166FE5" strokeWidth="3" />
       <g fill="#FFFFFF">
         <rect x="46" y="52" width="108" height="20" rx="2" />
         <rect x="90" y="52" width="20" height="96" rx="2" />
