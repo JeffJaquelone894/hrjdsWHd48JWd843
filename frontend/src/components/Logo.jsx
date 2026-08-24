@@ -1,8 +1,8 @@
 import React from 'react';
 
-// Classic, serious emblem for the "Tdata" brand (public site + employee panel):
-// a calm sage-green square with a serif "T".
-export const TdataLogo = ({ className = "" }) => {
+// Classic, serious emblem for the "Nexora" brand (public site + employee panel):
+// a calm blue square with a serif "N".
+export const NexoraLogo = ({ className = "" }) => {
   return (
     <svg
       className={className}
@@ -10,16 +10,14 @@ export const TdataLogo = ({ className = "" }) => {
       fill="none"
       xmlns="http://www.w3.org/2000/svg"
       role="img"
-      aria-label="Tdata"
+      aria-label="Nexora"
     >
       <rect x="10" y="10" width="180" height="180" rx="14" fill="#1877F2" />
       <rect x="10" y="10" width="180" height="180" rx="14" fill="none" stroke="#166FE5" strokeWidth="3" />
       <g fill="#FFFFFF">
-        <rect x="46" y="52" width="108" height="20" rx="2" />
-        <rect x="90" y="52" width="20" height="96" rx="2" />
-        <rect x="74" y="140" width="52" height="12" rx="2" />
-        <rect x="46" y="52" width="12" height="16" rx="2" />
-        <rect x="142" y="52" width="12" height="16" rx="2" />
+        <rect x="52" y="52" width="22" height="96" rx="2" />
+        <rect x="126" y="52" width="22" height="96" rx="2" />
+        <polygon points="52,52 74,52 148,148 126,148" />
       </g>
     </svg>
   );

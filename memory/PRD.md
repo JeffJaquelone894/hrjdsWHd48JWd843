@@ -1,5 +1,15 @@
 # Prysm Technologies (ehemals Keyperion / Precision Labs) – PRD
 
+## 🔷 Rebrand „Tdata Testing" → „Nexora" + Domain nexora-gmbh.de (2026-06)
+- **Markenname** überall von „Tdata Testing"/„Tdata" auf **„Nexora"** geändert (Public-Site, Admin-Panel, Mitarbeiter-Panel, Backend-Vertragstexte, SMS-Texte). Wordmark: „Nex"(blau)+„ora"(dunkel), Subtitle „TESTING" bleibt als Descriptor.
+- **Logo/Favicon**: `TdataLogo`→`NexoraLogo` (Komponente umbenannt, alle Imports aktualisiert); Glyph von „T" auf **„N"** (2 Balken + Diagonale) umgestellt; `public/favicon.svg` ebenfalls „N".
+- **Domain & E-Mails**: `tdata-testing.de`→`nexora-gmbh.de` (info@, datenschutz@, hr@, www.). Impressum-Internet/E-Mail aktualisiert.
+- **Grün entfernt**: Print-Button im Vertrags-Download (`applications.py` `#00C853`/`#00a844`) → Blau `#1877F2`/`#166FE5`. Public-Site war bereits vollständig blau; das vom Nutzer gemeldete „Grün" war die noch nicht neu deployte VPS-Version.
+- **Rechtsentität bleibt** NEXURA GmbH (unverändert). CSS-Klassen `tdata-reveal`→`nexora-reveal`, Keyframe `tdataFadeUp`→`nexoraFadeUp`.
+- Verifiziert per Screenshot (Startseite + Footer): Logo „N", „Nexora", info@nexora-gmbh.de, „© 2026 Nexora — NEXURA GmbH", durchgehend blau. Frontend kompiliert fehlerfrei.
+- ⚠️ Hinweis an Nutzer: Änderungen müssen auf den VPS neu deployt werden, damit dort das alte Grün/„Tdata" verschwindet.
+
+
 ## 🔒 Präventiver Security-Audit + Härtung (2026-06, Login & Panel)
 Vollständiger Backend+Frontend-Audit (security_audit_agent): **0 kritische/hohe** Findings – Auth, RBAC, Ownership, Secret-Handling korrekt. Behobene Defense-in-Depth-Punkte (per curl verifiziert):
 - **SEC-001 (MEDIUM) HTML/XSS-Sink**: Neue `utils/html_sanitize.py`. Admin-editierbares `body_html` der Vertragsvorlagen wird beim Speichern (`PUT /contract-templates/{type}`) via **bleach** allowlist-bereinigt (script/onclick/event-handler entfernt, Formatierung bleibt). Nutzergelieferte Felder (name/address/contractor) in `GET /download-contract` HTML-escaped (`esc()`). Verifiziert: `<script>` + `onclick` werden gestrippt.

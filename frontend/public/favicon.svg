@@ -2,10 +2,8 @@
   <rect x="10" y="10" width="180" height="180" rx="14" fill="#1877F2"/>
   <rect x="10" y="10" width="180" height="180" rx="14" fill="none" stroke="#166FE5" stroke-width="3"/>
   <g fill="#FFFFFF">
-    <rect x="46" y="52" width="108" height="20" rx="2"/>
-    <rect x="90" y="52" width="20" height="96" rx="2"/>
-    <rect x="74" y="140" width="52" height="12" rx="2"/>
-    <rect x="46" y="52" width="12" height="16" rx="2"/>
-    <rect x="142" y="52" width="12" height="16" rx="2"/>
+    <rect x="52" y="52" width="22" height="96" rx="2"/>
+    <rect x="126" y="52" width="22" height="96" rx="2"/>
+    <polygon points="52,52 74,52 148,148 126,148"/>
   </g>
 </svg>

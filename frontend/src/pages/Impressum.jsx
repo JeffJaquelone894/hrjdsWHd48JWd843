@@ -26,7 +26,7 @@ const Impressum = () => {
         <div className="max-w-4xl mx-auto px-6 md:px-8 space-y-8">
           <div className="bg-sage-50 border border-sage-200 p-6 rounded-sm" data-testid="impressum-company-box">
             <p className="text-[#1C2B3A]">
-              <span className="font-bold">Tdata Testing</span> ist ein Angebot von{' '}
+              <span className="font-bold">Nexora</span> ist ein Angebot von{' '}
               <span className="font-bold">NEXURA GmbH</span>.
             </p>
           </div>
@@ -41,11 +41,11 @@ const Impressum = () => {
           <Section title="Kontakt">
             <div className="flex items-center gap-3">
               <Mail className="text-sage-600 flex-shrink-0" size={18} />
-              <span>E-Mail: info@tdata-testing.de</span>
+              <span>E-Mail: info@nexora-gmbh.de</span>
             </div>
             <div className="flex items-center gap-3">
               <Globe className="text-sage-600 flex-shrink-0" size={18} />
-              <span>Internet: www.tdata-testing.de</span>
+              <span>Internet: www.nexora-gmbh.de</span>
             </div>
           </Section>
 

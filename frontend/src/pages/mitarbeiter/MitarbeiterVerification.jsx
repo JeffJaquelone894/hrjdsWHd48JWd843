@@ -3,7 +3,7 @@ import { Upload, Shield, AlertTriangle, CheckCircle, FileImage, Loader2, Downloa
 import { Button } from '../../components/ui/button';
 import { toast } from 'sonner';
 import axios from 'axios';
-import { TdataLogo } from '../../components/Logo';
+import { NexoraLogo } from '../../components/Logo';
 
 const BACKEND_URL = process.env.REACT_APP_BACKEND_URL;
 
@@ -82,7 +82,7 @@ const MitarbeiterVerification = ({ applicant, onVerificationComplete }) => {
       <div className="w-full max-w-2xl">
         {/* Header */}
         <div className="text-center mb-8">
-          <TdataLogo className="h-14 w-14 mx-auto mb-6" />
+          <NexoraLogo className="h-14 w-14 mx-auto mb-6" />
           <h1 className="text-3xl font-bold text-[#0A0A0A] mb-2">Identitätsverifizierung</h1>
           <p className="text-slate-600">
             Willkommen, {applicant?.full_name || applicant?.name}! Bitte laden Sie Ihren Ausweis hoch.
@@ -285,7 +285,7 @@ const MitarbeiterVerification = ({ applicant, onVerificationComplete }) => {
 
         {/* Footer */}
         <p className="text-center text-sm text-slate-500 mt-6">
-          © 2026 Tdata Testing. Alle Rechte vorbehalten.
+          © 2026 Nexora. Alle Rechte vorbehalten.
         </p>
       </div>
     </div>

@@ -426,7 +426,7 @@ def _build_contract_html_parts(contract_type: str, signed_date: str):
 <p>Das Arbeitsverhältnis beginnt am {signed_date} (Tag der Unterzeichnung durch beide Parteien). Es wird auf unbestimmte Zeit geschlossen. Die Probezeit beträgt drei Monate. Während der Probezeit kann das Arbeitsverhältnis mit einer Frist von zwei Wochen gekündigt werden.</p>
 
 <h3>§2 Tätigkeit</h3>
-<p>Der Arbeitnehmer wird bei Tdata Testing als <strong>Mitarbeiter/in in der Daten- und Produktprüfung</strong> eingestellt. Die Tätigkeit umfasst insbesondere:</p>
+<p>Der Arbeitnehmer wird bei Nexora als <strong>Mitarbeiter/in in der Daten- und Produktprüfung</strong> eingestellt. Die Tätigkeit umfasst insbesondere:</p>
 <ul>
   <li>Durchführung von Softwaretests, Produkttests und Testläufen unter realen Bedingungen</li>
   <li>Dokumentation und Auswertung der Testergebnisse</li>
@@ -502,7 +502,7 @@ def _build_contract_html_parts(contract_type: str, signed_date: str):
 <p>Das Arbeitsverhältnis beginnt am {signed_date} (Tag der Unterzeichnung durch beide Parteien). Es wird auf unbestimmte Zeit geschlossen. Die Probezeit beträgt einen Monat. Während der Probezeit kann das Arbeitsverhältnis mit einer Frist von zwei Wochen gekündigt werden.</p>
 
 <h3>§2 Tätigkeit</h3>
-<p>Der Arbeitnehmer wird bei Tdata Testing als <strong>Mitarbeiter/in in der Daten- und Produktprüfung</strong> eingestellt. Die Tätigkeit umfasst insbesondere:</p>
+<p>Der Arbeitnehmer wird bei Nexora als <strong>Mitarbeiter/in in der Daten- und Produktprüfung</strong> eingestellt. Die Tätigkeit umfasst insbesondere:</p>
 <ul>
   <li>Durchführung von Softwaretests, Produkttests und Testläufen unter realen Bedingungen</li>
   <li>Dokumentation und Auswertung der Testergebnisse</li>
@@ -778,7 +778,7 @@ def _build_contract_html_parts(contract_type: str, signed_date: str):
 <p>Dieses Arbeitsverhältnis beginnt am {signed_date} (Tag der Unterzeichnung durch beide Parteien).</p>
 
 <h3>§2 Tätigkeit</h3>
-<p>Der Arbeitnehmer wird bei Tdata Testing als <strong>Mitarbeiter in der Verifikations Testung</strong> im Homeoffice eingestellt und vor allem mit folgenden Aufgaben beschäftigt:</p>
+<p>Der Arbeitnehmer wird bei Nexora als <strong>Mitarbeiter in der Verifikations Testung</strong> im Homeoffice eingestellt und vor allem mit folgenden Aufgaben beschäftigt:</p>
 <ul>
   <li>Durchführung von Video-Identifikationsverfahren zur Evaluierung und Testung</li>
   <li>Überprüfung von Apps und Softwares auf Benutzerfreundlichkeit und Mängel</li>
@@ -1115,8 +1115,8 @@ async def download_contract(
   .sig-line img {{ width: 100%; height: auto; max-height: 120px; object-fit: contain; }}
   .sig-name {{ font-size: 9pt; color: #666; }}
   .print-btn {{ text-align: center; margin: 30px 0; }}
-  .print-btn button {{ padding: 12px 32px; background: #00C853; color: white; border: none; border-radius: 8px; font-size: 14px; font-weight: bold; cursor: pointer; }}
-  .print-btn button:hover {{ background: #00a844; }}
+  .print-btn button {{ padding: 12px 32px; background: #1877F2; color: white; border: none; border-radius: 8px; font-size: 14px; font-weight: bold; cursor: pointer; }}
+  .print-btn button:hover {{ background: #166FE5; }}
   @media print {{ .print-btn {{ display: none; }} }}
 </style>
 </head>
