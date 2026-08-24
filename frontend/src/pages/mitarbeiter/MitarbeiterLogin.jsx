@@ -2,7 +2,7 @@ import React, { useState } from 'react';
 import { useNavigate, Link } from 'react-router-dom';
 import { Lock, Mail, AlertCircle, Briefcase } from 'lucide-react';
 import axios from 'axios';
-import { NexoraLogo } from '../../components/Logo';
+import { NexuraLogo } from '../../components/Logo';
 
 const BACKEND_URL = process.env.REACT_APP_BACKEND_URL;
 
@@ -74,7 +74,7 @@ const MitarbeiterLogin = () => {
       <div className="relative w-full max-w-md">
         {/* Logo */}
         <div className="text-center mb-8">
-          <NexoraLogo className="h-14 w-14 mx-auto mb-4" />
+          <NexuraLogo className="h-14 w-14 mx-auto mb-4" />
           <p className="text-sm text-gray-600">Mitarbeiter Portal</p>
         </div>
 
@@ -171,7 +171,7 @@ const MitarbeiterLogin = () => {
 
         {/* Footer */}
         <p className="text-center text-sm text-gray-600 mt-6">
-          © 2026 Nexora. Alle Rechte vorbehalten.
+          © 2026 Nexura. Alle Rechte vorbehalten.
         </p>
       </div>
     </div>

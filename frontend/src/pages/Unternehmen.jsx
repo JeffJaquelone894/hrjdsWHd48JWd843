@@ -13,7 +13,7 @@ const Unternehmen = () => {
   ];
 
   const milestones = [
-    { year: '2024', event: 'Gründung von Nexora' },
+    { year: '2024', event: 'Gründung von Nexura' },
     { year: '2025', event: 'Aufbau eines Teams von über 10 Testexperten' },
     { year: '2026', event: 'Mehr als 25 Testexperten und 500+ geprüfte Anwendungen' },
   ];
@@ -30,7 +30,7 @@ const Unternehmen = () => {
                 Deutsche Gründlichkeit in der Qualitätssicherung
               </h1>
               <p className="text-lg leading-relaxed mb-8">
-                Seit 2024 steht Nexora für sorgfältiges, strukturiertes
+                Seit 2024 steht Nexura für sorgfältiges, strukturiertes
                 Application Testing. Unser Team aus zertifizierten Experten prüft
                 Software mit einem klaren Ziel: verlässliche Qualität.
               </p>

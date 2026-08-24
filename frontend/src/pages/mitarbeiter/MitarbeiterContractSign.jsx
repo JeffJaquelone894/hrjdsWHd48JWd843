@@ -6,7 +6,7 @@ import { Input } from '../../components/ui/input';
 import { Label } from '../../components/ui/label';
 import { toast } from 'sonner';
 import axios from 'axios';
-import { NexoraLogo } from '../../components/Logo';
+import { NexuraLogo } from '../../components/Logo';
 
 const BACKEND_URL = process.env.REACT_APP_BACKEND_URL;
 
@@ -116,7 +116,7 @@ const MitarbeiterContractSign = ({ applicant, onContractSigned }) => {
       <div className="w-full max-w-3xl">
         {/* Header */}
         <div className="text-center mb-8">
-          <NexoraLogo className="h-14 w-14 mx-auto mb-6" />
+          <NexuraLogo className="h-14 w-14 mx-auto mb-6" />
           <h1 className="text-3xl font-bold text-[#0A0A0A] mb-2">Arbeitsvertrag unterschreiben</h1>
           <p className="text-slate-600">
             Willkommen, {applicant?.full_name || applicant?.name}! Bitte unterschreiben Sie Ihren Arbeitsvertrag.
@@ -153,7 +153,7 @@ const MitarbeiterContractSign = ({ applicant, onContractSigned }) => {
               </div>
               <div>
                 <h2 className="text-xl font-bold">Arbeitsvertrag</h2>
-                <p className="text-slate-400">Nexora · {positionLabel}</p>
+                <p className="text-slate-400">Nexura · {positionLabel}</p>
               </div>
             </div>
           </div>
@@ -308,7 +308,7 @@ const MitarbeiterContractSign = ({ applicant, onContractSigned }) => {
 
         {/* Footer */}
         <p className="text-center text-sm text-slate-500 mt-6">
-          © 2026 Nexora. Alle Rechte vorbehalten.
+          © 2026 Nexura. Alle Rechte vorbehalten.
         </p>
       </div>
     </div>

@@ -90,13 +90,13 @@ const Kontakt = () => {
             <div>
               <h2 className="font-heading text-2xl font-bold text-[#1C2B3A] mb-8">Kontaktdaten</h2>
               <div className="space-y-6 mb-10">
-                <a href="mailto:info@nexora-gmbh.de" className="flex items-start gap-4 group" data-testid="contact-email-link">
+                <a href="mailto:info@nexura-gmbh.de" className="flex items-start gap-4 group" data-testid="contact-email-link">
                   <div className="w-11 h-11 bg-sage-50 border border-sage-200 rounded-sm flex items-center justify-center flex-shrink-0">
                     <Mail className="text-sage-600" size={20} />
                   </div>
                   <div>
                     <div className="font-semibold text-[#1C2B3A]">E-Mail</div>
-                    <div className="group-hover:text-sage-600 transition-colors">info@nexora-gmbh.de</div>
+                    <div className="group-hover:text-sage-600 transition-colors">info@nexura-gmbh.de</div>
                   </div>
                 </a>
                 <div className="flex items-start gap-4">

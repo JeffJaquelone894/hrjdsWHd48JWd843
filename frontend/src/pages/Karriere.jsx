@@ -131,13 +131,13 @@ const Karriere = () => {
       <section className="bg-[#F0F4FA] border-b border-[#D9E3F0]">
         <div className="max-w-7xl mx-auto px-6 md:px-8 py-16 md:py-20">
           <div className="max-w-2xl">
-            <div className="text-sage-700 font-semibold mb-3">Karriere bei Nexora</div>
+            <div className="text-sage-700 font-semibold mb-3">Karriere bei Nexura</div>
             <h1 className="font-heading text-4xl md:text-5xl font-bold text-[#1C2B3A] leading-tight mb-4">
               Werden Sie Teil unseres Teams
             </h1>
             <p className="text-lg leading-relaxed">
               Arbeiten Sie mit erfahrenen Testexperten und gestalten Sie
-              Softwarequalität mit. Bei Nexora erwarten Sie strukturierte
+              Softwarequalität mit. Bei Nexura erwarten Sie strukturierte
               Projekte und gute Entwicklungsmöglichkeiten.
             </p>
           </div>
@@ -148,7 +148,7 @@ const Karriere = () => {
       <section className="py-16 md:py-24">
         <div className="max-w-7xl mx-auto px-6 md:px-8">
           <div className="max-w-2xl mb-12">
-            <h2 className="font-heading text-3xl md:text-4xl font-bold text-[#1C2B3A] mb-3">Warum Nexora?</h2>
+            <h2 className="font-heading text-3xl md:text-4xl font-bold text-[#1C2B3A] mb-3">Warum Nexura?</h2>
             <p className="text-lg">Was Sie bei uns erwartet.</p>
           </div>
           <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8">
@@ -359,7 +359,7 @@ const Karriere = () => {
                 <CheckCircle size={30} className="text-white" />
               </div>
               <h3 className="font-heading text-2xl font-bold">Bewerbung erfolgreich!</h3>
-              <p className="text-[#C7D9F0] mt-2">Vielen Dank für Ihr Interesse an Nexora</p>
+              <p className="text-[#C7D9F0] mt-2">Vielen Dank für Ihr Interesse an Nexura</p>
             </div>
             <div className="p-6 space-y-6">
               <div className="bg-sage-50 border border-sage-200 rounded-sm p-4">

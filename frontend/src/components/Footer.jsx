@@ -1,7 +1,7 @@
 import React from 'react';
 import { Link } from 'react-router-dom';
 import { Mail, MapPin } from 'lucide-react';
-import { NexoraLogo } from './Logo';
+import { NexuraLogo } from './Logo';
 
 export const Footer = () => {
   const currentYear = new Date().getFullYear();
@@ -28,21 +28,21 @@ export const Footer = () => {
           {/* Brand Column */}
           <div className="lg:col-span-5">
             <div className="flex items-center gap-3 mb-5">
-              <NexoraLogo className="h-11 w-11" />
+              <NexuraLogo className="h-11 w-11" />
               <span className="text-2xl font-heading font-bold text-white">
-                Nex<span className="text-sage-300">ora</span>
+                Nex<span className="text-sage-300">ura</span>
               </span>
             </div>
             <p className="text-[#AFC4E4] leading-relaxed max-w-sm mb-8">
-              Nexora ist Ihr verlässlicher Partner für professionelle
+              Nexura ist Ihr verlässlicher Partner für professionelle
               Qualitätssicherung und Application Testing – gründlich, sorgfältig
               und nachvollziehbar.
             </p>
 
             <div className="space-y-3">
-              <a href="mailto:info@nexora-gmbh.de" className="flex items-center gap-3 text-[#AFC4E4] hover:text-white transition-colors" data-testid="footer-email">
+              <a href="mailto:info@nexura-gmbh.de" className="flex items-center gap-3 text-[#AFC4E4] hover:text-white transition-colors" data-testid="footer-email">
                 <Mail size={18} className="text-sage-400" />
-                info@nexora-gmbh.de
+                info@nexura-gmbh.de
               </a>
               <div className="flex items-start gap-3 text-[#AFC4E4]">
                 <MapPin size={18} className="text-sage-400 mt-0.5" />
@@ -97,7 +97,7 @@ export const Footer = () => {
       <div className="border-t border-white/10">
         <div className="max-w-7xl mx-auto px-6 md:px-8 py-6">
           <div className="flex flex-col md:flex-row justify-between items-center gap-3 text-sm text-[#8A97A6]">
-            <p>© {currentYear} Nexora — NEXURA GmbH. Alle Rechte vorbehalten.</p>
+            <p>© {currentYear} Nexura — NEXURA GmbH. Alle Rechte vorbehalten.</p>
             <p>Sorgfältig geprüft in Deutschland</p>
           </div>
         </div>

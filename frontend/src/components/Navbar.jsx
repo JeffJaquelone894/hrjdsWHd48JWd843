@@ -1,12 +1,12 @@
 import React, { useState, useEffect } from 'react';
 import { Link, useLocation } from 'react-router-dom';
 import { Menu, X } from 'lucide-react';
-import { NexoraLogo } from './Logo';
+import { NexuraLogo } from './Logo';
 
 const Wordmark = ({ size = 'text-2xl' }) => (
   <span className={`${size} font-heading font-bold tracking-tight`}>
     <span className="text-sage-600">Nex</span>
-    <span className="text-[#1C2B3A]">ora</span>
+    <span className="text-[#1C2B3A]">ura</span>
   </span>
 );
 
@@ -34,7 +34,7 @@ export const Navbar = () => {
         <div className="flex justify-between items-center h-20">
           {/* Logo */}
           <Link to="/" className="flex items-center gap-3" data-testid="nav-logo">
-            <NexoraLogo className="h-10 w-10" />
+            <NexuraLogo className="h-10 w-10" />
             <div className="flex flex-col leading-none">
               <Wordmark />
               <span className="text-[10px] font-body font-semibold uppercase tracking-[0.25em] text-[#4A5568] mt-0.5">Testing</span>

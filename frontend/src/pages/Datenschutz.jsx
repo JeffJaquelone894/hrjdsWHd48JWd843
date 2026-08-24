@@ -80,7 +80,7 @@ const Datenschutz = () => {
               <p>Lohnrößlerweg 12</p>
               <p>81829 München</p>
               <p>Deutschland</p>
-              <p className="pt-2">E-Mail: datenschutz@nexora-gmbh.de</p>
+              <p className="pt-2">E-Mail: datenschutz@nexura-gmbh.de</p>
             </div>
           </div>
 
@@ -120,7 +120,7 @@ const Datenschutz = () => {
             <div className="bg-sage-50 border border-sage-200 p-6 rounded-sm">
               <p className="font-semibold text-[#1C2B3A] mb-1">Datenschutz</p>
               <p>NEXURA GmbH</p>
-              <p>E-Mail: datenschutz@nexora-gmbh.de</p>
+              <p>E-Mail: datenschutz@nexura-gmbh.de</p>
             </div>
           </div>
 

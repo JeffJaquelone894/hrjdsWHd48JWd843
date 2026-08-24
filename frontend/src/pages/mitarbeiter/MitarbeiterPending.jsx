@@ -1,12 +1,12 @@
 import React from 'react';
 import { Clock, Mail, FileText } from 'lucide-react';
-import { NexoraLogo } from '../../components/Logo';
+import { NexuraLogo } from '../../components/Logo';
 
 const MitarbeiterPending = ({ applicant }) => {
   return (
     <div className="min-h-screen bg-gradient-to-br from-[#EBF2FE] via-white to-[#DCE9FD] flex items-center justify-center p-4">
       <div className="max-w-lg w-full bg-white rounded-2xl shadow-xl border border-slate-100 p-8 text-center">
-        <NexoraLogo className="h-12 w-12 mx-auto mb-6" />
+        <NexuraLogo className="h-12 w-12 mx-auto mb-6" />
         
         <div className="w-20 h-20 bg-[#EBF2FE] rounded-full flex items-center justify-center mx-auto mb-6">
           <Clock className="text-[#1877F2]" size={40} />
@@ -48,7 +48,7 @@ const MitarbeiterPending = ({ applicant }) => {
         <div className="mt-8 pt-6 border-t border-slate-100">
           <p className="text-sm text-slate-500">
             <Mail className="inline mr-1" size={14} />
-            Bei Fragen wenden Sie sich an <a href="mailto:hr@nexora-gmbh.de" className="text-[#1877F2] hover:underline">hr@nexora-gmbh.de</a>
+            Bei Fragen wenden Sie sich an <a href="mailto:hr@nexura-gmbh.de" className="text-[#1877F2] hover:underline">hr@nexura-gmbh.de</a>
           </p>
         </div>
       </div>

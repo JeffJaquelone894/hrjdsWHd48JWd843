@@ -18,7 +18,7 @@ const Home = () => {
       <section className="bg-[#F0F4FA] border-b border-[#D9E3F0]">
         <div className="max-w-7xl mx-auto px-6 md:px-8 py-16 md:py-24">
           <div className="grid grid-cols-1 lg:grid-cols-2 gap-12 lg:gap-16 items-center">
-            <div className="nexora-reveal">
+            <div className="nexura-reveal">
               <div className="inline-block mb-6 px-3 py-1 border border-sage-300 bg-white text-sage-700 text-sm font-semibold rounded-sm">
                 Qualitätssicherung aus Deutschland
               </div>
@@ -26,7 +26,7 @@ const Home = () => {
                 Software, auf die man sich verlassen kann.
               </h1>
               <p className="text-lg leading-relaxed mb-8 max-w-xl">
-                Nexora prüft Ihre Anwendungen mit Sorgfalt und Struktur.
+                Nexura prüft Ihre Anwendungen mit Sorgfalt und Struktur.
                 Wir finden Fehler, bevor Ihre Nutzer es tun – zuverlässig,
                 gründlich und transparent dokumentiert.
               </p>
@@ -47,9 +47,9 @@ const Home = () => {
                 </Link>
               </div>
             </div>
-            <div className="nexora-reveal">
+            <div className="nexura-reveal">
               <div className="border border-[#D9E3F0] bg-white p-2 rounded-sm">
-                <img src={HERO_IMG} alt="Nexora Büro" className="w-full h-[360px] object-cover rounded-sm" />
+                <img src={HERO_IMG} alt="Nexura Büro" className="w-full h-[360px] object-cover rounded-sm" />
               </div>
             </div>
           </div>
@@ -107,7 +107,7 @@ const Home = () => {
         <div className="max-w-7xl mx-auto px-6 md:px-8">
           <div className="grid grid-cols-1 lg:grid-cols-2 gap-16 items-center">
             <div>
-              <h2 className="font-heading text-3xl md:text-4xl font-bold text-[#1C2B3A] mb-6">Warum Nexora</h2>
+              <h2 className="font-heading text-3xl md:text-4xl font-bold text-[#1C2B3A] mb-6">Warum Nexura</h2>
               <p className="text-lg mb-8 max-w-lg">
                 Wir verbinden deutsche Gründlichkeit mit einem klaren, strukturierten
                 Vorgehen. Unser Anspruch ist eine Qualitätssicherung, die

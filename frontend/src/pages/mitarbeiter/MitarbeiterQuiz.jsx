@@ -1,6 +1,6 @@
 import React, { useState } from 'react';
 import { ClipboardList, ChevronRight, ChevronLeft, CheckCircle, AlertCircle } from 'lucide-react';
-import { NexoraLogo } from '../../components/Logo';
+import { NexuraLogo } from '../../components/Logo';
 import axios from 'axios';
 import { toast } from 'sonner';
 
@@ -227,10 +227,10 @@ const MitarbeiterQuiz = ({ applicant, onQuizCompleted }) => {
       {/* Header */}
       <div className="bg-white border-b border-gray-200 px-4 py-4">
         <div className="max-w-2xl mx-auto flex items-center gap-3">
-          <NexoraLogo className="w-10 h-10" />
+          <NexuraLogo className="w-10 h-10" />
           <div>
             <h1 className="text-lg font-bold text-gray-900">
-              Nexora
+              Nexura
             </h1>
             <p className="text-xs text-gray-500">Einführungs-Quiz</p>
           </div>
