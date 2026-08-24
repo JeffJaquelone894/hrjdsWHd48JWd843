@@ -1,7 +1,8 @@
-from fastapi import APIRouter, HTTPException, Depends, Header, UploadFile, File, Form
+from fastapi import APIRouter, HTTPException, Depends, Header, UploadFile, File, Form, Request
 from motor.motor_asyncio import AsyncIOMotorDatabase
 from models.employee import EmployeeLogin, TokenResponse, EmployeeResponse, Task, TaskCreate, TaskUpdate
 from utils.auth import verify_password, create_access_token, decode_token, get_password_hash
+from utils.throttle import client_ip, login_identifiers, check_lockout, register_failure, clear_attempts
 from datetime import timedelta, datetime
 from typing import List, Optional
 from pydantic import BaseModel
@@ -45,19 +46,27 @@ def get_db():
     return db
 
 @router.post("/login", response_model=TokenResponse)
-async def employee_login(credentials: EmployeeLogin, db: AsyncIOMotorDatabase = Depends(get_db)):
-    """Employee login endpoint"""
+async def employee_login(credentials: EmployeeLogin, request: Request, db: AsyncIOMotorDatabase = Depends(get_db)):
+    """Employee login endpoint (mit Brute-Force-Schutz)"""
+    ip = client_ip(request)
+    identifiers = login_identifiers(ip, credentials.email)
+    await check_lockout(db, identifiers)
+
     employee = await db.employees.find_one({"email": credentials.email})
-    
+
     if not employee:
+        await register_failure(db, identifiers)
         raise HTTPException(status_code=401, detail="Ungültige Anmeldedaten")
-    
+
     if not employee.get("is_active", True):
         raise HTTPException(status_code=401, detail="Konto ist deaktiviert")
-    
+
     if not verify_password(credentials.password, employee["password_hash"]):
+        await register_failure(db, identifiers)
         raise HTTPException(status_code=401, detail="Ungültige Anmeldedaten")
-    
+
+    await clear_attempts(db, identifiers)
+
     # Update last login
     await db.employees.update_one(
         {"_id": employee["_id"]},

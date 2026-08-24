@@ -1,5 +1,14 @@
 # Prysm Technologies (ehemals Keyperion / Precision Labs) – PRD
 
+## 🔒 Präventiver Security-Audit + Härtung (2026-06, Login & Panel)
+Vollständiger Backend+Frontend-Audit (security_audit_agent): **0 kritische/hohe** Findings – Auth, RBAC, Ownership, Secret-Handling korrekt. Behobene Defense-in-Depth-Punkte (per curl verifiziert):
+- **SEC-001 (MEDIUM) HTML/XSS-Sink**: Neue `utils/html_sanitize.py`. Admin-editierbares `body_html` der Vertragsvorlagen wird beim Speichern (`PUT /contract-templates/{type}`) via **bleach** allowlist-bereinigt (script/onclick/event-handler entfernt, Formatierung bleibt). Nutzergelieferte Felder (name/address/contractor) in `GET /download-contract` HTML-escaped (`esc()`). Verifiziert: `<script>` + `onclick` werden gestrippt.
+- **SEC-002 (LOW) Brute-Force**: Neue `utils/throttle.py`, gemeinsam genutzt. Lockout jetzt auf **allen 3 Login-Routen** (admin/employee/applicant), gekeyt per `ip:email` **und** per `email` (XFF-Rotation umgeht Sperre nicht mehr). 5 Fehlversuche → 429 (15 Min). Verifiziert: employee/applicant liefern 429 nach 5 Fehlversuchen; legit Login weiterhin 200.
+- **SEC-005 (LOW) Info-Leak**: `str(e)` aus Fehlermeldungen entfernt in `contracts.py` (2x) + `email_inbox.py` – nur generische Meldung an Client, Details ins Server-Log.
+- **Bewusst belassen (User-Entscheidung / geringes Risiko)**: 365-Tage-Tokens + manuelles Logout (Wunsch des Nutzers), `?token=`-Query-Param für Contract-Download (UX), CORS-Default `*` (per `CORS_ORIGINS` env auf VPS zu setzen, credentials=False), Chat-Bilder ohne Auth (UUID-Namen + Path-Traversal-Schutz vorhanden).
+- Neue Dependency: `bleach==6.4.0` (in requirements.txt via pip freeze).
+
+
 ## 🔵 Rebrand Grün → Facebook-Blau + Impressum NEXURA GmbH (2026-06)
 - **Farbschema** komplett von Salbeigrün auf **Facebook-Blau** umgestellt: Tailwind-`sage`-Palette-Werte → Blau (500=#1877F2, 600=#166FE5, 900=#0B1E3B); alle hartcodierten Grün-Hexes in Public-Seiten + Mitarbeiter-Panel global ersetzt (#659A65→#1877F2, #223322→#1C2B3A, #DDE8DD→#D9E3F0, #F4F8F4→#F0F4FA, #556655→#4A5568 usw.); `emerald-*` Provision-Widgets im Panel → `sage-*` (blau).
 - **Logo/Favicon**: TdataLogo + favicon.svg + index.html theme-color → #1877F2. Admin-Login-Logo ebenfalls blau (Admin-Tokyo-Night-Theme sonst unverändert).

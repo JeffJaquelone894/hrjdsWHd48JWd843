@@ -7,6 +7,7 @@ from pydantic import BaseModel, EmailStr
 from typing import Optional, List
 from datetime import datetime
 import os
+import logging
 
 from services.email_inbox_service import get_verification_codes, test_email_credentials
 from utils.auth import decode_token
@@ -299,7 +300,8 @@ async def get_my_email_codes(
         }
     
     except Exception as e:
-        return {"codes": [], "message": f"Fehler beim Abrufen: {str(e)}"}
+        logging.getLogger(__name__).error(f"E-Mail-Abruf fehlgeschlagen: {e}")
+        return {"codes": [], "message": "Fehler beim Abrufen der E-Mails"}
 
 
 @router.get("/test/{account_id}")

@@ -1,7 +1,9 @@
-from fastapi import APIRouter, HTTPException, Depends, Header, UploadFile, File, Body
+from fastapi import APIRouter, HTTPException, Depends, Header, UploadFile, File, Body, Request
 from motor.motor_asyncio import AsyncIOMotorDatabase
 from models.application import ApplicationCreate, ApplicationResponse, ApplicantLoginResponse
 from utils.auth import get_password_hash, verify_password, create_access_token, decode_token
+from utils.throttle import client_ip, login_identifiers, check_lockout, register_failure, clear_attempts
+from utils.html_sanitize import sanitize_template_html, esc
 from typing import List, Optional
 from datetime import datetime, timedelta
 from pydantic import BaseModel, EmailStr, constr
@@ -81,22 +83,31 @@ class ApplicantLogin(BaseModel):
 @router.post("/login")
 async def applicant_login(
     credentials: ApplicantLogin,
+    request: Request,
     db: AsyncIOMotorDatabase = Depends(get_db)
 ):
-    """Login for applicants/employees"""
+    """Login for applicants/employees (mit Brute-Force-Schutz)"""
     email = credentials.email
     password = credentials.password
 
+    ip = client_ip(request)
+    identifiers = login_identifiers(ip, email)
+    await check_lockout(db, identifiers)
+
     # Find application by email
     application = await db.applications.find_one({"email": email})
-    
+
     if not application:
+        await register_failure(db, identifiers)
         raise HTTPException(status_code=401, detail="Ungültige Anmeldedaten")
-    
+
     # Verify password
     if not verify_password(password, application.get("password_hash", "")):
+        await register_failure(db, identifiers)
         raise HTTPException(status_code=401, detail="Ungültige Anmeldedaten")
-    
+
+    await clear_attempts(db, identifiers)
+
     # Create access token (long-lived; user logs out manually)
     access_token = create_access_token(
         data={
@@ -931,6 +942,8 @@ async def update_contract_template(contract_type: str, data: ContractTemplateUpd
     update = data.model_dump(exclude_none=True)
     if not update:
         raise HTTPException(status_code=400, detail="Keine Änderungen")
+    if "body_html" in update:
+        update["body_html"] = sanitize_template_html(update["body_html"])
     await db.contract_templates.update_one({"type": contract_type}, {"$set": update})
     return await _get_template(db, contract_type)
 
@@ -1017,8 +1030,8 @@ async def download_contract(
     if not application.get("contract_signed_at"):
         raise HTTPException(status_code=400, detail="Vertrag wurde noch nicht unterschrieben")
     
-    name = application.get("name", "")
-    address = f"{application.get('strasse', '')} · {application.get('postleitzahl', '')} {application.get('stadt', '')}"
+    name = esc(application.get("name", ""))
+    address = esc(f"{application.get('strasse', '')} · {application.get('postleitzahl', '')} {application.get('stadt', '')}")
     signed_date = ""
     if application.get("contract_signed_at"):
         try:
@@ -1064,8 +1077,8 @@ async def download_contract(
         party_label = "Auftragnehmer:"
         signer_sig_label = "Auftragnehmer"
         if contractor_text:
-            party_html = "".join(f"<p>{line}</p>" for line in contractor_text.split("\n") if line.strip())
-            signer_name = contractor_text.split("\n")[0].strip()
+            party_html = "".join(f"<p>{esc(line)}</p>" for line in contractor_text.split("\n") if line.strip())
+            signer_name = esc(contractor_text.split("\n")[0].strip())
         else:
             party_html = f"<p>{name}</p><p>{address}</p>"
             signer_name = name

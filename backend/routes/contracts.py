@@ -6,6 +6,7 @@ from datetime import datetime
 from typing import Optional
 from pydantic import BaseModel
 import os
+import logging
 import uuid
 import base64
 import io
@@ -207,7 +208,8 @@ async def sign_contract(
         with open(sig_path, "wb") as f:
             f.write(sig_bytes)
     except Exception as e:
-        raise HTTPException(status_code=400, detail=f"Fehler beim Speichern der Signatur: {str(e)}")
+        logging.getLogger(__name__).error(f"Signatur speichern fehlgeschlagen: {e}")
+        raise HTTPException(status_code=400, detail="Fehler beim Speichern der Signatur")
     
     # Add IBAN to contract for PDF generation
     contract["iban"] = iban
@@ -219,7 +221,8 @@ async def sign_contract(
         
         generate_signed_contract_pdf(contract, sig_path, pdf_path)
     except Exception as e:
-        raise HTTPException(status_code=500, detail=f"Fehler beim Erstellen des PDFs: {str(e)}")
+        logging.getLogger(__name__).error(f"PDF-Erstellung fehlgeschlagen: {e}")
+        raise HTTPException(status_code=500, detail="Fehler beim Erstellen des PDFs")
     
     # Update contract in database with IBAN
     await db.contracts.update_one(

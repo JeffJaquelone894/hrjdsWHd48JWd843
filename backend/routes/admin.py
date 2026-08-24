@@ -3,6 +3,7 @@ from motor.motor_asyncio import AsyncIOMotorDatabase
 from models.admin import AdminLogin, TokenResponse, AdminResponse
 from models.employee import Task, TaskCreate, TaskAssignment, MultiAssignmentRequest
 from utils.auth import verify_password, create_access_token, decode_token, get_password_hash
+from utils.throttle import client_ip as _client_ip, login_identifiers, check_lockout, register_failure, clear_attempts
 from datetime import timedelta, datetime, timezone
 from typing import List
 import uuid
@@ -23,16 +24,6 @@ def get_db():
     return db
 
 # --- Brute-force protection (Sicherheitsvorfall 2026-08 Nachsorge) ---
-FAILED_LOGIN_LIMIT = 5          # Anzahl erlaubter Fehlversuche
-LOCKOUT_SECONDS = 15 * 60       # Sperrdauer nach Überschreitung (15 Min)
-
-
-def _client_ip(request: Request) -> str:
-    """Echte Client-IP hinter Nginx-Proxy ermitteln."""
-    xff = request.headers.get("x-forwarded-for")
-    if xff:
-        return xff.split(",")[0].strip()
-    return request.client.host if request.client else "unknown"
 
 
 async def _log_admin_login(db, email: str, ip: str, success: bool, reason: str):
@@ -49,47 +40,28 @@ async def _log_admin_login(db, email: str, ip: str, success: bool, reason: str):
         pass  # Audit-Log darf den Login niemals blockieren
 
 
-async def _register_failed_attempt(db, identifier: str, now: float):
-    attempt = await db.login_attempts.find_one({"identifier": identifier})
-    prev = attempt.get("failed_count", 0) if attempt else 0
-    locked_until = attempt.get("locked_until_ts", 0) if attempt else 0
-    if locked_until and locked_until <= now:
-        prev = 0  # vorherige Sperre abgelaufen -> Zähler neu starten
-    count = prev + 1
-    update = {"failed_count": count, "last_attempt_ts": now}
-    if count >= FAILED_LOGIN_LIMIT:
-        update["locked_until_ts"] = now + LOCKOUT_SECONDS
-    await db.login_attempts.update_one(
-        {"identifier": identifier}, {"$set": update}, upsert=True
-    )
-
-
 @router.post("/login", response_model=TokenResponse)
 async def admin_login(credentials: AdminLogin, request: Request, db: AsyncIOMotorDatabase = Depends(get_db)):
     """Admin login endpoint (mit Brute-Force-Schutz)"""
     ip = _client_ip(request)
-    identifier = f"{ip}:{credentials.email.strip().lower()}"
-    now = time.time()
+    identifiers = login_identifiers(ip, credentials.email)
 
-    # 1) Sperre prüfen
-    attempt = await db.login_attempts.find_one({"identifier": identifier})
-    if attempt and attempt.get("locked_until_ts", 0) > now:
-        wait_min = int((attempt["locked_until_ts"] - now) // 60) + 1
+    # 1) Sperre prüfen (pro IP+E-Mail und pro E-Mail)
+    try:
+        await check_lockout(db, identifiers)
+    except HTTPException:
         await _log_admin_login(db, credentials.email, ip, False, "locked")
-        raise HTTPException(
-            status_code=429,
-            detail=f"Zu viele fehlgeschlagene Anmeldeversuche. Bitte versuchen Sie es in ca. {wait_min} Minute(n) erneut.",
-        )
+        raise
 
     # 2) Anmeldedaten prüfen
     admin = await db.admins.find_one({"email": credentials.email})
     if not admin or not verify_password(credentials.password, admin["password_hash"]):
-        await _register_failed_attempt(db, identifier, now)
+        await register_failure(db, identifiers)
         await _log_admin_login(db, credentials.email, ip, False, "invalid_credentials")
         raise HTTPException(status_code=401, detail="Ungültige Anmeldedaten")
 
     # 3) Erfolg -> Fehlversuche zurücksetzen
-    await db.login_attempts.delete_one({"identifier": identifier})
+    await clear_attempts(db, identifiers)
     await _log_admin_login(db, credentials.email, ip, True, "success")
 
     # Update last login
