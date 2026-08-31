@@ -87,7 +87,7 @@ class EmailInboxService:
         if self.connection:
             try:
                 self.connection.logout()
-            except:
+            except Exception:
                 pass
             self.connection = None
     
@@ -119,7 +119,7 @@ class EmailInboxService:
                         if payload:
                             charset = part.get_content_charset() or 'utf-8'
                             body += payload.decode(charset, errors='ignore')
-                    except:
+                    except Exception:
                         pass
                 elif content_type == "text/html" and "attachment" not in content_disposition and not body:
                     try:
@@ -129,7 +129,7 @@ class EmailInboxService:
                             html_body = payload.decode(charset, errors='ignore')
                             # Strip HTML tags for code extraction
                             body = re.sub(r'<[^>]+>', ' ', html_body)
-                    except:
+                    except Exception:
                         pass
         else:
             try:
@@ -137,7 +137,7 @@ class EmailInboxService:
                 if payload:
                     charset = msg.get_content_charset() or 'utf-8'
                     body = payload.decode(charset, errors='ignore')
-            except:
+            except Exception:
                 pass
         
         return body
@@ -227,7 +227,7 @@ class EmailInboxService:
                             received_at = datetime.fromtimestamp(timestamp)
                         else:
                             received_at = datetime.now()
-                    except:
+                    except Exception:
                         received_at = datetime.now()
 
                     emails.append({

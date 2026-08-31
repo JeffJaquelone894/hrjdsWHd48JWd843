@@ -289,7 +289,7 @@ async def get_my_email_codes(
                     email_time = datetime.fromisoformat(email_data["received_at"])
                     if email_time >= assigned_at:
                         filtered_emails.append(email_data)
-                except:
+                except Exception:
                     filtered_emails.append(email_data)
             emails = filtered_emails
         

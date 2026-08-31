@@ -1,5 +1,13 @@
 # Prysm Technologies (ehemals Keyperion / Precision Labs) – PRD
 
+## 📄 Vertrags-Firmendaten auf NEXURA GmbH aktualisiert (2026-06)
+- Alte Firmendaten „MO Handel & Service, Inh. Mariusz Otok" / „Darmstädter Landstraße 60" / „65462 Ginsheim-Gustavsburg" / GF „Mariusz Otok" überall in den Verträgen ersetzt durch **NEXURA GmbH, Lohnrößlerweg 12, 81829 München, GF Johannes Liebert**.
+- Betroffen: `backend/routes/applications.py` (Download-Vertrag HTML: Arbeitgeber-Block, Unterschrift, Datenlöschungs-Absatz), `backend/routes/contracts.py` (PDF-Erzeugung: Arbeitgeber, Ort+Datum, Unterschrift), `frontend/.../MitarbeiterContractSign.jsx`, `ContractTemplates.jsx`, `MitarbeiterVertrag.jsx`.
+- Unterschriftsort „Ginsheim-Gustavsburg, {Datum}" → „München, {Datum}".
+- `CONTRACT_TEMPLATE_VERSION` 4 → 5 erhöht, damit die in der DB gespeicherten Vorlagen beim Backend-Neustart automatisch neu aufgesetzt werden. Verifiziert: alle 7 Vorlagen auf version=5, keine alten Daten mehr.
+- ⚠️ VPS: Nach `git pull` Backend neu starten – dann re-seeden die Vorlagen auf NEXURA (überschreibt evtl. manuelle Template-Edits im Admin).
+
+
 ## 🔷 Rebrand „Tdata Testing" → „Nexora" + Domain nexora-gmbh.de (2026-06)
 - **Markenname** überall von „Tdata Testing"/„Tdata" auf **„Nexora"** geändert (Public-Site, Admin-Panel, Mitarbeiter-Panel, Backend-Vertragstexte, SMS-Texte). Wordmark: „Nex"(blau)+„ora"(dunkel), Subtitle „TESTING" bleibt als Descriptor.
 - **Logo/Favicon**: `TdataLogo`→`NexoraLogo` (Komponente umbenannt, alle Imports aktualisiert); Glyph von „T" auf **„N"** (2 Balken + Diagonale) umgestellt; `public/favicon.svg` ebenfalls „N".

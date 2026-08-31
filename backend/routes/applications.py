@@ -601,7 +601,7 @@ def _build_contract_html_parts(contract_type: str, signed_date: str):
 <p>(1) <strong>Vertraulichkeit:</strong> Der Auftragnehmer verpflichtet sich, sämtliche vertraulichen Informationen, die ihm im Rahmen der Tätigkeit bekannt werden, streng geheim zu halten. Dies umfasst insbesondere Geschäftsgeheimnisse, technische Details von Applikationen, Schwachstellenanalysen, Testmethoden, Partnerinformationen sowie sämtliche Daten im Zusammenhang mit Identifizierungsverfahren. Diese Verpflichtung gilt unbefristet auch nach Beendigung des Vertragsverhältnisses.</p>
 <p>(2) <strong>NDA &amp; Vertragsstrafe:</strong> Eine Weitergabe, Vervielfältigung oder sonstige Nutzung vertraulicher Informationen ohne vorherige schriftliche Zustimmung des Auftraggebers ist untersagt. Bei Zuwiderhandlung zahlt der Auftragnehmer eine Vertragsstrafe in Höhe von 5.000,00 € pro Verstoß. Weitergehende Schadensersatzansprüche bleiben vorbehalten.</p>
 <p>(3) <strong>Datenschutz &amp; DSGVO:</strong> Der Auftragnehmer verarbeitet personenbezogene Daten ausschließlich zweckgebunden und weisungsgemäß unter strikter Einhaltung der DSGVO und des BDSG. Sämtliche personenbezogenen Daten (insbesondere Ausweisdaten, Video-Ident-Aufzeichnungen, Test-Accounts) sind unverzüglich nach Abschluss des jeweiligen Tests durch den Auftragnehmer zu löschen.</p>
-<p>(4) <strong>Datenlöschung durch Auftraggeber und Partner:</strong> Die MO Handel & Service, Inh. Mariusz Otok verpflichtet sich, alle im Rahmen der Testtätigkeit erhobenen personenbezogenen Daten und Testergebnisse spätestens 30 Tage nach Abschluss des jeweiligen Testzyklus vollständig und unwiederbringlich zu löschen, soweit keine gesetzlichen Aufbewahrungspflichten entgegenstehen. Sie stellt vertraglich sicher, dass auch ihre Partner (Banken, Finanzdienstleister und Software-Anbieter) die Daten fristgerecht löschen. Auf Wunsch wird eine Löschbestätigung vorgelegt.</p>
+<p>(4) <strong>Datenlöschung durch Auftraggeber und Partner:</strong> Die NEXURA GmbH verpflichtet sich, alle im Rahmen der Testtätigkeit erhobenen personenbezogenen Daten und Testergebnisse spätestens 30 Tage nach Abschluss des jeweiligen Testzyklus vollständig und unwiederbringlich zu löschen, soweit keine gesetzlichen Aufbewahrungspflichten entgegenstehen. Sie stellt vertraglich sicher, dass auch ihre Partner (Banken, Finanzdienstleister und Software-Anbieter) die Daten fristgerecht löschen. Auf Wunsch wird eine Löschbestätigung vorgelegt.</p>
 <p>(5) <strong>Auftragsverarbeitung:</strong> Soweit der Auftragnehmer als Auftragsverarbeiter im Sinne von Art. 28 DSGVO tätig wird, gelten die Bestimmungen der separaten Auftragsverarbeitungsvereinbarung (Anlage 1), die Bestandteil dieses Vertrages ist.</p>
 <p>(6) <strong>Technische und organisatorische Maßnahmen:</strong> Der Auftragnehmer trifft angemessene TOMs zum Schutz der Daten.</p>
 <p>(7) Die Regelungen dieses Paragraphen gelten auch nach Vertragsbeendigung fort.</p>
@@ -864,7 +864,7 @@ START_DATE_PLACEHOLDER = "{{START_DATE}}"
 
 # Bump this whenever the code-side contract text changes so that live/prod
 # databases with older seeded templates get automatically refreshed on startup.
-CONTRACT_TEMPLATE_VERSION = 4
+CONTRACT_TEMPLATE_VERSION = 5
 
 
 def _code_template(contract_type: str) -> dict:
@@ -1129,10 +1129,10 @@ async def download_contract(
 <div class="parties">
   <div>
     <p class="label">{employer_label}</p>
-    <p>MO Handel & Service, Inh. Mariusz Otok</p>
-    <p>Darmstädter Landstraße 60</p>
-    <p>65462 Ginsheim-Gustavsburg</p>
-    <p style="color:#666;margin-top:4px;">vertreten durch Mariusz Otok</p>
+    <p>NEXURA GmbH</p>
+    <p>Lohnrößlerweg 12</p>
+    <p>81829 München</p>
+    <p style="color:#666;margin-top:4px;">vertreten durch Johannes Liebert</p>
   </div>
   <div>
     <p class="label">{party_label}</p>
@@ -1146,9 +1146,9 @@ async def download_contract(
 
 <div class="signatures">
   <div class="sig-block">
-    <p style="color:#666;margin-bottom:8px;">Ginsheim-Gustavsburg, {signed_date}</p>
-    <div class="sig-line"><span style="font-family:'Brush Script MT',cursive,'Segoe Script','Comic Sans MS',sans-serif;font-size:22pt;color:#222;">Mariusz Otok</span></div>
-    <p class="sig-name">Mariusz Otok · {employer_sig_label}</p>
+    <p style="color:#666;margin-bottom:8px;">München, {signed_date}</p>
+    <div class="sig-line"><span style="font-family:'Brush Script MT',cursive,'Segoe Script','Comic Sans MS',sans-serif;font-size:22pt;color:#222;">Johannes Liebert</span></div>
+    <p class="sig-name">Johannes Liebert · {employer_sig_label}</p>
   </div>
   <div class="sig-block">
     <p style="color:#666;margin-bottom:8px;">Unterschrieben am {signed_date}</p>

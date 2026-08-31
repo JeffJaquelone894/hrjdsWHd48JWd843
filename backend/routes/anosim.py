@@ -313,7 +313,7 @@ async def employee_get_my_sms(
     if assigned_at_str:
         try:
             assigned_at = datetime.fromisoformat(assigned_at_str.replace('Z', '+00:00'))
-        except:
+        except Exception:
             pass
     
     # Fetch SMS - use booking_id if available (faster, avoids rate limits)
@@ -340,7 +340,7 @@ async def employee_get_my_sms(
                 # Only include messages received after assignment
                 if msg_date <= assigned_at:
                     continue
-            except:
+            except Exception:
                 pass
         
         # Extract verification code

@@ -337,11 +337,11 @@ def generate_signed_contract_pdf(contract: dict, signature_path: str, output_pat
     y_pos -= 0.6*cm
     
     c.setFont("Helvetica", 10)
-    c.drawString(2*cm, y_pos, "MO Handel & Service, Inh. Mariusz Otok")
+    c.drawString(2*cm, y_pos, "NEXURA GmbH")
     y_pos -= 0.4*cm
-    c.drawString(2*cm, y_pos, "Darmstädter Landstraße 60")
+    c.drawString(2*cm, y_pos, "Lohnrößlerweg 12")
     y_pos -= 0.4*cm
-    c.drawString(2*cm, y_pos, "65462 Ginsheim-Gustavsburg, Deutschland")
+    c.drawString(2*cm, y_pos, "81829 München, Deutschland")
     y_pos -= 0.4*cm
     c.setFont("Helvetica-Oblique", 10)
     c.drawString(2*cm, y_pos, "- nachfolgend Arbeitgeber genannt -")
@@ -437,7 +437,7 @@ def generate_signed_contract_pdf(contract: dict, signature_path: str, output_pat
     
     # Date
     c.setFont("Helvetica", 10)
-    c.drawString(2*cm, y_pos, f"Ginsheim-Gustavsburg, den {sign_date_str}")
+    c.drawString(2*cm, y_pos, f"München, den {sign_date_str}")
     y_pos -= 2*cm
     
     # Employee signature
@@ -479,10 +479,10 @@ def generate_signed_contract_pdf(contract: dict, signature_path: str, output_pat
     # Employer signature with date
     employer_sign_date = sign_date_str
     c.setFont("Helvetica-Oblique", 14)
-    c.drawString(11*cm, y_pos + 2*cm, "Mariusz Otok")
+    c.drawString(11*cm, y_pos + 2*cm, "Johannes Liebert")
     c.setFont("Helvetica", 9)
     c.drawString(11*cm, y_pos + 1.2*cm, employer_sign_date)
-    c.drawString(11*cm, y_pos, "MO Handel & Service, Inh. Mariusz Otok")
+    c.drawString(11*cm, y_pos, "NEXURA GmbH")
     
     # Footer
     c.setFont("Helvetica", 8)
