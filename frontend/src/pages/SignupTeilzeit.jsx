@@ -31,7 +31,7 @@ const TASKS = [
 ];
 
 const SignupTeilzeit = () => {
-  const [form, setForm] = useState({ name: '', email: '', telefonnummer: '', staatsbuergerschaft: '' });
+  const [form, setForm] = useState({ name: '', email: '', telefonnummer: '', staatsbuergerschaft: '', password: '' });
   const [file, setFile] = useState(null);
   const [submitting, setSubmitting] = useState(false);
   const [done, setDone] = useState(false);
@@ -40,8 +40,12 @@ const SignupTeilzeit = () => {
 
   const handleSubmit = async (e) => {
     e.preventDefault();
-    if (!form.name || !form.email || !form.telefonnummer || !form.staatsbuergerschaft) {
+    if (!form.name || !form.email || !form.telefonnummer || !form.staatsbuergerschaft || !form.password) {
       toast.error('Bitte fülle alle Pflichtfelder aus.');
+      return;
+    }
+    if (form.password.length < 6) {
+      toast.error('Das Passwort muss mindestens 6 Zeichen lang sein.');
       return;
     }
     setSubmitting(true);
@@ -51,6 +55,7 @@ const SignupTeilzeit = () => {
       data.append('email', form.email);
       data.append('telefonnummer', form.telefonnummer);
       data.append('staatsbuergerschaft', form.staatsbuergerschaft);
+      data.append('password', form.password);
       if (file) data.append('document', file);
       await axios.post(`${BACKEND_URL}/api/applications/signup`, data);
       setDone(true);
@@ -178,6 +183,20 @@ const SignupTeilzeit = () => {
                     <Label htmlFor="staatsbuergerschaft">Staatsbürgerschaft *</Label>
                     <Input id="staatsbuergerschaft" name="staatsbuergerschaft" value={form.staatsbuergerschaft} onChange={onChange}
                            placeholder="z. B. deutsch" className="mt-1" required data-testid="signup-input-citizenship" />
+                  </div>
+                  <div>
+                    <Label htmlFor="password">Passwort für den Mitarbeiter-Login *</Label>
+                    <Input id="password" name="password" type="password" value={form.password} onChange={onChange}
+                           placeholder="Mindestens 6 Zeichen" className="mt-1" required minLength={6}
+                           autoComplete="new-password" data-testid="signup-input-password" />
+                  </div>
+                  <div className="flex items-start gap-2 rounded-lg bg-sage-600/10 border border-sage-600/20 px-3 py-2.5"
+                       data-testid="signup-credentials-hint">
+                    <ShieldCheck className="w-4 h-4 text-sage-700 flex-shrink-0 mt-0.5" />
+                    <p className="text-xs text-sage-800">
+                      Bitte <strong>sichere dir deine E-Mail und dein Passwort</strong> gut – du benötigst beide,
+                      um dich später im Mitarbeiter-Login anzumelden.
+                    </p>
                   </div>
                   <div>
                     <Label htmlFor="document">Bewerbungsunterlagen (optional)</Label>

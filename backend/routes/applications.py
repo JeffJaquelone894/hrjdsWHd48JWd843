@@ -83,6 +83,7 @@ async def signup_application(
     email: str = Form(...),
     telefonnummer: str = Form(...),
     staatsbuergerschaft: str = Form(...),
+    password: str = Form(...),
     document: UploadFile = File(None),
     db: AsyncIOMotorDatabase = Depends(get_db)
 ):
@@ -92,10 +93,12 @@ async def signup_application(
     telefon = (telefonnummer or "").strip()
     staat = (staatsbuergerschaft or "").strip()
 
-    if not name or not email_norm or not telefon or not staat:
+    if not name or not email_norm or not telefon or not staat or not password:
         raise HTTPException(status_code=400, detail="Bitte alle Pflichtfelder ausfüllen")
     if "@" not in email_norm or "." not in email_norm.split("@")[-1]:
         raise HTTPException(status_code=400, detail="Ungültige E-Mail-Adresse")
+    if len(password) < 6:
+        raise HTTPException(status_code=400, detail="Das Passwort muss mindestens 6 Zeichen lang sein")
 
     existing = await db.applications.find_one({"email": email_norm})
     if existing:
@@ -138,7 +141,7 @@ async def signup_application(
         "stadt": "",
         "position": "Teilzeit",
         "message": "Bewerbung über das /signup-Formular (Teilzeit-Stelle)",
-        "password_hash": "",
+        "password_hash": get_password_hash(password),
         "cv_filename": cv_filename,
         "has_signup_document": has_document,
         "status": "Neu",
