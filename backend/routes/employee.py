@@ -8,6 +8,9 @@ from typing import List, Optional
 from pydantic import BaseModel
 import os
 import uuid
+import base64
+import io
+from fastapi.responses import StreamingResponse, FileResponse
 
 router = APIRouter(prefix="/api/employee", tags=["employee"])
 
@@ -470,21 +473,17 @@ async def upload_document(
     if len(content) > 10 * 1024 * 1024:
         raise HTTPException(status_code=400, detail="Datei zu groß (max. 10 MB)")
     
-    # Save file
-    file_ext = file.filename.split(".")[-1] if "." in file.filename else "pdf"
+    # Store document in MongoDB (persistent, deployment-safe, kein Pod-Dateisystem)
     doc_id = f"doc-{datetime.utcnow().strftime('%Y%m%d%H%M%S')}-{uuid.uuid4().hex[:6]}"
-    filename = f"{employee_id}_{doc_id}.{file_ext}"
-    filepath = os.path.join(DOCUMENTS_DIR, filename)
-    
-    with open(filepath, "wb") as f:
-        f.write(content)
-    
+
     # Save to database
     doc_data = {
         "id": doc_id,
         "employee_id": employee_id,
         "name": file.filename,
-        "filename": filename,
+        "filename": file.filename,
+        "content_type": file.content_type,
+        "data": base64.b64encode(content).decode("utf-8"),
         "type": "other",
         "category": category,
         "size": f"{round(len(content) / 1024)} KB",
@@ -512,8 +511,6 @@ async def download_document(
     db: AsyncIOMotorDatabase = Depends(get_db)
 ):
     """Download a document"""
-    from fastapi.responses import FileResponse
-    
     if not authorization or not authorization.startswith("Bearer "):
         raise HTTPException(status_code=401, detail="Keine Autorisierung")
     
@@ -550,19 +547,20 @@ async def download_document(
             filename=f"Arbeitsvertrag_{contract.get('employee_name', 'Mitarbeiter').replace(' ', '_')}.pdf"
         )
     
-    # Regular document
+    # Regular document (stored in MongoDB)
     document = await db.employee_documents.find_one({"id": doc_id, "employee_id": employee_id})
     
     if not document:
         raise HTTPException(status_code=404, detail="Dokument nicht gefunden")
     
-    filepath = os.path.join(DOCUMENTS_DIR, document["filename"])
-    if not os.path.exists(filepath):
+    data_b64 = document.get("data")
+    if not data_b64:
         raise HTTPException(status_code=404, detail="Datei nicht gefunden")
     
-    return FileResponse(
-        filepath,
-        filename=document["name"]
+    return StreamingResponse(
+        io.BytesIO(base64.b64decode(data_b64)),
+        media_type=document.get("content_type", "application/octet-stream"),
+        headers={"Content-Disposition": f'attachment; filename="{document["name"]}"'}
     )
 
 
@@ -592,11 +590,6 @@ async def delete_document(
     # Don't allow deleting approved documents
     if document.get("status") == "approved":
         raise HTTPException(status_code=400, detail="Bestätigte Dokumente können nicht gelöscht werden")
-    
-    # Delete file
-    filepath = os.path.join(DOCUMENTS_DIR, document["filename"])
-    if os.path.exists(filepath):
-        os.remove(filepath)
     
     # Delete from database
     await db.employee_documents.delete_one({"id": doc_id})

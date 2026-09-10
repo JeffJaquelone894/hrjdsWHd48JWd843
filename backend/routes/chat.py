@@ -1,5 +1,5 @@
 from fastapi import APIRouter, HTTPException, Depends, Header, UploadFile, File, Form
-from fastapi.responses import FileResponse
+from fastapi.responses import StreamingResponse
 from motor.motor_asyncio import AsyncIOMotorDatabase
 from utils.auth import decode_token
 from datetime import datetime, timezone
@@ -7,6 +7,8 @@ from pydantic import BaseModel
 from typing import Optional
 import os
 import uuid
+import base64
+import io
 
 router = APIRouter(prefix="/api/chat", tags=["chat"])
 
@@ -243,12 +245,22 @@ async def send_image(
     if ext not in allowed:
         raise HTTPException(status_code=400, detail="Nur Bilder erlaubt (jpg, png, gif, webp)")
 
-    # Save file
-    filename = f"{uuid.uuid4().hex}{ext}"
-    filepath = os.path.join(UPLOAD_DIR, filename)
+    # Store image in MongoDB (persistent, deployment-safe, kein Pod-Dateisystem)
     content = await file.read()
-    with open(filepath, "wb") as f:
-        f.write(content)
+    if len(content) > 10 * 1024 * 1024:
+        raise HTTPException(status_code=400, detail="Datei zu groß (max. 10 MB)")
+    image_id = f"{uuid.uuid4().hex}{ext}"
+    content_type = {
+        ".jpg": "image/jpeg", ".jpeg": "image/jpeg", ".png": "image/png",
+        ".gif": "image/gif", ".webp": "image/webp"
+    }.get(ext, "application/octet-stream")
+    await db.chat_images.insert_one({
+        "image_id": image_id,
+        "content_type": content_type,
+        "data": base64.b64encode(content).decode("utf-8"),
+        "created_at": datetime.now(timezone.utc).isoformat(),
+    })
+    filename = image_id
 
     sender_id = payload.get("id")
     sender_role = payload.get("role", "employee")
@@ -283,15 +295,14 @@ async def send_image(
     return {"message": "Bild gesendet", "image": filename}
 
 
-# Serve chat images
+# Serve chat images (aus MongoDB)
 @router.get("/image/{filename}")
-async def get_chat_image(filename: str):
-    # Prevent path traversal: only allow a bare filename inside UPLOAD_DIR
+async def get_chat_image(filename: str, db: AsyncIOMotorDatabase = Depends(get_db)):
     safe_name = os.path.basename(filename)
-    filepath = os.path.realpath(os.path.join(UPLOAD_DIR, safe_name))
-    upload_root = os.path.realpath(UPLOAD_DIR)
-    if not filepath.startswith(upload_root + os.sep):
+    doc = await db.chat_images.find_one({"image_id": safe_name})
+    if not doc:
         raise HTTPException(status_code=404, detail="Bild nicht gefunden")
-    if not os.path.isfile(filepath):
-        raise HTTPException(status_code=404, detail="Bild nicht gefunden")
-    return FileResponse(filepath)
+    return StreamingResponse(
+        io.BytesIO(base64.b64decode(doc["data"])),
+        media_type=doc.get("content_type", "image/jpeg")
+    )

@@ -52,6 +52,26 @@ const AdminApplications = () => {
   const [dialogMode, setDialogMode] = useState('accept'); // 'accept' | 'reassign'
   const [approvingQuiz, setApprovingQuiz] = useState(false);
 
+  const handleDownloadDocument = async (id, filename) => {
+    try {
+      const token = localStorage.getItem('admin_token');
+      const res = await axios.get(`${BACKEND_URL}/api/applications/${id}/signup-document`, {
+        headers: { Authorization: `Bearer ${token}` },
+        responseType: 'blob',
+      });
+      const url = window.URL.createObjectURL(new Blob([res.data]));
+      const a = document.createElement('a');
+      a.href = url;
+      a.download = filename || 'bewerbungsunterlagen';
+      document.body.appendChild(a);
+      a.click();
+      a.remove();
+      window.URL.revokeObjectURL(url);
+    } catch (error) {
+      toast.error('Download fehlgeschlagen');
+    }
+  };
+
   const fetchApplications = async () => {
     try {
       const token = localStorage.getItem('admin_token');
@@ -541,10 +561,20 @@ const AdminApplications = () => {
                     <p className="text-sm text-[#565f89]">Anschreiben</p>
                     <p className="text-[#9aa5ce] whitespace-pre-wrap">{selectedApp.message}</p>
                   </div>
-                  {selectedApp.cv_filename && (
+                  {(selectedApp.cv_filename || selectedApp.has_signup_document) && (
                     <div>
-                      <p className="text-sm text-[#565f89]">Lebenslauf</p>
-                      <p className="text-[#7dcfff]">{selectedApp.cv_filename}</p>
+                      <p className="text-sm text-[#565f89]">Bewerbungsunterlagen</p>
+                      {selectedApp.has_signup_document ? (
+                        <button
+                          onClick={() => handleDownloadDocument(selectedApp.id, selectedApp.cv_filename)}
+                          className="text-[#7dcfff] underline hover:text-[#a9deff]"
+                          data-testid="download-signup-document-btn"
+                        >
+                          {selectedApp.cv_filename || 'Dokument'} herunterladen
+                        </button>
+                      ) : (
+                        <p className="text-[#7dcfff]">{selectedApp.cv_filename}</p>
+                      )}
                     </div>
                   )}
                 </div>

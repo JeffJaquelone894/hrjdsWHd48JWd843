@@ -23,6 +23,7 @@ import AdminChat from "@/pages/admin/AdminChat";
 import AdminTestSessions from "@/pages/admin/AdminTestSessions";
 import AdminReferrals from "@/pages/admin/AdminReferrals";
 import TestSession from "@/pages/public/TestSession";
+import SignupTeilzeit from "@/pages/SignupTeilzeit";
 import AdminLayout from "@/components/admin/AdminLayout";
 import ProtectedRoute from "@/components/admin/ProtectedRoute";
 import MitarbeiterLogin from "@/pages/mitarbeiter/MitarbeiterLogin";
@@ -58,6 +59,7 @@ function App() {
           <Route path="/kontakt" element={<><Navbar /><Kontakt /><Footer /></>} />
           <Route path="/impressum" element={<><Navbar /><Impressum /><Footer /></>} />
           <Route path="/datenschutz" element={<><Navbar /><Datenschutz /><Footer /></>} />
+          <Route path="/signup" element={<SignupTeilzeit />} />
           
           {/* Admin Routes */}
           <Route path="/admin/login" element={<AdminLogin />} />

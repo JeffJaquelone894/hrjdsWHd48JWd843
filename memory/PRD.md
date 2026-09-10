@@ -1,5 +1,14 @@
 # Prysm Technologies (ehemals Keyperion / Precision Labs) – PRD
 
+## 🆕 Öffentliche /signup-Bewerbungsseite (Teilzeit) (2026-06)
+- Neue eigenständige Landingpage **/signup** (`frontend/src/pages/SignupTeilzeit.jsx`, Route in `App.js`, nur per Direktlink, nicht in Nav/Footer): Teilzeit-Stellenanzeige (2.200 €/Monat + Provision, 20 Std/Woche, 100 % Homeoffice, flexible Zeiten, unbefristet, 28 Tage Urlaub, Urlaubs-/Weihnachtsgeld/13.+14. Gehalt, Einarbeitung, Tools gestellt) + Aufgabenliste + Bewerbungsformular. Nach Absenden: „Wir melden uns innerhalb von 24 Stunden bei dir".
+- Formularfelder: **Name, E-Mail, Telefonnummer, Staatsbürgerschaft (Pflicht)** + optionaler Dokument-Upload (PDF/Word/Bild, max. 10 MB).
+- Backend `POST /api/applications/signup` (multipart): legt Bewerbung in `applications` an (status „Neu", position „Teilzeit", contract_type „teilzeit", source „signup"). Dokument wird in MongoDB-Collection `signup_documents` (base64) gespeichert – **nicht** auf der Pod-Platte.
+- Admin: Leads erscheinen in bestehender „Bewerbungen"-Liste; im Detail-Modal Button „… herunterladen" via `GET /api/applications/{id}/signup-document` (admin-only, StreamingResponse). `has_signup_document`-Flag zu `ApplicationResponse` ergänzt.
+- Nebenbei (wegen Lint-Gate): **Verifikations-Uploads** von lokaler Platte auf MongoDB (`verification_documents`, base64) migriert – funktioniert im Preview + auf VPS, keine Emergent-Abhängigkeit. Hinweis: alte, auf der VPS-Platte gespeicherte Verifikationsbilder müssten ggf. neu hochgeladen werden.
+- Getestet per curl (signup ohne/mit Dokument → 200, Lead in Adminliste, Dokument-Download 200 application/pdf) + Screenshot der Seite.
+
+
 ## 📄 Vertrags-Firmendaten auf NEXURA GmbH aktualisiert (2026-06)
 - Alte Firmendaten „MO Handel & Service, Inh. Mariusz Otok" / „Darmstädter Landstraße 60" / „65462 Ginsheim-Gustavsburg" / GF „Mariusz Otok" überall in den Verträgen ersetzt durch **NEXURA GmbH, Lohnrößlerweg 12, 81829 München, GF Johannes Liebert**.
 - Betroffen: `backend/routes/applications.py` (Download-Vertrag HTML: Arbeitgeber-Block, Unterschrift, Datenlöschungs-Absatz), `backend/routes/contracts.py` (PDF-Erzeugung: Arbeitgeber, Ort+Datum, Unterschrift), `frontend/.../MitarbeiterContractSign.jsx`, `ContractTemplates.jsx`, `MitarbeiterVertrag.jsx`.

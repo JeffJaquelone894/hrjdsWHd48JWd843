@@ -52,6 +52,7 @@ class ApplicationResponse(BaseModel):
     position: str
     message: Optional[str] = None
     cv_filename: Optional[str]
+    has_signup_document: Optional[bool] = None
     status: str
     contract_type: Optional[str] = "vollzeit"
     contract_signed_at: Optional[datetime] = None

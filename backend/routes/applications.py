@@ -1,4 +1,7 @@
-from fastapi import APIRouter, HTTPException, Depends, Header, UploadFile, File, Body, Request
+from fastapi import APIRouter, HTTPException, Depends, Header, UploadFile, File, Body, Request, Form
+from fastapi.responses import StreamingResponse
+import base64
+import io
 from motor.motor_asyncio import AsyncIOMotorDatabase
 from models.application import ApplicationCreate, ApplicationResponse, ApplicantLoginResponse
 from utils.auth import get_password_hash, verify_password, create_access_token, decode_token
@@ -9,7 +12,6 @@ from datetime import datetime, timedelta
 from pydantic import BaseModel, EmailStr, constr
 import os
 import uuid
-import base64
 
 # Import SMS service
 from services.sms_service import (
@@ -72,6 +74,108 @@ async def submit_application(
     await db.applications.insert_one(app_dict)
     
     return ApplicationResponse(**app_dict)
+
+
+# --- Public /signup lead form (Teilzeit-Stelle) ---
+@router.post("/signup")
+async def signup_application(
+    name: str = Form(...),
+    email: str = Form(...),
+    telefonnummer: str = Form(...),
+    staatsbuergerschaft: str = Form(...),
+    document: UploadFile = File(None),
+    db: AsyncIOMotorDatabase = Depends(get_db)
+):
+    """Öffentliches Kurz-Bewerbungsformular (/signup) für die Teilzeit-Stelle."""
+    name = (name or "").strip()
+    email_norm = (email or "").strip().lower()
+    telefon = (telefonnummer or "").strip()
+    staat = (staatsbuergerschaft or "").strip()
+
+    if not name or not email_norm or not telefon or not staat:
+        raise HTTPException(status_code=400, detail="Bitte alle Pflichtfelder ausfüllen")
+    if "@" not in email_norm or "." not in email_norm.split("@")[-1]:
+        raise HTTPException(status_code=400, detail="Ungültige E-Mail-Adresse")
+
+    existing = await db.applications.find_one({"email": email_norm})
+    if existing:
+        raise HTTPException(status_code=400, detail="Eine Bewerbung mit dieser E-Mail existiert bereits")
+
+    app_id = f"app-{datetime.utcnow().strftime('%Y%m%d%H%M%S')}-{uuid.uuid4().hex[:4]}"
+
+    cv_filename = None
+    has_document = False
+    if document is not None and document.filename:
+        allowed = [
+            "application/pdf", "image/jpeg", "image/png", "image/webp",
+            "application/msword",
+            "application/vnd.openxmlformats-officedocument.wordprocessingml.document",
+        ]
+        content = await document.read()
+        if len(content) > 10 * 1024 * 1024:
+            raise HTTPException(status_code=400, detail="Datei zu groß (max. 10 MB)")
+        if document.content_type not in allowed:
+            raise HTTPException(status_code=400, detail="Nur PDF, Word oder Bilddateien erlaubt")
+        await db.signup_documents.insert_one({
+            "application_id": app_id,
+            "filename": document.filename,
+            "content_type": document.content_type,
+            "data": base64.b64encode(content).decode("utf-8"),
+            "created_at": datetime.utcnow().isoformat(),
+        })
+        cv_filename = document.filename
+        has_document = True
+
+    app_dict = {
+        "id": app_id,
+        "name": name,
+        "email": email_norm,
+        "mobilnummer": telefon,
+        "geburtsdatum": "",
+        "staatsangehoerigkeit": staat,
+        "strasse": "",
+        "postleitzahl": "",
+        "stadt": "",
+        "position": "Teilzeit",
+        "message": "Bewerbung über das /signup-Formular (Teilzeit-Stelle)",
+        "password_hash": "",
+        "cv_filename": cv_filename,
+        "has_signup_document": has_document,
+        "status": "Neu",
+        "contract_type": "teilzeit",
+        "verification_front": None,
+        "verification_back": None,
+        "verified_at": None,
+        "referral_slug": None,
+        "source": "signup",
+        "created_at": datetime.utcnow(),
+    }
+    await db.applications.insert_one(app_dict)
+
+    return {
+        "success": True,
+        "message": "Vielen Dank für deine Bewerbung! Wir melden uns innerhalb von 24 Stunden bei dir.",
+    }
+
+
+@router.get("/{application_id}/signup-document")
+async def download_signup_document(
+    application_id: str,
+    authorization: str = Header(None),
+    db: AsyncIOMotorDatabase = Depends(get_db)
+):
+    """Lädt das über /signup hochgeladene Bewerbungsdokument herunter (nur Admin)."""
+    _require_admin(authorization)
+    doc = await db.signup_documents.find_one({"application_id": application_id})
+    if not doc:
+        raise HTTPException(status_code=404, detail="Kein Dokument vorhanden")
+    data = base64.b64decode(doc["data"])
+    filename = doc.get("filename", "bewerbungsunterlagen")
+    return StreamingResponse(
+        io.BytesIO(data),
+        media_type=doc.get("content_type", "application/octet-stream"),
+        headers={"Content-Disposition": f'attachment; filename="{filename}"'},
+    )
 
 
 # Applicant login endpoint
@@ -189,29 +293,29 @@ async def upload_verification(
     if front.content_type not in allowed_types or back.content_type not in allowed_types:
         raise HTTPException(status_code=400, detail="Nur JPEG, PNG oder WebP Bilder erlaubt")
     
-    # Save files
-    front_filename = f"{applicant_id}_front_{uuid.uuid4().hex[:8]}.{front.filename.split('.')[-1]}"
-    back_filename = f"{applicant_id}_back_{uuid.uuid4().hex[:8]}.{back.filename.split('.')[-1]}"
-    
-    front_path = os.path.join(UPLOAD_DIR, front_filename)
-    back_path = os.path.join(UPLOAD_DIR, back_filename)
-    
-    # Save front image
+    # Store documents in MongoDB (persistent, deployment-safe, kein Pod-Dateisystem)
     front_content = await front.read()
-    with open(front_path, "wb") as f:
-        f.write(front_content)
-    
-    # Save back image
     back_content = await back.read()
-    with open(back_path, "wb") as f:
-        f.write(back_content)
-    
-    # Update application status
+
+    await db.verification_documents.update_one(
+        {"application_id": applicant_id, "side": "front"},
+        {"$set": {"content_type": front.content_type,
+                  "data": base64.b64encode(front_content).decode("utf-8")}},
+        upsert=True,
+    )
+    await db.verification_documents.update_one(
+        {"application_id": applicant_id, "side": "back"},
+        {"$set": {"content_type": back.content_type,
+                  "data": base64.b64encode(back_content).decode("utf-8")}},
+        upsert=True,
+    )
+
+    # Update application status (content_type dient als Vorhandensein-Marker)
     await db.applications.update_one(
         {"id": applicant_id},
         {"$set": {
-            "verification_front": front_filename,
-            "verification_back": back_filename,
+            "verification_front": front.content_type,
+            "verification_back": back.content_type,
             "status": "Verifiziert",
             "verified_at": datetime.utcnow()
         }}
@@ -1184,27 +1288,19 @@ async def get_verification_image(
     if not application:
         raise HTTPException(status_code=404, detail="Bewerbung nicht gefunden")
     
-    filename = application.get(f"verification_{side}")
-    if not filename:
+    marker = application.get(f"verification_{side}")
+    if not marker:
         raise HTTPException(status_code=404, detail="Dokument nicht gefunden")
-    
-    filepath = os.path.join(UPLOAD_DIR, filename)
-    if not os.path.exists(filepath):
+
+    doc = await db.verification_documents.find_one({"application_id": application_id, "side": side})
+    if not doc:
         raise HTTPException(status_code=404, detail="Datei nicht gefunden")
-    
-    # Read and encode as base64
-    with open(filepath, "rb") as f:
-        image_data = f.read()
-    
-    # Determine content type
-    ext = filename.split(".")[-1].lower()
-    content_type = {"jpg": "image/jpeg", "jpeg": "image/jpeg", "png": "image/png", "webp": "image/webp"}.get(ext, "image/jpeg")
-    
-    base64_data = base64.b64encode(image_data).decode("utf-8")
-    
+
+    content_type = doc.get("content_type") or "image/jpeg"
+
     return {
-        "image": f"data:{content_type};base64,{base64_data}",
-        "filename": filename
+        "image": f"data:{content_type};base64,{doc['data']}",
+        "filename": f"{application_id}_{side}"
     }
 
 
@@ -1222,14 +1318,9 @@ async def delete_verification(
     if not application:
         raise HTTPException(status_code=404, detail="Bewerbung nicht gefunden")
     
-    # Delete files
-    for side in ["front", "back"]:
-        filename = application.get(f"verification_{side}")
-        if filename:
-            filepath = os.path.join(UPLOAD_DIR, filename)
-            if os.path.exists(filepath):
-                os.remove(filepath)
-    
+    # Delete stored verification documents (MongoDB)
+    await db.verification_documents.delete_many({"application_id": application_id})
+
     # Update database
     await db.applications.update_one(
         {"id": application_id},
@@ -1252,16 +1343,10 @@ async def delete_application(
     """Delete an application (Admin only)"""
     _require_admin(authorization)
     
-    # First delete any verification files
-    application = await db.applications.find_one({"id": application_id})
-    if application:
-        for side in ["front", "back"]:
-            filename = application.get(f"verification_{side}")
-            if filename:
-                filepath = os.path.join(UPLOAD_DIR, filename)
-                if os.path.exists(filepath):
-                    os.remove(filepath)
-    
+    # First delete any verification documents + uploaded signup document
+    await db.verification_documents.delete_many({"application_id": application_id})
+    await db.signup_documents.delete_many({"application_id": application_id})
+
     result = await db.applications.delete_one({"id": application_id})
     
     if result.deleted_count == 0:
