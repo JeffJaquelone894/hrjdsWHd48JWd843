@@ -1,5 +1,12 @@
 # Prysm Technologies (ehemals Keyperion / Precision Labs) – PRD
 
+## 📊 Meta (Facebook) Pixel auf /signup (2026-06)
+- Browser-Pixel (ID `495144119315872`, fest im Code als `FB_PIXEL_ID` in `SignupTeilzeit.jsx`) lädt **nur** auf /signup via `useEffect` (nicht site-weit).
+- Feuert `PageView` beim Laden und `Lead` beim erfolgreichen Absenden des Bewerbungsformulars.
+- Verifiziert: fbevents.js geladen, Config-Request + PageView-Tracking-Request an facebook.com/tr mit korrekter Pixel-ID.
+- Hinweis: Das vom Nutzer geteilte `EAAN…`-Token ist ein Conversions-API-Token (serverseitig, geheim) – NICHT eingebaut; Nutzer wurde zur Neugenerierung geraten.
+
+
 ## 🆕 Öffentliche /signup-Bewerbungsseite (Teilzeit) (2026-06)
 - Neue eigenständige Landingpage **/signup** (`frontend/src/pages/SignupTeilzeit.jsx`, Route in `App.js`, nur per Direktlink, nicht in Nav/Footer): Teilzeit-Stellenanzeige (2.200 €/Monat + Provision, 20 Std/Woche, 100 % Homeoffice, flexible Zeiten, unbefristet, 28 Tage Urlaub, Urlaubs-/Weihnachtsgeld/13.+14. Gehalt, Einarbeitung, Tools gestellt) + Aufgabenliste + Bewerbungsformular. Nach Absenden: „Wir melden uns innerhalb von 24 Stunden bei dir".
 - Formularfelder: **Name, E-Mail, Telefonnummer, Staatsbürgerschaft (Pflicht)** + optionaler Dokument-Upload (PDF/Word/Bild, max. 10 MB).

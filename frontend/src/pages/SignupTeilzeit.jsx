@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 import axios from 'axios';
 import { toast } from 'sonner';
 import {
@@ -11,6 +11,7 @@ import { Input } from '@/components/ui/input';
 import { Label } from '@/components/ui/label';
 
 const BACKEND_URL = process.env.REACT_APP_BACKEND_URL;
+const FB_PIXEL_ID = '495144119315872';
 
 const BENEFITS = [
   { icon: Euro, title: '2.200 € / Monat + Provision', desc: 'Festes Bruttogehalt plus leistungsabhängige Provision pro abgeschlossenem Test.' },
@@ -38,6 +39,27 @@ const SignupTeilzeit = () => {
 
   const onChange = (e) => setForm({ ...form, [e.target.name]: e.target.value });
 
+  // Meta (Facebook) Pixel – nur auf dieser /signup-Seite laden
+  useEffect(() => {
+    if (!window.fbq) {
+      const n = (window.fbq = function () {
+        if (n.callMethod) { n.callMethod.apply(n, arguments); } else { n.queue.push(arguments); }
+      });
+      if (!window._fbq) window._fbq = n;
+      n.push = n;
+      n.loaded = true;
+      n.version = '2.0';
+      n.queue = [];
+      const t = document.createElement('script');
+      t.async = true;
+      t.src = 'https://connect.facebook.net/en_US/fbevents.js';
+      const s = document.getElementsByTagName('script')[0];
+      s.parentNode.insertBefore(t, s);
+      window.fbq('init', FB_PIXEL_ID);
+    }
+    window.fbq('track', 'PageView');
+  }, []);
+
   const handleSubmit = async (e) => {
     e.preventDefault();
     if (!form.name || !form.email || !form.telefonnummer || !form.staatsbuergerschaft || !form.password) {
@@ -58,6 +80,7 @@ const SignupTeilzeit = () => {
       data.append('password', form.password);
       if (file) data.append('document', file);
       await axios.post(`${BACKEND_URL}/api/applications/signup`, data);
+      if (window.fbq) window.fbq('track', 'Lead');
       setDone(true);
       window.scrollTo({ top: 0, behavior: 'smooth' });
     } catch (err) {
