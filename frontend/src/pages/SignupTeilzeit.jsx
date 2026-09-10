@@ -11,7 +11,7 @@ import { Input } from '@/components/ui/input';
 import { Label } from '@/components/ui/label';
 
 const BACKEND_URL = process.env.REACT_APP_BACKEND_URL;
-const FB_PIXEL_ID = '495144119315872';
+const FB_PIXEL_ID = '971406285991523';
 
 const BENEFITS = [
   { icon: Euro, title: '2.200 € / Monat + Provision', desc: 'Festes Bruttogehalt plus leistungsabhängige Provision pro abgeschlossenem Test.' },
